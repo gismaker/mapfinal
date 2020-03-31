@@ -3,17 +3,22 @@ package com.mapfinal.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-public class Feature implements GeoElement {
+public class Feature<K> implements GeoElement {
 
-	private Long id;
+	private K id;
 	/**
 	 * 图形对象
 	 */
 	private Geometry geometry;
+	/**
+	 * 坐标系统
+	 */
+	private SpatialReference spatialReference;
 	/**
 	 * 索引对象
 	 */
@@ -31,10 +36,11 @@ public class Feature implements GeoElement {
 	 */
 	private long activeTime;
 
-	public Feature(Long id, SpatialIndexObject spatialIndexObject, Geometry geometry) {
+	public Feature(K id, SpatialIndexObject spatialIndexObject, Geometry geometry) {
 		this.id = id;
 		this.spatialIndexObject = spatialIndexObject;
 		this.geometry = geometry;
+		this.spatialReference = SpatialReference.wgs84();
 	}
 
 	/*
@@ -103,11 +109,11 @@ public class Feature implements GeoElement {
 	 * 获取要素的唯一id编号
 	 * @return
 	 */
-	public long getId() {
+	public K getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(K id) {
 		this.id = id;
 	}
 
@@ -159,6 +165,14 @@ public class Feature implements GeoElement {
 	@Override
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
+	}
+
+	public SpatialReference getSpatialReference() {
+		return spatialReference;
+	}
+
+	public void setSpatialReference(SpatialReference spatialReference) {
+		this.spatialReference = spatialReference;
 	}
 	
 	//Symbol getSymbol();

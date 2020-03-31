@@ -5,7 +5,7 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.FeatureResourceObject;
+import com.mapfinal.resource.FeatureCollection;
 
 public class FeatureDispatcher extends Dispatcher {
 	// 要素
@@ -17,12 +17,12 @@ public class FeatureDispatcher extends Dispatcher {
 	//private String geometryType;
 	private int size = 0;
 	
-	public FeatureDispatcher(SpatialIndexer indexer, FeatureResourceObject resource) {
+	public FeatureDispatcher(SpatialIndexer indexer, FeatureCollection resource) {
 		super(indexer, resource);
 	}
 	
-	public FeatureResourceObject getFeatureResourceObject() {
-		return (FeatureResourceObject) getResource();
+	public FeatureCollection getFeatureCollection() {
+		return (FeatureCollection) getResource();
 	} 
 	
 	@Override
@@ -32,11 +32,11 @@ public class FeatureDispatcher extends Dispatcher {
 		boolean bintersects = context.getSceneEnvelope().intersects(sio.getEnvelope());
 		if(!bintersects) return;
 		size++;
-		if(context.getZoom() > 13) {
-			System.out.println("id: " + sio.getId() + ", env: " + sio.getEnvelope().toString());
-		}
+//		if(context.getZoom() > 13) {
+//			System.out.println("id: " + sio.getId() + ", env: " + sio.getEnvelope().toString());
+//		}
 		//System.out.println("[resultAction] id: " + id);
-		Feature feature = getFeatureResourceObject().curreatFeature(sio);
+		Feature feature = getFeatureCollection().current(sio);
 		if(feature!=null) {
 			//System.out.println("[resultAction] render id: " + id);
 			Renderer renderer = event.get("renderer");
@@ -68,7 +68,7 @@ public class FeatureDispatcher extends Dispatcher {
 //		}
 		size = 0;
 		query(event, context.getSceneEnvelope(), this);
-		System.out.println("[FeatureDispatcher] size: " + size + ", scene: " + context.getSceneEnvelope().toString());
+		//System.out.println("[FeatureDispatcher] size: " + size + ", scene: " + context.getSceneEnvelope().toString());
 		//long start = System.currentTimeMillis();
 		//System.out.println("query times: " + (System.currentTimeMillis() - start));
 //		if(features!=null) {

@@ -1,13 +1,13 @@
 package com.mapfinal.dispatcher;
 
-import java.util.List;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.map.ImageFeature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.tile.TileResourceObject;
+import com.mapfinal.resource.tile.TileCollection;
+import com.mapfinal.resource.tile.TileResourceDispatcher;
 
 public class TileDispatcher extends Dispatcher {
 
@@ -17,19 +17,19 @@ public class TileDispatcher extends Dispatcher {
 	private int minZoom = 0;
 	private int maxZoom = 18;
 	
-	public TileDispatcher(SpatialIndexer indexer, TileResourceObject resource) {
+	public TileDispatcher(SpatialIndexer indexer, TileResourceDispatcher resource) {
 		super(indexer, resource);
 	}
 	
 	@Override
 	public void resultAction(SpatialIndexObject sio) {
 		// TODO Auto-generated method stub
-		TileResourceObject tro = (TileResourceObject) getResource();
-		ImageFeature feature = tro.curreatFeature(sio);
+		TileResourceDispatcher tro = (TileResourceDispatcher) getResource();
+		ImageFeature feature = (ImageFeature) tro.current(sio);
 		if(feature!=null) {
 			//System.out.println("tile render: " + feature.getId());
 			//tile.onRender(event, engine);
-			feature.setEnvelope(sio.getEnvelope());
+			//feature.setEnvelope(sio.getEnvelope());
 			engine.renderImageFeature(null, event.get("map"), feature);
 		}
 	}
@@ -40,13 +40,6 @@ public class TileDispatcher extends Dispatcher {
 		
 	}
 	
-	public ImageFeature loadImageFeature(SpatialIndexObject sio) {
-		ImageFeature tile =  null;
-		if(getResource()!=null && getResource().getReader()!=null) {
-			tile = (ImageFeature) getResource().getReader().read(sio);
-		}
-		return tile;
-	}
 	
 	public void onRender(Event event, RenderEngine engine, Renderer renderer) {
 		this.event = event;
@@ -58,32 +51,32 @@ public class TileDispatcher extends Dispatcher {
 			//System.out.println("[TileDispatcher] decimalZoom: " + decimalZoom + ", zoom: " + zoom);
 			zoom = decimalZoom;
 		}
-		TileResourceObject resource = (TileResourceObject) getResource();
-		query(event.set("type", resource.getTmsType()).set("name", resource.getCacheFolder()), context.getSceneEnvelope(), this);
-		System.out.println("[TileDispatcher]" + resource.getTileCache().print());
+		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
+		query(event.set("type", resource.getTmsType()).set("name", resource.getName()), context.getSceneEnvelope(), this);
+		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 	}
 
 	public void onEvent(Event event) {
-		//TileResourceObject tro = (TileResourceObject) getResource();
+		//TileCollection tro = (TileCollection) getResource();
 		//List<String> keys = tro.getTileCache().getKeys();
 		//for (String key : keys) {
 		//}
 	}
 	
-	public ImageFeature getImageFeature(String featureId) {
-		TileResourceObject tro = (TileResourceObject) getResource();
-		return tro.getTileCache().get(featureId);
-	}
-
-	public void removeImageFeature(String featureId) {
-		TileResourceObject tro = (TileResourceObject) getResource();
-		tro.getTileCache().remove(featureId);
-	}
-	
-	public List<String> getFeatureIds() {
-		TileResourceObject tro = (TileResourceObject) getResource();
-		return tro.getTileCache().keys();
-	}
+//	public ImageFeature getImageFeature(String featureId) {
+//		TileCollection tro = (TileCollection) getResource();
+//		return tro.getTileCache().get(featureId);
+//	}
+//
+//	public void removeImageFeature(String featureId) {
+//		TileCollection tro = (TileCollection) getResource();
+//		tro.getTileCache().remove(featureId);
+//	}
+//	
+//	public List<String> getFeatureIds() {
+//		TileCollection tro = (TileCollection) getResource();
+//		return tro.getTileCache().keys();
+//	}
 
 	public int getMinZoom() {
 		return minZoom;

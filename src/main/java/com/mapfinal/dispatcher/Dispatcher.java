@@ -3,7 +3,8 @@ package com.mapfinal.dispatcher;
 import java.util.List;
 
 import com.mapfinal.event.Event;
-import com.mapfinal.resource.ResourceObject;
+import com.mapfinal.resource.ResourceDispatcher;
+
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.ItemVisitor;
 
@@ -15,9 +16,9 @@ import org.locationtech.jts.index.ItemVisitor;
 public abstract class Dispatcher implements ItemVisitor {
 
 	private SpatialIndexer indexer;
-	private ResourceObject resource;
+	private ResourceDispatcher resource;
 	
-	public Dispatcher(SpatialIndexer indexer, ResourceObject resource) {
+	public Dispatcher(SpatialIndexer indexer, ResourceDispatcher resource) {
 		this.setIndexer(indexer);
 		this.setResource(resource);
 	}
@@ -52,11 +53,11 @@ public abstract class Dispatcher implements ItemVisitor {
 		this.indexer = indexer;
 	}
 
-	public ResourceObject getResource() {
+	public ResourceDispatcher getResource() {
 		return resource;
 	}
 
-	public void setResource(ResourceObject resource) {
+	public void setResource(ResourceDispatcher resource) {
 		this.resource = resource;
 	}
 

@@ -48,9 +48,7 @@ public abstract class SceneGraph {
 	}
 	
 	public void onRender(Event event, RenderEngine engine) {
-		ResourceManager.me().renderBefore(event);
 		sceneRoot.onRender(event, engine);
-		ResourceManager.me().renderEnd(event);
 	}
 	
 	public void onEvent(Event event) {

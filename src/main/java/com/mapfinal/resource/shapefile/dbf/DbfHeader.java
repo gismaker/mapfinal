@@ -1,6 +1,6 @@
 package com.mapfinal.resource.shapefile.dbf;
 
-import com.mapfinal.resource.shapefile.BigEndian;
+import com.mapfinal.resource.shapefile.shpx.BigEndian;
 
 /**
  * DBF文件头

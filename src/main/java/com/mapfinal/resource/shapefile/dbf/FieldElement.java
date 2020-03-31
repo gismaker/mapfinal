@@ -2,7 +2,7 @@ package com.mapfinal.resource.shapefile.dbf;
 
 import java.util.Arrays;
 
-import com.mapfinal.resource.shapefile.BigEndian;
+import com.mapfinal.resource.shapefile.shpx.BigEndian;
 
 /**
  * 字段描述结构

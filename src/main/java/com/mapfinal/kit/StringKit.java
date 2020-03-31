@@ -19,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -959,6 +961,21 @@ public final class StringKit {
 		}
 		return newfile;
 	}
+	
+	/**
+	 * 获取缩略图名称
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public static String getFileName(String filepath) {
+		String newfile = "";
+		if (StringKit.toStr(filepath).length() > 0) {
+			newfile = filepath.substring(0, filepath.indexOf("."))
+					+ filepath.substring(filepath.indexOf("."));
+		}
+		return newfile;
+	}
 
 	/**
 	 * 去除字符串中的空格、回车、换行符、制表符 注：\n 回车(\u000a) \t 水平制表符(\u0009) \s 空格(\u0008) \r
@@ -1244,5 +1261,28 @@ public final class StringKit {
         matcher.appendTail(sb);
         return sb.toString();
     }
+    
+    
+    public static String encodeName(String url) {
+		// TODO Auto-generated method stub
+		byte[] hash;
+		try {
+			hash = MessageDigest.getInstance("MD5").digest(
+					url.getBytes("UTF-8"));
+			StringBuilder hex = new StringBuilder(hash.length * 2);
+	        for (byte b : hash) {
+	            if ((b & 0xFF) < 0x10) {
+	                hex.append("0");
+	            }
+	            hex.append(Integer.toHexString(b & 0xFF));
+	        }
+	        return hex.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+        return url;
+	}
 
 }

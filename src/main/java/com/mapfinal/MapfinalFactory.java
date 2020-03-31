@@ -2,8 +2,7 @@ package com.mapfinal;
 
 import com.mapfinal.operator.GeoCompress;
 import com.mapfinal.render.RenderCompress;
-import com.mapfinal.resource.ImageCacheService;
-import com.mapfinal.resource.Resource;
+import com.mapfinal.resource.image.ImageHandle;
 
 public abstract class MapfinalFactory {
 	
@@ -25,8 +24,8 @@ public abstract class MapfinalFactory {
 	public abstract RenderCompress getRenderCompress(GeoCompress.Type type);
 	
 	/**
-	 * 创建一个图像IO
+	 * 创建一个图像处理句柄
 	 * @return
 	 */
-	public abstract ImageCacheService createImageCacheService(Resource.CacheType type, int cacheSize);
+	public abstract ImageHandle getImageHandle();
 }

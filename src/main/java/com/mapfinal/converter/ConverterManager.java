@@ -2,9 +2,10 @@ package com.mapfinal.converter;
 
 import java.util.Map;
 
+import com.mapfinal.common.SyncWriteMap;
 import com.mapfinal.converter.proj4.Proj4ConverterFactory;
 import com.mapfinal.kit.StringKit;
-import com.mapfinal.kit.SyncWriteMap;
+
 import org.locationtech.jts.geom.Coordinate;
 
 public class ConverterManager {

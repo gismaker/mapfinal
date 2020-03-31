@@ -1,53 +1,36 @@
 package com.mapfinal.resource;
 
-import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.event.Event;
 
-import org.locationtech.jts.geom.Envelope;
-
 /**
- * 资源对象： 资源唯一性，同一个资源可被多个layer调用，name是主键
+ * 非空间数据资源对象： 资源唯一性，同一个资源可被多个对象调用，name是主键
  * <br>资源对象各自管理自己的资源、缓存和存储。
  * @author yangyong
  */
-public class ResourceObject {
+public abstract class ResourceObject implements Resource {
 
-	//名称，唯一键
+	//名称
 	private String name;
-	//文件路径 或 网络地址
+	//文件路径 或 网络地址，唯一键
 	private String url;
-	//数据类型，Resource.Type
-	private Resource.Type type;
 	//ResourceObject外接矩形
-	private Envelope envelope;
-	//空间参考坐标系
-	private SpatialReference spatialReference;
-	//原位置读取方法
-	private ResourceReader reader;
-	//目标位置保存方法
-	private ResourceWriter writer;
+	//private Envelope envelope;
 	//ResourceObject被调用次数
 	private int reference = 0;
-	//缓存
-	private ResourceCache cache;
-	//缓存文件夹
-	private String cacheFolder = "common";
+
+	public ResourceObject() {
+	}
 	
-	public ResourceObject(String name, String url, Resource.Type type) {
-		// TODO Auto-generated constructor stub
+	public ResourceObject(String name, String url) {
 		this.name = name;
-		this.cacheFolder = name;
 		this.url = url;
-		this.type = type;
-		ResourceManager.me().putResource(this);
 	}
 	
-	public void renderBefore(Event event) {
+	@Override
+	public void execute(Event event) {
+		// TODO Auto-generated method stub
 	}
-	
-	public void renderEnd(Event event) {
-	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -60,62 +43,11 @@ public class ResourceObject {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public Resource.Type getType() {
-		return type;
-	}
-	public void setType(Resource.Type type) {
-		this.type = type;
-	}
-	public ResourceReader getReader() {
-		return reader;
-	}
-	public void setReader(ResourceReader reader) {
-		this.reader = reader;
-	}
-	public ResourceWriter getWriter() {
-		return writer;
-	}
-	public void setWriter(ResourceWriter writer) {
-		this.writer = writer;
-	}
-
-	public Envelope getEnvelope() {
-		return envelope;
-	}
-
-	public void setEnvelope(Envelope envelope) {
-		this.envelope = envelope;
-	}
-
-	public SpatialReference getSpatialReference() {
-		return spatialReference;
-	}
-
-	public void setSpatialReference(SpatialReference spatialReference) {
-		this.spatialReference = spatialReference;
-	}
-
-	public String getCacheFolder() {
-		return cacheFolder;
-	}
-
-	public void setCacheFolder(String cacheFolder) {
-		this.cacheFolder = cacheFolder;
-	}
-
 	public int getReference() {
 		return reference;
 	}
 
 	public void setReference(int reference) {
 		this.reference = reference;
-	}
-
-	public ResourceCache getCache() {
-		return cache;
-	}
-
-	public void setCache(ResourceCache cache) {
-		this.cache = cache;
 	}
 }

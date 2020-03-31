@@ -16,22 +16,25 @@ import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.FileKit;
-import com.mapfinal.map.Feature;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.FieldType;
 import com.mapfinal.map.GeoElement;
+import com.mapfinal.resource.ResourceDispatcher;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
 import com.mapfinal.resource.shapefile.dbf.MapTableDesc;
 import com.mapfinal.resource.shapefile.dbf.RecordStart;
+import com.mapfinal.resource.shapefile.shpx.ShpRandomAccess;
+import com.mapfinal.resource.shapefile.shpx.ShpType;
+import com.mapfinal.resource.shapefile.shpx.ShxRandomAccess;
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
-public class ShapefileRandomAccess {
+public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeature> {
 
 	private String filepath;
 	
@@ -110,10 +113,22 @@ public class ShapefileRandomAccess {
 		return recordSet.openDBF(dbfFile);
 	}
 
-	public Dispatcher connection(ShapefileResourceObject resource) {
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return filepath;
+	}
+
+	@Override
+	public ShapefileFeature current(SpatialIndexObject sio) {
+		// TODO Auto-generated method stub
+		return read(sio);
+	}
+
+	public Dispatcher connection() {
 		// TODO Auto-generated method stub
 		try {
-			return shpRandomAccess.buildDispatcher(resource, shxRandomAccess);
+			return shpRandomAccess.buildDispatcher(ShapefileManager.me().getCollection(filepath), shxRandomAccess);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -131,7 +146,7 @@ public class ShapefileRandomAccess {
 		return features;
 	}
 
-	public GeoElement read(SpatialIndexObject obj) {
+	public ShapefileFeature read(SpatialIndexObject obj) {
 		// TODO Auto-generated method stub
 		//System.out.println("shapefile read of SpatialIndexObject");
 		Integer i = Integer.valueOf(obj.getId());
@@ -161,7 +176,7 @@ public class ShapefileRandomAccess {
 	 * @return 成功返回true,否则返回false
 	 * @throws IOException
 	 */
-	protected GeoElement readRecord(int i, SpatialIndexObject obj) throws IOException {
+	protected ShapefileFeature readRecord(int i, SpatialIndexObject obj) throws IOException {
 		switch (shxRandomAccess.getShpType()) {
 		case ShpType.NULL_SHAPE:
 			break;
@@ -195,7 +210,7 @@ public class ShapefileRandomAccess {
 		return null;
 	}
 	
-	private GeoElement readRecordPoint(int i, SpatialIndexObject obj) throws IOException {
+	private ShapefileFeature readRecordPoint(int i, SpatialIndexObject obj) throws IOException {
 		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		point.setUserData(i - 1);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, point, shxRandomAccess.getShpType());
@@ -210,7 +225,7 @@ public class ShapefileRandomAccess {
 		return feature;		
 	}
 	
-	private GeoElement readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
+	private ShapefileFeature readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
 		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i));
 		line.setUserData(i-1);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shxRandomAccess.getShpType());
@@ -225,14 +240,14 @@ public class ShapefileRandomAccess {
 		return feature;		
 	}
 	
-	private GeoElement readRecordPolygon(int i, SpatialIndexObject obj) throws IOException {
+	private ShapefileFeature readRecordPolygon(int i, SpatialIndexObject obj) throws IOException {
 		MultiPolygon mpolygon = shpRandomAccess.readRecordPolygon(shxRandomAccess.getRecordPosition(i));
 		mpolygon.setUserData(i-1);
 		//ShapefileFeatureRender renderer = factory.build(mpolygon, shxRandomAccess.getShpType());
 		//System.out.println("read shp polygon times: " + (System.currentTimeMillis() - start));
 		//return new ShapefileFeature(obj.getId(), obj, renderer, mpolygon.getEnvelopeInternal());
 		mpolygon.setUserData(i - 1);
-		Feature feature = new Feature(Long.valueOf(i), obj, mpolygon);
+		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, mpolygon, shxRandomAccess.getShpType());
 		feature.setEnvelope(mpolygon.getEnvelopeInternal());
 		
 		//属性

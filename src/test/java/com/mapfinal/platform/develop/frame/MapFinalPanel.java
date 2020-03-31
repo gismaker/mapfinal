@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.Latlng;
+import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
 import com.mapfinal.platform.develop.graphics.GraphicsMapBackgroundRenderer;
@@ -32,16 +34,28 @@ public class MapFinalPanel extends JPanel {
         //scene.addNode(map);
         Mapfinal.me().init(scene, new GraphicsMapfinalFactory());
        
+        //tile
         String url = "D:\\web\\gwzw\\tomcat\\webapps\\tile\\grey\\{z}\\{y}_{x}.png";
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.file);
         //String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
         //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
         
+        //shp
         ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
         layer.addTo(Mapfinal.me().getMap());
         
+        //bundle
+        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
+        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
+        //String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
+        //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
+        bundleLayer.addTo(Mapfinal.me().getMap());
+        
         Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
+        
+        Mapfinal.me().getMap().setCenter(new Latlng(35.43800418056032,102.98341606580078));
+        Mapfinal.me().getMap().setZoom(13);
         
         addMouseListener(new MouseListener() {
 			@Override
@@ -86,7 +100,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 				Event event = new Event("mouseCoordinate", "event", paramMouseEvent);
 		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	//scene.onEvent(event, null);
+		    	//scene.onEvent(event);
 			}
 			
 			@Override

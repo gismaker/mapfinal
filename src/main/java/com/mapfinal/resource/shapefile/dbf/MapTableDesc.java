@@ -2,7 +2,7 @@ package com.mapfinal.resource.shapefile.dbf;
 
 import java.util.ArrayList;
 
-import com.mapfinal.resource.shapefile.BigEndian;
+import com.mapfinal.resource.shapefile.shpx.BigEndian;
 
 /**
  * 对属性数据的表结构的管理

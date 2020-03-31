@@ -8,6 +8,14 @@ public class SpatialReference {
 		// TODO Auto-generated constructor stub
 		this.name = name;
 	}
+	
+	public static SpatialReference mercator() {
+		return new SpatialReference("EPSG:3857");
+	}
+	
+	public static SpatialReference wgs84() {
+		return new SpatialReference("EPSG:4326");
+	}
 
 	public static SpatialReference create(int wkid) {
 		//未完成

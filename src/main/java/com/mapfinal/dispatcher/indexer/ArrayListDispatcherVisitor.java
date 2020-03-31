@@ -6,7 +6,7 @@ import java.util.List;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
-import com.mapfinal.resource.ResourceObject;
+import com.mapfinal.resource.ResourceDispatcher;
 
 public class ArrayListDispatcherVisitor extends Dispatcher {
 
@@ -17,7 +17,7 @@ public class ArrayListDispatcherVisitor extends Dispatcher {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ArrayListDispatcherVisitor(SpatialIndexer indexer, ResourceObject resource) {
+	public ArrayListDispatcherVisitor(SpatialIndexer indexer, ResourceDispatcher resource) {
 		super(indexer, resource);
 		// TODO Auto-generated constructor stub
 	}

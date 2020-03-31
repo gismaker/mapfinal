@@ -1,64 +1,74 @@
 package com.mapfinal.map;
 
-import java.util.Map;
-
-import com.mapfinal.converter.SpatialReference;
-import com.mapfinal.resource.Resource;
-import com.mapfinal.resource.ResourceManager;
-import com.mapfinal.resource.ResourceObject;
-import com.mapfinal.resource.tile.TileResourceObject;
-
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 
-public class ImageFeature implements GeoElement {
+public abstract class ImageFeature<M> implements GeoElement {
 
-	private String url;
-	private String resourceName;
-	private String imageName;// tile.getImageName
-	private Resource.ImageType imageType;
-	private int width;
-	private int height;
-	private Envelope envelope;
-	private SpatialReference spatialReference;
+	/**
+	 * 图片
+	 */
+	//private Image image;
+	/**
+	 * 图形对象
+	 */
+	//private Geometry geometry;
+	/**
+	 * 坐标系统
+	 */
+	//private SpatialReference spatialReference;
+	/**
+	 * 属性信息
+	 */
+	//private Map<String, Object> attributes;
+	/**
+	 * 包围盒
+	 */
+	//private Envelope envelope;
+	/**
+	 * 最后一次渲染时间
+	 */
+	private long activeTime;
 
-	public ImageFeature(String url, Resource.ImageType imageType, String imageName, Envelope envelope,
-			SpatialReference spatialReference) {
-		// TODO Auto-generated constructor stub
-		this.setImageName(imageName);
-		this.url = url;
-		this.setImageType(imageType);
-		this.envelope = envelope;
-		this.spatialReference = spatialReference;
-	}
+//	public ImageFeature(Image image, Envelope envelope, SpatialReference spatialReference) {
+//		// TODO Auto-generated constructor stub
+//		this.image = image;
+//		this.envelope = envelope;
+//		this.spatialReference = spatialReference;
+//	}
+//	
+//	public ImageFeature(Image image, Geometry geometry, SpatialReference spatialReference) {
+//		// TODO Auto-generated constructor stub
+//		this.image = image;
+//		this.geometry = geometry;
+//		this.envelope = geometry.getEnvelopeInternal();
+//		this.spatialReference = spatialReference;
+//	}
+//
+//	public ImageFeature(Image image, Envelope envelope) {
+//		this.image = image;
+//		this.envelope = envelope;
+//		this.spatialReference = SpatialReference.wgs84();
+//	}
+//	
+//	public Object getImage() {
+//		return image.getImage();
+//	}
+//
+//	public void setImage(Image image) {
+//		this.image = image;
+//	}
+	
+	public abstract M getImage(); 
 
-	public ImageFeature(String url, Resource.ImageType imageType, Tile tile) {
-		this.url = url;
-		this.imageType = imageType;
-		this.imageName = tile.getImageName();
-		this.envelope = tile.getEnvelope();
-		this.spatialReference = tile.getSpatialReference();
-	}
-
-	public Object getImage() {
-		// TODO Auto-generated method stub
-		ResourceObject ro = ResourceManager.me().getResource(resourceName);
-		if(ro instanceof TileResourceObject) {
-			TileResourceObject tro = (TileResourceObject) ro;
-			return tro.getImage(url);
-		} else {
-			return ResourceManager.me().getImageCache().get(url);
-		}
-	}
-
+	public abstract Envelope getEnvelope();
 	/**
 	 * 左上角
 	 * 
 	 * @return
 	 */
 	public Coordinate getTopLeft() {
-		return new Coordinate(envelope.getMinX(), envelope.getMaxY());
+		return new Coordinate(getEnvelope().getMinX(), getEnvelope().getMaxY());
 	}
 
 	/**
@@ -67,7 +77,7 @@ public class ImageFeature implements GeoElement {
 	 * @return
 	 */
 	public Coordinate getBottomLeft() {
-		return new Coordinate(envelope.getMinX(), envelope.getMinY());
+		return new Coordinate(getEnvelope().getMinX(), getEnvelope().getMinY());
 	}
 
 	/**
@@ -76,7 +86,7 @@ public class ImageFeature implements GeoElement {
 	 * @return
 	 */
 	public Coordinate getTopRight() {
-		return new Coordinate(envelope.getMaxX(), envelope.getMaxY());
+		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMaxY());
 	}
 
 	/**
@@ -85,94 +95,52 @@ public class ImageFeature implements GeoElement {
 	 * @return
 	 */
 	public Coordinate getBottomRight() {
-		return new Coordinate(envelope.getMaxX(), envelope.getMinY());
+		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMinY());
 	}
 
-	@Override
-	public Map<String, Object> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+//	@Override
+//	public Map<String, Object> getAttributes() {
+//		// TODO Auto-generated method stub
+//		return attributes;
+//	}
+//
+//	@Override
+//	public Geometry getGeometry() {
+//		// TODO Auto-generated method stub
+//		return geometry;
+//	}
+//
+//	@Override
+//	public void setGeometry(Geometry geometry) {
+//		// TODO Auto-generated method stub
+//		this.geometry = geometry;
+//	}
+//
+//	public SpatialReference getSpatialReference() {
+//		return spatialReference;
+//	}
+//
+//	public void setSpatialReference(SpatialReference spatialReference) {
+//		this.spatialReference = spatialReference;
+//	}
+//
+//	public Envelope getEnvelope() {
+//		return envelope;
+//	}
+//
+//	public void setEnvelope(Envelope envelope) {
+//		this.envelope = envelope;
+//	}
+//	
+//	public void setAttributes(Map<String, Object> attributes) {
+//		this.attributes = attributes;
+//	}
+
+	public long getActiveTime() {
+		return activeTime;
 	}
 
-	@Override
-	public Geometry getGeometry() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setActiveTime(long activeTime) {
+		this.activeTime = activeTime;
 	}
-
-	@Override
-	public void setGeometry(Geometry geometry) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public SpatialReference getSpatialReference() {
-		return spatialReference;
-	}
-
-	public void setSpatialReference(SpatialReference spatialReference) {
-		this.spatialReference = spatialReference;
-	}
-
-	public Envelope getEnvelope() {
-		return envelope;
-	}
-
-	public void setEnvelope(Envelope envelope) {
-		this.envelope = envelope;
-	}
-
-	public Resource.ImageType getImageType() {
-		return imageType;
-	}
-
-	public void setImageType(Resource.ImageType imageType) {
-		this.imageType = imageType;
-	}
-
-	public String getResourceName() {
-		return resourceName;
-	}
-
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
-	}
-
-	public String getImageName() {
-		return imageName;
-	}
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getId() {
-		// TODO Auto-generated method stub
-		return url;
-	}
-
 }

@@ -5,6 +5,7 @@ mapfinal-0.3:
 新增：操作器中加入抽稀压缩算法
 新增：加入ResourceCache管理资源内存
 新增：增加dbf的读取
+新增：增加bundle格式的支持
 优化：shp采用RandomAccessFile指定Feature读取
 优化：shp显示加入点抽稀处理
 优化：抽取Tile切片行列算法为调度器的索引算法
@@ -12,6 +13,7 @@ mapfinal-0.3:
 优化：优化Resource的管理，强化ResourcceObject对资源的操作和管理。
 优化：FeatureDispatcher中，索引结果再次判断包围盒交集，过滤索引结果
 优化：将运行界面及swing相关的代码移植test中，如需启动窗口界面，请运行com.mapfinal.platform.develop.frame.MapFinalFrame
+优化：重构resource资源管理器的所有代码
 
 -----------------------------
 mapfinal-0.2:

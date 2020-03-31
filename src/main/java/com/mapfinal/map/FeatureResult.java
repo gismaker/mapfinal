@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class FeatureResult {
+public class FeatureResult<K> {
 
 	private List<Field> fields;
-	private Map<Long, Feature> features;
+	private Map<K, Feature<K>> features;
 	
 	public FeatureResult(List<Field> fields) {
 		this.fields = fields;
-		features = new ConcurrentHashMap<Long, Feature>();
+		features = new ConcurrentHashMap<K, Feature<K>>();
 	}
 	
-	public void addFeature(Feature feature) {
-		features.put(Long.valueOf(feature.getId()), feature);
+	public void addFeature(Feature<K> feature) {
+		features.put(feature.getId(), feature);
 	}
 
 	/**

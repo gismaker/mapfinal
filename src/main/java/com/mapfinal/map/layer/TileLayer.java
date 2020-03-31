@@ -1,13 +1,13 @@
 package com.mapfinal.map.layer;
 
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.event.Event;
 import com.mapfinal.map.MapView;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.resource.Resource;
-import com.mapfinal.resource.ResourceObject;
-import com.mapfinal.resource.tile.TileResourceObject;
+import com.mapfinal.resource.tile.TileCollection;
 import org.locationtech.jts.geom.Envelope;
 
 public class TileLayer extends AbstractLayer {
@@ -15,27 +15,27 @@ public class TileLayer extends AbstractLayer {
 	// 调度器
 	private TileDispatcher dispatcher;
 	// 资源
-	private ResourceObject resource;
+	private TileCollection resource;
 
 	public TileLayer(String name, String url, Resource.FileType fileType) {
 		// TODO Auto-generated constructor stub
-		resource = new TileResourceObject(name, url, fileType);
+		resource = new TileCollection(name, url, fileType);
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.getReader().connection();
-		System.out.println("FeatureDispatcher: " + dispatcher.getResource().getName());
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
-		setSpatialReference(resource.getSpatialReference());
+		setSpatialReference(SpatialReference.mercator());
 	}
 	
-	public TileLayer(ResourceObject resource) {
+	public TileLayer(TileCollection resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.getReader().connection();
-		System.out.println("FeatureDispatcher: " + dispatcher.getResource().getName());
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
-		setSpatialReference(resource.getSpatialReference());
+		setSpatialReference(SpatialReference.mercator());
 	}
 	
 	public void addTo(MapView mapNode) {
@@ -72,18 +72,18 @@ public class TileLayer extends AbstractLayer {
 		this.dispatcher = dispatcher;
 	}
 
-	public ResourceObject getResource() {
+	public TileCollection getResource() {
 		return resource;
 	}
 
-	public void setResource(ResourceObject resource) {
+	public void setResource(TileCollection resource) {
 		this.resource = resource;
 	}
 	
 	@Override
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
-		return resource != null ? resource.getEnvelope() : null;
+		return null;
 	}
 	
 	@Override

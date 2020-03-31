@@ -4,11 +4,18 @@ import java.io.IOException;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.geometry.GeoKit;
-import com.mapfinal.map.Feature;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
 import com.mapfinal.resource.shapefile.dbf.RecordStart;
+import com.mapfinal.resource.shapefile.shpx.BigEndian;
+import com.mapfinal.resource.shapefile.shpx.BytePacket;
+import com.mapfinal.resource.shapefile.shpx.ShpInfo;
+import com.mapfinal.resource.shapefile.shpx.ShpPoint;
+import com.mapfinal.resource.shapefile.shpx.ShpPointContent;
+import com.mapfinal.resource.shapefile.shpx.ShpRecordHeader;
+import com.mapfinal.resource.shapefile.shpx.ShpRecordRandomReader;
+import com.mapfinal.resource.shapefile.shpx.ShpType;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -16,6 +23,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+
 
 public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 
@@ -68,7 +76,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	}
 
 	@Override
-	public Feature read(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) {
+	public ShapefileFeature read(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) {
 		// TODO Auto-generated method stub
 		if (shpRecord.getShpType() != ShpType.NULL_SHAPE) {
 			shpType = shpRecord.getShpType();
@@ -143,7 +151,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	}
 	
 	@Override
-	public Feature readRecordPoint(MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
+	public ShapefileFeature readRecordPoint(MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		Integer i = Integer.valueOf(obj.getId());
 		point.setUserData(i - 1);
@@ -160,7 +168,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	}
 
 	@Override
-	public Feature readRecordPoint(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
+	public ShapefileFeature readRecordPoint(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		Integer i = Integer.valueOf(obj.getId());
 		point.setUserData(i - 1);
@@ -281,7 +289,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	}
 
 	@Override
-	public Feature readRecordPolyline(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
+	public ShapefileFeature readRecordPolyline(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		LineString line = readRecordPolyline(shpRecord);
 		Integer i = Integer.valueOf(obj.getId());
 		line.setUserData(i - 1);
@@ -414,7 +422,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	}
 
 	@Override
-	public Feature readRecordPolygon(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
+	public ShapefileFeature readRecordPolygon(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		MultiPolygon mpolygon = readRecordPolygon(shpRecord);
 		Integer i = Integer.valueOf(obj.getId());
 		mpolygon.setUserData(i - 1);

@@ -5,7 +5,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.resource.FeatureResourceObject;
+import com.mapfinal.resource.FeatureCollection;
 import org.locationtech.jts.geom.Envelope;
 
 /**
@@ -18,21 +18,21 @@ public class FeatureLayer extends AbstractLayer {
 	/**
 	 * 资源
 	 */
-	private FeatureResourceObject resource;
+	private FeatureCollection resource;
 	/**
 	 * 默认通过FeatureDispatcher调度器实现
 	 */
 	private FeatureDispatcher dispatcher;
 	
-	public FeatureLayer(FeatureResourceObject resource) {
+	public FeatureLayer(FeatureCollection resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
-		dispatcher = (FeatureDispatcher) resource.getReader().connection();
-		System.out.println("FeatureDispatcher: " + dispatcher.getResource().getName());
+		dispatcher = (FeatureDispatcher) resource.connection();
+		System.out.println("FeatureDispatcher: " + resource.getName());
 		setSpatialReference(resource.getSpatialReference());
 	}
-	
+	/*
 	public void addFeature(Feature feature) {
 		if(resource!=null) {
 			resource.addFeature(feature);
@@ -49,7 +49,7 @@ public class FeatureLayer extends AbstractLayer {
 		if(resource!=null) {
 			resource.deleteFeature(featureId);
 		}
-	}
+	}*/
 
 	@Override
 	public boolean isDrawable() {
@@ -82,11 +82,11 @@ public class FeatureLayer extends AbstractLayer {
 		return resource.getEnvelope();
 	}
 
-	public FeatureResourceObject getResource() {
+	public FeatureCollection getResource() {
 		return resource;
 	}
 
-	public void setResource(FeatureResourceObject resource) {
+	public void setResource(FeatureCollection resource) {
 		this.resource = resource;
 	}
 }
