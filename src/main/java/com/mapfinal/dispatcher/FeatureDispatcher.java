@@ -36,7 +36,7 @@ public class FeatureDispatcher extends Dispatcher {
 //			System.out.println("id: " + sio.getId() + ", env: " + sio.getEnvelope().toString());
 //		}
 		//System.out.println("[resultAction] id: " + id);
-		Feature feature = getFeatureCollection().current(sio);
+		Feature feature = (Feature) getFeatureCollection().read(sio);
 		if(feature!=null) {
 			//System.out.println("[resultAction] render id: " + id);
 			Renderer renderer = event.get("renderer");

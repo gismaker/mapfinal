@@ -8,7 +8,8 @@ import com.mapfinal.event.Event;
 import com.mapfinal.kit.StringKit;
 
 public class RemoteImage<M> extends Image<M> {
-	private String fileExt = ".png";
+	private String fileExt = "png";
+	private Thread downloadThread;
 	
 	public RemoteImage(String name, String url) {
 		super(name, url, null);
@@ -20,9 +21,18 @@ public class RemoteImage<M> extends Image<M> {
 	}
 	
 	public String cachePath() {
-		String im = ImageManager.me().getCacheFolder();
-		String cf = this.getCollection()!=null ? this.getCollection().getName() : "defalut";
-		return Mapfinal.me().getCacheFolder() + File.separator + im + File.separator + cf;
+		String objType = ImageManager.me().getCacheFolder();
+		String objName = "default";
+		if(this.collection!=null) {
+			objType = this.collection.getType();
+			objName = this.collection.getName();
+		}
+		String cpath = Mapfinal.me().getCacheFolder() + File.separator + objType + File.separator + objName;
+		File f = new File(cpath);
+		if(!f.exists()) {
+			f.mkdirs();
+		}
+		return cpath;
 	}
 	
 	public String getFileName() {
@@ -30,8 +40,7 @@ public class RemoteImage<M> extends Image<M> {
 		String name = StringKit.encodeName(getUrl());
 		return cachePath + File.separator + name + "." + fileExt.toString();
 	}
-	
-	
+
 	public void writeToLocal(M image) {
 		String fileName = getFileName();
 		File f = new File(fileName);
@@ -53,29 +62,36 @@ public class RemoteImage<M> extends Image<M> {
 			this.data = readFromLocal();
 			if(data==null) {
 				bDownload = true;
-				//网络缓存
-				getHandle().download(getUrl(), new Callback() {
-					@Override
-					public void execute(Event event) {
-						M img = event.get("image");
-						if(img!=null) {
-							//从网络获取图片后,保存至本地缓存
-							writeToLocal(img);
-							//保存至内存中
-							setData(img);
-						}
-						callback.execute(new Event("imageCache:get").set("image", data));
-					}
-					@Override
-					public void error(Event event) {
-						callback.error(event);
-					}
-				});
+				if(downloadThread!=null) {
+					downloadThread.interrupt();
+					downloadThread = null;
+				}
+				downloadThread = new Thread(new DownloadRunnable(getUrl(), callback));
+				downloadThread.start();
 			}
 		}
 		if(!bDownload) {
 			callback.execute(new Event("imageCache:get").set("image", data));
 		}
+	}
+	
+	protected class DownloadRunnable implements Runnable {
+		private String url;
+		private Callback callback;
+		
+		public DownloadRunnable(String url, Callback callback) {
+			// TODO Auto-generated constructor stub
+			this.url = url;
+			this.callback = callback;
+		}
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			//网络缓存
+			getHandle().download(url, callback);
+		}
+		
 	}
 	
 	@Override
@@ -86,7 +102,11 @@ public class RemoteImage<M> extends Image<M> {
 			this.data = readFromLocal();
 			if(data==null) {
 				//网络缓存
-				getHandle().download(getUrl(), new Callback() {
+				if(downloadThread!=null) {
+					downloadThread.interrupt();
+					downloadThread = null;
+				}
+				downloadThread = new Thread(new DownloadRunnable(getUrl(), new Callback() {
 					@Override
 					public void execute(Event event) {
 						M img = event.get("image");
@@ -100,7 +120,25 @@ public class RemoteImage<M> extends Image<M> {
 					@Override
 					public void error(Event event) {
 					}
-				});
+				}));
+				downloadThread.start();
+				/*
+				getHandle().download(getUrl(), new Callback() {
+					@Override
+					public void execute(Event event) {
+						if(releaseFlag) return;
+						M img = event.get("image");
+						if(img!=null) {
+							//从网络获取图片后,保存至本地缓存
+							writeToLocal(img);
+							//保存至内存中
+							setData(img);
+						}
+					}
+					@Override
+					public void error(Event event) {
+					}
+				});*/
 			}
 		}
 	}
@@ -139,5 +177,16 @@ public class RemoteImage<M> extends Image<M> {
 
 	public void setFileExt(String fileExt) {
 		this.fileExt = fileExt;
+	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		super.destroy();
+		if(downloadThread!=null) {
+			System.out.println("[RemoteImage] downloadThread stop");
+			downloadThread.interrupt();
+			downloadThread = null;
+		}
 	}
 }

@@ -1,8 +1,12 @@
 package com.mapfinal;
 
+import java.io.File;
+
+import com.mapfinal.event.EventManager;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.MapView;
 import com.mapfinal.render.SceneGraph;
+import com.mapfinal.render.SceneRedrawListener;
 
 /**
  * 参考：
@@ -31,6 +35,10 @@ public class Mapfinal {
 		this.factory.init();
 		this.scene = scene;
 		scene.addNode(map);
+		
+		this.cacheFolder = System.getProperty("user.dir") + File.separator + "cache";
+		System.out.println("cacheFolder: " + cacheFolder);
+		EventManager.me().registerListener(SceneRedrawListener.class);
 	}
 	
 	public void setCenter(Latlng center) {

@@ -11,7 +11,6 @@ import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.ResourceCollection;
-import com.mapfinal.resource.Resource.FileType;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
 public class BundleCollection extends TileResourceDispatcher<BundleFeature> implements ResourceCollection<BundleFeature, String> {
@@ -36,8 +35,16 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 	}
 	@Override
 	public BundleFeature read(SpatialIndexObject sio) {
-		// TODO Auto-generated method stub
-		return loadFeature(sio);
+		BundleFeature feature =  getFromCache(sio.getId());
+		if(feature==null) {
+			Tile tile = (Tile) sio.getOption("tile");
+			String tileUrl = tile.getIntactUrl(this.url);
+			feature = new BundleFeature(tileUrl, tile);
+			if(feature!=null) {
+				putToCache(sio.getId(), feature);
+			}
+		}
+		return feature;
 	}
 
 	@Override
@@ -62,31 +69,6 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 		return 0;
 	}
 	
-	@Override
-	public BundleFeature current(SpatialIndexObject sio) {
-		BundleFeature feature =  getFromCache(sio.getId());
-		if(feature==null) {
-			Tile tile = (Tile) sio.getOption("tile");
-			String tileUrl = tile.getIntactUrl(this.url);
-			feature = new BundleFeature(tileUrl, tile);
-			if(feature!=null) {
-				putToCache(sio.getId(), feature);
-			}
-		}
-		return feature;
-	}
-	
-	public BundleFeature loadFeature(SpatialIndexObject sio) {
-		BundleFeature feature =  null;
-		Tile tile = (Tile) sio.getOption("tile");
-		String tileUrl = tile.getIntactUrl(this.url);
-		feature = new BundleFeature(tileUrl, tile);
-		if(feature!=null) {
-			putToCache(sio.getId(), feature);
-		}
-		return feature;
-	}
-		
 	public BundleFeature getFeature(Tile tile) {
 		BundleFeature feature =  getFromCache(tile.getId());
 		if(feature==null) {
@@ -104,7 +86,7 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 	}
 	
 	protected void putToCache(String tileHash, BundleFeature tileFeature) {
-		cache.put(tileHash, tileFeature);
+		put(tileHash, tileFeature);
 	}
 	
 	@Override

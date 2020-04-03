@@ -2,10 +2,11 @@ package com.mapfinal.cache.impl;
 
 import java.util.List;
 
+import com.mapfinal.MapfinalObject;
 import com.mapfinal.cache.Cache;
 import com.mapfinal.cache.LruCache;
 
-public class LruCacheImpl<K, V> implements Cache<K, V> {
+public class LruCacheImpl<K, V extends MapfinalObject> implements Cache<K, V> {
 
 	private LruCache<K, V> cache;
 	

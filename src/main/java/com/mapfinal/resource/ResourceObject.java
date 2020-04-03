@@ -50,4 +50,26 @@ public abstract class ResourceObject implements Resource {
 	public void setReference(int reference) {
 		this.reference = reference;
 	}
+	
+	@Override
+	public ResourceObject reference() {
+		this.reference++;
+		return this;
+	}
+	
+	@Override
+	public int referenceRelease() {
+		// TODO Auto-generated method stub
+		this.reference--;
+		if(this.reference==0) {
+			destroy();
+		}
+		return this.reference;
+	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
 }

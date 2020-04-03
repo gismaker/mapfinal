@@ -5,9 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mapfinal.MapfinalObject;
 import com.mapfinal.cache.Cache;
 
-public class ScreenLruCacheImpl<K, V> implements Cache<K, V> {
+public class ScreenLruCacheImpl<K, V extends MapfinalObject> implements Cache<K, V> {
 
 	private Map<K, V> mBitmapCache;
     protected int mCacheSize = 0;
@@ -28,7 +29,12 @@ public class ScreenLruCacheImpl<K, V> implements Cache<K, V> {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest)
             {
-                return size() > maxSize;
+            	boolean flag = size() > maxSize;
+            	if(flag) {
+            		MapfinalObject obj = (MapfinalObject) eldest.getValue();
+            		obj.destroy();
+            	}
+                return flag;
             }
         };
     }

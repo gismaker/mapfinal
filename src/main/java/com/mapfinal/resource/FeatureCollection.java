@@ -110,7 +110,7 @@ public abstract class FeatureCollection<V extends FeatureResource<K>, K> impleme
 		return null;
 	}
 	
-	public abstract V current(SpatialIndexObject sio);
+//	public abstract V current(SpatialIndexObject sio);
 	
 //	public void addFeature(V feature) {
 //		put(feature.getId(), feature);

@@ -35,10 +35,10 @@ public class MapFinalPanel extends JPanel {
         Mapfinal.me().init(scene, new GraphicsMapfinalFactory());
        
         //tile
-        String url = "D:\\web\\gwzw\\tomcat\\webapps\\tile\\grey\\{z}\\{y}_{x}.png";
-        TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.file);
-        //String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
-        //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
+        //String url = "D:\\web\\gwzw\\tomcat\\webapps\\tile\\grey\\{z}\\{y}_{x}.png";
+        //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.file);
+        String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
+        TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
         
         //shp
@@ -46,16 +46,14 @@ public class MapFinalPanel extends JPanel {
         layer.addTo(Mapfinal.me().getMap());
         
         //bundle
-        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
-        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
-        //String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
-        //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
-        bundleLayer.addTo(Mapfinal.me().getMap());
+//        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
+//        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
+//        bundleLayer.addTo(Mapfinal.me().getMap());
         
         Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
-        Mapfinal.me().getMap().setCenter(new Latlng(35.43800418056032,102.98341606580078));
-        Mapfinal.me().getMap().setZoom(13);
+//        Mapfinal.me().getMap().setCenter(new Latlng(35.43800418056032,102.98341606580078));
+//        Mapfinal.me().getMap().setZoom(13);
         
         addMouseListener(new MouseListener() {
 			@Override

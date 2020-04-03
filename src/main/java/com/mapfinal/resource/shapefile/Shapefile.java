@@ -157,19 +157,6 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 		return recordSet.openDBF(dbfFile);
 	}
 
-	public ShapefileFeature current(SpatialIndexObject sio) {
-		Long id = Long.valueOf(sio.getId());
-		if(id==null) return null;
-		ShapefileFeature feature = get(id);
-		if(feature==null) {
-			feature = read(sio);
-			if(feature!=null) {
-				put(feature.getId(), feature);
-			}
-		}
-		return feature;
-	}
-
 	@Override
 	public Dispatcher connection() {
 		// TODO Auto-generated method stub
@@ -186,13 +173,22 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 	@Override
 	public ShapefileFeature read(SpatialIndexObject sio) {
 		// TODO Auto-generated method stub
-		Integer i = Integer.valueOf(sio.getId());
-		try {
-			return i==null || i <1 || i>shxRandomAccess.getRecordCount() ? null : readRecord(i.intValue(), sio);
-		} catch (IOException e) {
-			e.printStackTrace();
+		Long id = Long.valueOf(sio.getId());
+		if(id == null || id < 1 || id > shxRandomAccess.getRecordCount()) {
+			return null;
 		}
-		return null;
+		ShapefileFeature feature = get(id);
+		if(feature==null) {
+			try {
+				feature = readRecord(id.intValue(), sio);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(feature!=null) {
+				put(feature.getId(), feature);
+			}
+		}
+		return feature;
 	}
 	
 	public void close() {

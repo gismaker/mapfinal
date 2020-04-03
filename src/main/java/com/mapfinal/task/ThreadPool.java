@@ -70,7 +70,7 @@ public final class ThreadPool {
      */
     public void submit(final Runnable runnable) {
         final int queueSize = queue.size();
-
+        
         // 缓冲队列满，同步执行，（如果网络资源等其它无压力，可以不同步）
         if (queueSize >= MAX_BUFFER_SIZE) {
             runnable.run();
@@ -136,7 +136,7 @@ public final class ThreadPool {
     public void release() {
         final Runnable run = queue.poll();
         synchronized (lock) {
-            if (run == null) {
+            if (run != null) {
                 size--;
             }
             if (size == 0) {

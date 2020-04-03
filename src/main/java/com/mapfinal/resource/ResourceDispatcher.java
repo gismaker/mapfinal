@@ -18,7 +18,7 @@ public interface ResourceDispatcher<G extends GeoElement> {
 	 * @param sio
 	 * @return
 	 */
-	G current(SpatialIndexObject sio);
+	//G current(SpatialIndexObject sio);
 	
 	/**
 	 * 连接初始化

@@ -1,24 +1,18 @@
-package com.mapfinal.map;
+package com.mapfinal.resource.image;
 
 import java.util.Map;
 
 import com.mapfinal.converter.SpatialReference;
-import com.mapfinal.resource.image.Image;
-
+import com.mapfinal.map.GeoImage;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-public class SimpleImageFeature implements GeoElement {
-
-	/**
-	 * 图片
-	 */
-	private Image image;
+public class GeoImageFeature<M> extends Image<M> implements GeoImage<M> {
 	/**
 	 * 图形对象
 	 */
-	private Geometry geometry;
+	private Geometry geometry = null;
 	/**
 	 * 坐标系统
 	 */
@@ -36,33 +30,38 @@ public class SimpleImageFeature implements GeoElement {
 	 */
 	private long activeTime;
 
-	public SimpleImageFeature(Image image, Envelope envelope, SpatialReference spatialReference) {
-		// TODO Auto-generated constructor stub
-		this.image = image;
-		this.envelope = envelope;
-		this.spatialReference = spatialReference;
+	public GeoImageFeature(String name, String url) {
+		super(name, url);
 	}
 	
-	public SimpleImageFeature(Image image, Geometry geometry, SpatialReference spatialReference) {
-		// TODO Auto-generated constructor stub
-		this.image = image;
+	public GeoImageFeature(String name, String url, Geometry geometry) {
+		super(name, url);
 		this.geometry = geometry;
 		this.envelope = geometry.getEnvelopeInternal();
-		this.spatialReference = spatialReference;
+		this.spatialReference = SpatialReference.wgs84();
 	}
-
-	public SimpleImageFeature(Image image, Envelope envelope) {
-		this.image = image;
+	
+	public GeoImageFeature(String name, String url, Envelope envelope) {
+		super(name, url);
 		this.envelope = envelope;
 		this.spatialReference = SpatialReference.wgs84();
 	}
 	
-	public Object getImage() {
-		return image.getData();
+	public GeoImageFeature(String name, String url, M image, Geometry geometry) {
+		super(name, url, image);
+		this.geometry = geometry;
+		this.envelope = geometry.getEnvelopeInternal();
+		this.spatialReference = SpatialReference.wgs84();
 	}
 
-	public void setImage(Image image) {
-		this.image = image;
+	public GeoImageFeature(String name, String url, M image, Envelope envelope) {
+		super(name, url, image);
+		this.envelope = envelope;
+		this.spatialReference = SpatialReference.wgs84();
+	}
+	
+	public M getImage() {
+		return getData();
 	}
 
 	/**

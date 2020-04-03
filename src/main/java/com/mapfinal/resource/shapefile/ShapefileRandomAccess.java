@@ -119,12 +119,6 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		return filepath;
 	}
 
-	@Override
-	public ShapefileFeature current(SpatialIndexObject sio) {
-		// TODO Auto-generated method stub
-		return read(sio);
-	}
-
 	public Dispatcher connection() {
 		// TODO Auto-generated method stub
 		try {

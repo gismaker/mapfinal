@@ -16,10 +16,11 @@ import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.Feature;
-import com.mapfinal.map.ImageFeature;
+import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
@@ -256,7 +257,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 	}
 
 	@Override
-	public void renderImageFeature(Renderer renderer, MapContext context, ImageFeature feature) {
+	public void renderImageFeature(Renderer renderer, MapContext context, GeoImage feature) {
 		// TODO Auto-generated method stub
 		if(feature==null || feature.getImage()==null) return;
 		Graphics2D g2d = getGraphics2D();

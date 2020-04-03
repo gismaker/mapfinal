@@ -5,17 +5,18 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Map;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.event.Event;
-import com.mapfinal.map.ImageFeature;
+import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.image.ImageManager;
 
-public class BundleFeature<M> extends ImageFeature<M> implements Resource {
+public class BundleFeature<M> implements GeoImage<M>, Resource {
 
 	//名称
 	private String name;
@@ -33,6 +34,10 @@ public class BundleFeature<M> extends ImageFeature<M> implements Resource {
 	 * 切片信息
 	 */
 	protected Tile tile;
+	/**
+	 * 最后一次渲染时间
+	 */
+	private long activeTime;
 	
 	public BundleFeature(String url, Tile tile) {
 		this.name = tile.getId();
@@ -58,10 +63,24 @@ public class BundleFeature<M> extends ImageFeature<M> implements Resource {
 		return tile.getSpatialReference();
 	}
 
-	@Override
 	public int getReference() {
 		// TODO Auto-generated method stub
 		return reference;
+	}
+	
+	@Override
+	public BundleFeature<M> reference() {
+		// TODO Auto-generated method stub
+		reference++;
+		return this;
+	}
+	
+	@Override
+	public int referenceRelease() {
+		// TODO Auto-generated method stub
+		this.reference--;
+		if(this.reference==0) destroy();
+		return this.reference;
 	}
 
 	@Override
@@ -117,7 +136,51 @@ public class BundleFeature<M> extends ImageFeature<M> implements Resource {
 		// TODO Auto-generated method stub
 		return tile.getEnvelope();
 	}
+	
+	/**
+	 * 左上角
+	 * 
+	 * @return
+	 */
+	public Coordinate getTopLeft() {
+		return new Coordinate(getEnvelope().getMinX(), getEnvelope().getMaxY());
+	}
 
+	/**
+	 * 左下角
+	 * 
+	 * @return
+	 */
+	public Coordinate getBottomLeft() {
+		return new Coordinate(getEnvelope().getMinX(), getEnvelope().getMinY());
+	}
+
+	/**
+	 * 右上角
+	 * 
+	 * @return
+	 */
+	public Coordinate getTopRight() {
+		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMaxY());
+	}
+
+	/**
+	 * 右下角
+	 * 
+	 * @return
+	 */
+	public Coordinate getBottomRight() {
+		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMinY());
+	}
+
+	public long getActiveTime() {
+		return activeTime;
+	}
+
+	public void setActiveTime(long activeTime) {
+		this.activeTime = activeTime;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -203,5 +266,11 @@ public class BundleFeature<M> extends ImageFeature<M> implements Resource {
 	
 	public void writeBundle(Byte[] image, String bundlesDir, int level, int row, int col) {
 		//undo
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		image = null;
 	}
 }

@@ -3,7 +3,6 @@ package com.mapfinal.render;
 import java.util.List;
 
 import com.mapfinal.event.Event;
-import com.mapfinal.resource.ResourceManager;
 
 /**
  * 场景图
@@ -16,12 +15,14 @@ public abstract class SceneGraph {
 	private SceneGroupNode sceneRoot;
 	private int width;
 	private int height;
+	private boolean isRedraw = false;
+	private boolean isRendering = false;
 	
 	public SceneGraph() {
 		sceneRoot = new SceneGroupNode();
 	}
 	
-	public abstract void update();
+	protected abstract void update();
 	
 	public void addNode(SceneNode node) {
 		sceneRoot.add(node);
@@ -48,7 +49,10 @@ public abstract class SceneGraph {
 	}
 	
 	public void onRender(Event event, RenderEngine engine) {
+		isRendering = true;
+		isRedraw = false;
 		sceneRoot.onRender(event, engine);
+		isRendering = false;
 	}
 	
 	public void onEvent(Event event) {
@@ -83,4 +87,21 @@ public abstract class SceneGraph {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
+	public boolean isRendering() {
+		return isRendering;
+	}
+
+	public boolean isRedraw() {
+		return isRedraw;
+	}
+
+	public void setRedraw(boolean isRedraw) {
+		if(isRendering) return;
+		if(this.isRedraw==false) {
+			update();
+		}
+		this.isRedraw = isRedraw;
+	}
+
 }

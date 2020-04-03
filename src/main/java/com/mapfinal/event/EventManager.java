@@ -49,15 +49,10 @@ public class EventManager {
 		}
 		return manager;
 	}
-	
-
 
 	public void unRegisterListener(Class<? extends EventListener> listenerClass) {
-
 		deleteListner(listenerMap, listenerClass);
 		deleteListner(asyncListenerMap, listenerClass);
-		
-
 	}
 
 	private void deleteListner(Map<String, List<EventListener>> map, Class<? extends EventListener> listenerClass) {
@@ -75,7 +70,6 @@ public class EventManager {
 	}
 
 	public void registerListener(Class<? extends EventListener> listenerClass) {
-
 		if (listenerClass == null) {
 			return;
 		}

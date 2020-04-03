@@ -2,6 +2,7 @@ package com.mapfinal.resource;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.map.Feature;
+import com.mapfinal.resource.shapefile.ShapefileFeature;
 
 import org.locationtech.jts.geom.Geometry;
 
@@ -35,5 +36,28 @@ public abstract class FeatureResource<K> extends Feature<K> implements Resource 
 
 	public void setReference(int reference) {
 		this.reference = reference;
+	}
+	
+	@Override
+	public FeatureResource reference() {
+		// TODO Auto-generated method stub
+		this.reference++;
+		return this;
+	}
+	
+	@Override
+	public int referenceRelease() {
+		// TODO Auto-generated method stub
+		this.reference--;
+		if(this.reference==0) {
+			destroy();
+		}
+		return this.reference;
+	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }

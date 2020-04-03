@@ -39,8 +39,10 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	public BufferedImage readFile(String fileName) {
 		// TODO Auto-generated method stub
 		try {
+			String lockFileName = fileName + ".lock";
+			File lockFile = new File(lockFileName);
 			File file = new File(fileName);
-			if(file.exists()) {
+			if(file.exists() && !lockFile.exists()) {
 				return ImageIO.read(file);
 			}
 		} catch (IOException e) {
@@ -53,21 +55,33 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	@Override
 	public void writeFile(String fileName, BufferedImage image) {
 		// TODO Auto-generated method stub
-		try {
-			ImageIO.write(image, FileKit.getExtensionName(fileName), new File(fileName));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ThreadPool.getInstance().submit(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					//add file write lock
+					String lockFileName = fileName + ".lock";
+					File lockFile = new File(lockFileName);
+					lockFile.createNewFile();
+					ImageIO.write(image, FileKit.getExtensionName(fileName), new File(fileName));
+					lockFile.delete();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});		
+		ThreadPool.getInstance().release();
 	}
 
 	@Override
 	public void download(String url, Callback callback) {
 		// TODO Auto-generated method stub
 		//线程池
-		ThreadPool.getInstance().submit(new Runnable() {
-			@Override
-			public void run() {
+//		ThreadPool.getInstance().submit(new Runnable() {
+//			@Override
+//			public void run() {
 				// TODO Auto-generated method stub
 				HttpURLConnection httpCon = null;
 		        URLConnection  con = null;
@@ -78,16 +92,25 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 		        	urlObj = new URL(url);
 					con = urlObj.openConnection();
 					httpCon =(HttpURLConnection) con;
+					// Allow Inputs
+					httpCon.setDoInput(true);
+			        // Don't use a cached copy.
+					httpCon.setUseCaches(false);
+					httpCon.setConnectTimeout(10000);
+					httpCon.setReadTimeout(240000);//180 sec
+					httpCon.setRequestProperty("Accept", "*/*");
 			        in = httpCon.getInputStream();
 			        BufferedImage image = ImageIO.read(in);
 			        if(callback!=null) callback.execute(new Event("imageCache:get").set("image", image));
+			        in.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					if(callback!=null) callback.error(new Event("imageCache:get").set("image", null).set("error", e));
 				}
-			}
-		});
+//			}
+//		});
+//		ThreadPool.getInstance().release();
 	}
 
 	@Override

@@ -1,13 +1,19 @@
 package com.mapfinal.resource.image;
 
 import com.mapfinal.resource.Resource;
+import com.mapfinal.resource.ResourceCollection;
 import com.mapfinal.resource.ResourceObject;
 
 public class Image<M> extends ResourceObject {
 	private FileType fileType = FileType.cache;
 	private Resource.ImageType imageType = ImageType.png;
 	protected M data;
-	protected ImageCollection collection;
+	protected ResourceCollection collection;
+	
+	public Image(String name, String url) {
+		super(name, url);
+		prepare();
+	}
 
 	public Image(String name, String url, M image) {
 		super(name, url);
@@ -70,13 +76,11 @@ public class Image<M> extends ResourceObject {
 		this.imageType = imageType;
 	}
 
-	public ImageCollection getCollection() {
+	public ResourceCollection getCollection() {
 		return collection;
 	}
 
-	public void setCollection(ImageCollection collection) {
+	public void setCollection(ResourceCollection collection) {
 		this.collection = collection;
 	}
-
-	
 }

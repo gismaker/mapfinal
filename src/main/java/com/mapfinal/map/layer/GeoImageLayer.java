@@ -3,7 +3,7 @@ package com.mapfinal.map.layer;
 import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
-import com.mapfinal.map.ImageFeature;
+import com.mapfinal.map.GeoImage;
 import com.mapfinal.render.RenderEngine;
 
 /**
@@ -11,9 +11,9 @@ import com.mapfinal.render.RenderEngine;
  * @author yangyong
  *
  */
-public class ImageAdjustmentLayer extends AbstractLayer {
+public class GeoImageLayer extends AbstractLayer {
 
-	private ImageFeature featuer;
+	private GeoImage featuer;
 	
 	@Override
 	public Envelope getEnvelope() {
@@ -33,11 +33,11 @@ public class ImageAdjustmentLayer extends AbstractLayer {
 		
 	}
 
-	public ImageFeature getFeatuer() {
+	public GeoImage getFeatuer() {
 		return featuer;
 	}
 
-	public void setFeatuer(ImageFeature featuer) {
+	public void setFeatuer(GeoImage featuer) {
 		this.featuer = featuer;
 	}
 

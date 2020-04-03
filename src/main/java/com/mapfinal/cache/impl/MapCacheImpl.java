@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mapfinal.MapfinalObject;
 import com.mapfinal.cache.Cache;
 
-public class MapCacheImpl<K, V> implements Cache<K, V> {
+public class MapCacheImpl<K, V extends MapfinalObject> implements Cache<K, V> {
 
 	private ConcurrentHashMap<K, V> cache;
 	

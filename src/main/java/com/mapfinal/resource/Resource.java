@@ -1,5 +1,6 @@
 package com.mapfinal.resource;
 
+import com.mapfinal.MapfinalObject;
 import com.mapfinal.event.Event;
 
 /**
@@ -7,7 +8,7 @@ import com.mapfinal.event.Event;
  * @author yangyong
  *
  */
-public interface Resource {
+public interface Resource extends MapfinalObject {
 
 	public enum Type {
 		shp,
@@ -25,7 +26,8 @@ public interface Resource {
 		http,
 		file,
 		cache,
-		database
+		database,
+		other
 	}
 	
 	public enum ImageType {
@@ -69,7 +71,9 @@ public interface Resource {
 	 * 调用次数
 	 * @return
 	 */
-	public int getReference();
+	public <R extends Resource> R reference();
+	
+	public int referenceRelease();
 	
 	/**
 	 * 预加载
@@ -85,4 +89,5 @@ public interface Resource {
 	 * 写入资源
 	 */
 	public void writer();
+	
 }

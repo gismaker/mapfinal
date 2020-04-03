@@ -2,11 +2,13 @@ package com.mapfinal.cache;
 
 import java.util.List;
 
+import com.mapfinal.MapfinalObject;
+
 /**
  * 缓存接口
  * @author yangyong
  */
-public interface Cache<K, V>{
+public interface Cache<K, V extends MapfinalObject>{
 	/**
 	 * 读取缓存类
 	 * @param url  缓存的key值

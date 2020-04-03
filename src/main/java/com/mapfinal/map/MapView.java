@@ -1,9 +1,9 @@
 package com.mapfinal.map;
 
-import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventKit;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
@@ -65,7 +65,7 @@ public class MapView extends LayerGroup {
 			}
 			// System.out.println("[GeoMap.onEvent] current zoom: " +
 			// getZoom());
-			Mapfinal.me().getScene().update();
+			EventKit.sendEvent("redraw");
 			break;
 		case "mouseDown":
 			x0 = event.get("x");
@@ -79,7 +79,7 @@ public class MapView extends LayerGroup {
 				dx = 0;
 				dy = 0;
 				// System.out.println("[GeoMap.onEvent] mouseUp");
-				Mapfinal.me().getScene().update();
+				EventKit.sendEvent("redraw");
 			}
 			break;
 		case "mouseMove":
@@ -92,7 +92,7 @@ public class MapView extends LayerGroup {
 				// + y + ", x0: " + x0 + ", y0: " + y0);
 				// System.out.println("[GeoMap.onEvent] move dx: " + dx + ", dy:
 				// " + dy);
-				Mapfinal.me().getScene().update();
+				EventKit.sendEvent("redraw");
 			}
 			break;
 		case "mouseCoordinate":

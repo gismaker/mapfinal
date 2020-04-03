@@ -3,6 +3,7 @@ package com.mapfinal.resource.shapefile;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.event.Event;
 import com.mapfinal.resource.FeatureResource;
+import com.mapfinal.resource.Resource;
 
 import org.locationtech.jts.geom.Geometry;
 

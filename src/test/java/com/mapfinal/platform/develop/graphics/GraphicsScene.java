@@ -26,7 +26,7 @@ public class GraphicsScene extends SceneGraph {
 	}
 
 	@Override
-	public void update() {
+	protected void update() {
 		// TODO Auto-generated method stub
 		engine.update();
 	}

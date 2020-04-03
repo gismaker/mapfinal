@@ -2,7 +2,7 @@ package com.mapfinal.dispatcher;
 
 
 import com.mapfinal.event.Event;
-import com.mapfinal.map.ImageFeature;
+import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
@@ -25,7 +25,7 @@ public class TileDispatcher extends Dispatcher {
 	public void resultAction(SpatialIndexObject sio) {
 		// TODO Auto-generated method stub
 		TileResourceDispatcher tro = (TileResourceDispatcher) getResource();
-		ImageFeature feature = (ImageFeature) tro.current(sio);
+		GeoImage feature = (GeoImage) tro.read(sio);
 		if(feature!=null) {
 			//System.out.println("tile render: " + feature.getId());
 			//tile.onRender(event, engine);
@@ -37,7 +37,6 @@ public class TileDispatcher extends Dispatcher {
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	

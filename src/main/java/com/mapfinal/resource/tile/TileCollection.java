@@ -3,6 +3,8 @@ package com.mapfinal.resource.tile;
 import java.util.List;
 
 import com.mapfinal.cache.Cache;
+import com.mapfinal.cache.impl.LruCacheImpl;
+import com.mapfinal.cache.impl.MapCacheImpl;
 import com.mapfinal.cache.impl.ScreenLruCacheImpl;
 import com.mapfinal.converter.CRS;
 import com.mapfinal.dispatcher.Dispatcher;
@@ -12,23 +14,40 @@ import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Resource.FileType;
 import com.mapfinal.resource.ResourceCollection;
-import com.mapfinal.resource.ResourceDispatcher;
 
-public class TileCollection extends TileResourceDispatcher<TileFeature> implements ResourceCollection<TileFeature, String> {
+public class TileCollection extends TileResourceDispatcher<TileFeature> implements ResourceCollection<TileResource, String> {
 
 	private String name;
-	private Cache<String, TileFeature> tileCache;
+	private Cache<String, TileResource> resourceCache;
 	private int cacheScreenNum = 2;
 	private String url;
 	private int tmsType = Tile.TMS_LT;
+	private FileType fileType = FileType.file;
 	//分布式节点， 待完善
 	private String[] subdomains;
 	
 	public TileCollection(String name, String url, FileType type) {
 		this.name = name;
 		this.url = url;
+		this.fileType = type;
 		int cacheSize = 30;
-		tileCache = new ScreenLruCacheImpl<>(cacheSize);
+		resourceCache = new ScreenLruCacheImpl<>(cacheSize);
+	}
+	
+	public TileFeature createFeature(String url, Tile tile) {
+		TileResource resource = getResource(url, tile);
+		TileFeature feature = new TileFeature(this, resource, tile);
+		return feature;
+	}
+	
+	public TileResource getResource(String url, Tile tile) {
+		TileResource resource = get(tile.getImageId());
+		if(resource==null) {
+			resource = new TileResource(url, tile, fileType);
+			//resource.setCollection(this);
+			put(tile.getImageId(), resource);
+		}
+		return resource;
 	}
 	
 	@Override
@@ -53,58 +72,13 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 		return 0;
 	}
 	
-	public TileFeature current(SpatialIndexObject sio) {
-		TileFeature feature =  getFromCache(sio.getId());
-		if(feature==null) {
-			Tile tile = (Tile) sio.getOption("tile");
-			String tileUrl = tile.getIntactUrl(this.url);
-			feature = new TileFeature(tileUrl, tile);
-			if(feature!=null) {
-				putToCache(sio.getId(), feature);
-			}
-		}
-		return feature;
-	}
-	
-	public TileFeature loadFeature(SpatialIndexObject sio) {
-		TileFeature feature =  null;
-		Tile tile = (Tile) sio.getOption("tile");
-		String tileUrl = tile.getIntactUrl(this.url);
-		feature = new TileFeature(tileUrl, tile);
-		if(feature!=null) {
-			putToCache(sio.getId(), feature);
-		}
-		return feature;
-	}
-		
-	public TileFeature getFeature(Tile tile) {
-		TileFeature feature =  getFromCache(tile.getId());
-		if(feature==null) {
-			String tileUrl = tile.getIntactUrl(this.url);
-			feature = new TileFeature(tileUrl, tile);
-			if(feature!=null) {
-				putToCache(tile.getId(), feature);
-			}
-		}
-		return feature;
-	}
-	
-	protected TileFeature getFromCache(String tileHash) {
-		return tileCache.get(tileHash);
-	}
-	
-	protected void putToCache(String tileHash, TileFeature tileFeature) {
-		tileCache.put(tileHash, tileFeature);
-	}
-	
 	@Override
 	public void clear() {
-		tileCache.clear();
+		resourceCache.clear();
     }
 
 	public void setCacheScreenNum(int cacheScreenNum) {
 		this.cacheScreenNum = cacheScreenNum;
-		
 		//重设置缓存大小，待完善
 	}
 
@@ -143,7 +117,12 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 
 	@Override
 	public TileFeature read(SpatialIndexObject sio) {
-		return loadFeature(sio);
+		Tile tile = (Tile) sio.getOption("tile");
+		String tileUrl = tile.getIntactUrl(this.url);
+		TileFeature feature = createFeature(tileUrl, tile);
+//		System.out.println("[TileCollection] resourceCache: " + resourceCache.size());
+//		System.out.println("[TileCollection] featureCache: " + featureCache.size());
+		return feature;
 	}
 
 	@Override
@@ -157,30 +136,39 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 	}
 
 	@Override
-	public TileFeature get(String tileHash) {
-		return tileCache.get(tileHash);
+	public TileResource get(String tileHash) {
+		return resourceCache.get(tileHash);
 	}
 
 	@Override
-	public void put(String tileHash, TileFeature tileFeature) {
-		tileCache.put(tileHash, tileFeature);
+	public void put(String tileHash, TileResource tileResource) {
+		resourceCache.put(tileHash, tileResource);
+		tileResource.setCollection(this);
 	}
 
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return tileCache.size();
+		return resourceCache.size();
 	}
 
 	@Override
 	public boolean remove(String key) {
 		// TODO Auto-generated method stub
-		return tileCache.remove(key);
+		return resourceCache.remove(key);
 	}
 
 	@Override
 	public List<String> keys() {
 		// TODO Auto-generated method stub
-		return tileCache.keys();
+		return resourceCache.keys();
+	}
+
+	public FileType getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(FileType fileType) {
+		this.fileType = fileType;
 	}
 }
