@@ -10,6 +10,7 @@ import com.mapfinal.kit.StringKit;
 public class RemoteImage<M> extends Image<M> {
 	private String fileExt = "png";
 	private Thread downloadThread;
+	private boolean isDestroy = false;
 	
 	public RemoteImage(String name, String url) {
 		super(name, url, null);
@@ -114,7 +115,7 @@ public class RemoteImage<M> extends Image<M> {
 							//从网络获取图片后,保存至本地缓存
 							writeToLocal(img);
 							//保存至内存中
-							setData(img);
+							if(!isDestroy) setData(img);
 						}
 					}
 					@Override
@@ -183,6 +184,7 @@ public class RemoteImage<M> extends Image<M> {
 	public void destroy() {
 		// TODO Auto-generated method stub
 		super.destroy();
+		isDestroy = true;
 		if(downloadThread!=null) {
 			System.out.println("[RemoteImage] downloadThread stop");
 			downloadThread.interrupt();

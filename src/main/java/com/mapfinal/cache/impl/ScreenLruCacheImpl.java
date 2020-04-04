@@ -39,6 +39,14 @@ public class ScreenLruCacheImpl<K, V extends MapfinalObject> implements Cache<K,
         };
     }
 	
+	public void resize(int size) {
+		if(size==0) return;
+		synchronized (lock) {
+			mBitmapCache = lruCache(size);
+        }
+		mCacheSize = size;
+	}
+	
 	@Override
 	public V get(K key) {
 		// TODO Auto-generated method stub

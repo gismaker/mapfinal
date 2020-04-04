@@ -34,12 +34,6 @@ public class TileDispatcher extends Dispatcher {
 		}
 	}
 	
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-	}
-	
-	
 	public void onRender(Event event, RenderEngine engine, Renderer renderer) {
 		this.event = event;
 		if(!event.isRender()) return;
@@ -52,6 +46,8 @@ public class TileDispatcher extends Dispatcher {
 		}
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
 		query(event.set("type", resource.getTmsType()).set("name", resource.getName()), context.getSceneEnvelope(), this);
+		TileCollection collection = (TileCollection) resource;
+		collection.setCacheScreenNum(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 	}
 

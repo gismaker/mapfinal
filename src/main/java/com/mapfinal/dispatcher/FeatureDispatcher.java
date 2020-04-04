@@ -212,9 +212,4 @@ public class FeatureDispatcher extends Dispatcher {
 	public RenderEngine getEngine() {
 		return engine;
 	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-	}
 }

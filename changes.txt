@@ -15,6 +15,7 @@ mapfinal-0.3:
 优化：将运行界面及swing相关的代码移植test中，如需启动窗口界面，请运行com.mapfinal.platform.develop.frame.MapFinalFrame
 优化：重构resource资源管理器的所有代码
 优化：分离Tile的resource和feature
+优化：Tile和ScreenCacheImpl的屏幕大小缓存
 修复：修复文件下载后，写文件与读文件同时产生的读取错误
 
 -----------------------------

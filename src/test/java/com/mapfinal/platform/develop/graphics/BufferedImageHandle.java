@@ -105,7 +105,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 			        in.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 					if(callback!=null) callback.error(new Event("imageCache:get").set("image", null).set("error", e));
 				}
 //			}

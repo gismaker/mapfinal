@@ -20,6 +20,7 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 	private String name;
 	private Cache<String, TileResource> resourceCache;
 	private int cacheScreenNum = 2;
+	private int screenTileNumber = 0;
 	private String url;
 	private int tmsType = Tile.TMS_LT;
 	private FileType fileType = FileType.file;
@@ -30,8 +31,9 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 		this.name = name;
 		this.url = url;
 		this.fileType = type;
-		int cacheSize = 30;
-		resourceCache = new ScreenLruCacheImpl<>(cacheSize);
+		this.screenTileNumber = 15;
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		resourceCache = new ScreenLruCacheImpl<String, TileResource>(cacheSize);
 	}
 	
 	public TileFeature createFeature(String url, Tile tile) {
@@ -76,10 +78,25 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 	public void clear() {
 		resourceCache.clear();
     }
+	
+	public void setCurrentTileNumberOnScreen(int numTile) {
+		if(numTile < 1) return;
+		this.screenTileNumber = numTile;
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		if(this.resourceCache instanceof ScreenLruCacheImpl) {
+			ScreenLruCacheImpl slc = (ScreenLruCacheImpl) this.resourceCache;
+			slc.resize(cacheSize);
+		}
+	}
 
 	public void setCacheScreenNum(int cacheScreenNum) {
 		this.cacheScreenNum = cacheScreenNum;
 		//重设置缓存大小，待完善
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		if(this.resourceCache instanceof ScreenLruCacheImpl) {
+			ScreenLruCacheImpl slc = (ScreenLruCacheImpl) this.resourceCache;
+			slc.resize(cacheSize);
+		}
 	}
 
 	public String getUrl() {
@@ -121,7 +138,6 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 		String tileUrl = tile.getIntactUrl(this.url);
 		TileFeature feature = createFeature(tileUrl, tile);
 //		System.out.println("[TileCollection] resourceCache: " + resourceCache.size());
-//		System.out.println("[TileCollection] featureCache: " + featureCache.size());
 		return feature;
 	}
 
