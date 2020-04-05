@@ -14,7 +14,7 @@ import com.mapfinal.dispatcher.indexer.jts.KdTreeSpatialIndexer;
 import com.mapfinal.dispatcher.indexer.jts.QuadtreeSpatialIndexer;
 import com.mapfinal.dispatcher.indexer.jts.STRTreeSpatialIndexer;
 import com.mapfinal.geometry.GeoKit;
-import com.mapfinal.resource.FeatureCollection;
+import com.mapfinal.resource.ResourceDispatcher;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
@@ -83,7 +83,7 @@ public class ShpRandomAccess {
 		//System.out.println("[ShpRandomAccess] newClass times: " + (System.currentTimeMillis() - start));
 	}
 
-	public Dispatcher buildDispatcher(FeatureCollection resource, ShxRandomAccess shxRandomAccess) throws IOException {
+	public Dispatcher buildDispatcher(ResourceDispatcher resource, ShxRandomAccess shxRandomAccess) throws IOException {
 		// TODO Auto-generated method stub
 		Dispatcher dispatchar = null;
 		SpatialIndexer indexer = null;

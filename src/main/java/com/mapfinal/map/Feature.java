@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
+
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
@@ -36,6 +37,7 @@ public class Feature<K> implements GeoElement {
 	 * 最后一次渲染时间
 	 */
 	private long activeTime;
+	
 
 	public Feature(K id, SpatialIndexObject spatialIndexObject, Geometry geometry) {
 		this.id = id;
@@ -43,19 +45,6 @@ public class Feature<K> implements GeoElement {
 		this.geometry = geometry;
 	}
 
-	/*
-	public void draw(Event event, RenderEngine engine) {
-		// TODO Auto-generated method stub
-		// if(renderer!=null) renderer.draw(event, engine);
-		setActiveTime(System.currentTimeMillis());
-	}
-
-	public boolean handleEvent(Event event) {
-		// TODO Auto-generated method stub
-		// if(renderer!=null) renderer.cancelDraw(event);
-		return false;
-	}*/
-	
 	/**
 	 * 销毁
 	 */
@@ -167,6 +156,4 @@ public class Feature<K> implements GeoElement {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
-
-	//Symbol getSymbol();
 }

@@ -5,10 +5,10 @@ import java.io.File;
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Callback;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventKit;
 import com.mapfinal.kit.StringKit;
 
 public class RemoteImage<M> extends Image<M> {
-	private String fileExt = "png";
 	private Thread downloadThread;
 	private boolean isDestroy = false;
 	
@@ -17,18 +17,8 @@ public class RemoteImage<M> extends Image<M> {
 		setFileType(FileType.http);
 	}
 	
-	public ImageHandle getHandle() {
-		return ImageManager.me().getHandle();
-	}
-	
 	public String cachePath() {
-		String objType = ImageManager.me().getCacheFolder();
-		String objName = "default";
-		if(this.collection!=null) {
-			objType = this.collection.getType();
-			objName = this.collection.getName();
-		}
-		String cpath = Mapfinal.me().getCacheFolder() + File.separator + objType + File.separator + objName;
+		String cpath = Mapfinal.me().getCacheFolder() + File.separator + "image";
 		File f = new File(cpath);
 		if(!f.exists()) {
 			f.mkdirs();
@@ -39,7 +29,7 @@ public class RemoteImage<M> extends Image<M> {
 	public String getFileName() {
 		String cachePath = cachePath();
 		String name = StringKit.encodeName(getUrl());
-		return cachePath + File.separator + name + "." + fileExt.toString();
+		return cachePath + File.separator + name + "." + getImageType().toString();
 	}
 
 	public void writeToLocal(M image) {
@@ -92,21 +82,20 @@ public class RemoteImage<M> extends Image<M> {
 			//网络缓存
 			getHandle().download(url, callback);
 		}
-		
 	}
 	
 	@Override
-	public void read() {
+	public RemoteImage<M> read() {
 		// TODO Auto-generated method stub
 		if(this.data==null) {
 			//本地缓存
 			this.data = readFromLocal();
 			if(data==null) {
 				//网络缓存
-				if(downloadThread!=null) {
-					downloadThread.interrupt();
-					downloadThread = null;
+				if(downloadThread!=null && !downloadThread.isInterrupted()) {
+					return this;					
 				}
+				downloadThread = null;
 				downloadThread = new Thread(new DownloadRunnable(getUrl(), new Callback() {
 					@Override
 					public void execute(Event event) {
@@ -114,6 +103,7 @@ public class RemoteImage<M> extends Image<M> {
 						if(img!=null) {
 							//从网络获取图片后,保存至本地缓存
 							writeToLocal(img);
+							EventKit.sendEvent("redraw");
 							//保存至内存中
 							if(!isDestroy) setData(img);
 						}
@@ -142,6 +132,7 @@ public class RemoteImage<M> extends Image<M> {
 				});*/
 			}
 		}
+		return this;
 	}
 	
 	public void download(Callback callback) {
@@ -172,21 +163,13 @@ public class RemoteImage<M> extends Image<M> {
 		}
 	}
 	
-	public String getFileExt() {
-		return fileExt;
-	}
-
-	public void setFileExt(String fileExt) {
-		this.fileExt = fileExt;
-	}
-	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 		super.destroy();
 		isDestroy = true;
 		if(downloadThread!=null) {
-			System.out.println("[RemoteImage] downloadThread stop");
+			//System.out.println("[RemoteImage] downloadThread stop");
 			downloadThread.interrupt();
 			downloadThread = null;
 		}

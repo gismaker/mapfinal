@@ -1,14 +1,13 @@
 package com.mapfinal.resource;
 
 import com.mapfinal.MapfinalObject;
-import com.mapfinal.event.Event;
 
 /**
  * 资源，负责预加载和加载，数据内容
  * @author yangyong
  *
  */
-public interface Resource extends MapfinalObject {
+public interface Resource<D extends Data> extends MapfinalObject {
 
 	public enum Type {
 		shp,
@@ -61,33 +60,40 @@ public interface Resource extends MapfinalObject {
 		SCENE
 	}
 	
-	/**
-	 * 资源执行某一项事件或任务
-	 * @param event
-	 */
-	public void execute(Event event);
 	
 	/**
-	 * 调用次数
+	 * 资源名称
+	 */
+	public String getName();
+	/**
+	 * 资源地址，文件路径、网络地址、内存数据主键
 	 * @return
 	 */
-	public <R extends Resource> R reference();
+	public String getUrl();
+	/**
+	 * 资源类型
+	 * @return
+	 */
+	public String getType();
 	
-	public int referenceRelease();
-	
+	/**
+     * 内存占用
+     * @return
+     */
+    long getMemorySize();
+    
 	/**
 	 * 预加载
 	 */
-	public void prepare();
+	void prepare();
 	
 	/**
 	 * 加载资源
 	 */
-	public void read();
+	D read();
 	
 	/**
 	 * 写入资源
 	 */
-	public void writer();
-	
+	void writer(D data);
 }

@@ -7,8 +7,7 @@ import com.mapfinal.map.MapView;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.resource.bundle.BundleCollection;
-import com.mapfinal.resource.bundle.BundleManager;
+import com.mapfinal.resource.bundle.BundleResource;
 import org.locationtech.jts.geom.Envelope;
 
 public class ArcGISBundleLayer extends AbstractLayer {
@@ -16,11 +15,11 @@ public class ArcGISBundleLayer extends AbstractLayer {
 	// 调度器
 	private TileDispatcher dispatcher;
 	// 资源
-	private BundleCollection resource;
+	private BundleResource resource;
 
 	public ArcGISBundleLayer(String name, String url) {
 		// TODO Auto-generated constructor stub
-		resource = BundleManager.me().create(name, url);
+		resource = new BundleResource(name, url);
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
@@ -29,7 +28,7 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		setSpatialReference(SpatialReference.mercator());
 	}
 	
-	public ArcGISBundleLayer(BundleCollection resource) {
+	public ArcGISBundleLayer(BundleResource resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
@@ -71,11 +70,11 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		this.dispatcher = dispatcher;
 	}
 
-	public BundleCollection getResource() {
+	public BundleResource getResource() {
 		return resource;
 	}
 
-	public void setResource(BundleCollection resource) {
+	public void setResource(BundleResource resource) {
 		this.resource = resource;
 	}
 	

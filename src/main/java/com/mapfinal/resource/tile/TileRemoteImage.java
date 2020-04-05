@@ -3,26 +3,21 @@ package com.mapfinal.resource.tile;
 import java.io.File;
 
 import com.mapfinal.Mapfinal;
-import com.mapfinal.event.EventKit;
-import com.mapfinal.resource.image.ImageManager;
 import com.mapfinal.resource.image.RemoteImage;
 
 public class TileRemoteImage<M> extends RemoteImage<M> {
+	
+	private String tileResourceName;
 
-	public TileRemoteImage(String name, String url) {
+	public TileRemoteImage(String name, String url, String tileResourceName) {
 		super(name, url);
-		setFileExt("png");
+		this.setTileResourceName(tileResourceName);
+		setImageType(ImageType.png);
 	}
 
 	@Override
 	public String getFileName() {
-		String objType = ImageManager.me().getCacheFolder();
-		String objName = "default";
-		if(this.collection!=null) {
-			objType = this.collection.getType();
-			objName = this.collection.getName();
-		}
-		String cpath = Mapfinal.me().getCacheFolder() + File.separator + objType + File.separator + objName;
+		String cpath = Mapfinal.me().getCacheFolder() + File.separator + "tile" + File.separator + tileResourceName;
 		String[] names = this.getName().split("_");
 		String cachePath = cpath;
 		if(names.length > 3) {
@@ -37,14 +32,15 @@ public class TileRemoteImage<M> extends RemoteImage<M> {
 		if(!f.exists()) {
 			f.mkdirs();
 		}
-		String fileName = cachePath + "." + getFileExt().toString();
+		String fileName = cachePath + "." + getImageType().toString();
 		return fileName;
 	}
 	
-	@Override
-	public void setData(M image) {
-		// TODO Auto-generated method stub
-		super.setData(image);
-		EventKit.sendEvent("redraw");
+	public String getTileResourceName() {
+		return tileResourceName;
+	}
+
+	public void setTileResourceName(String tileResourceName) {
+		this.tileResourceName = tileResourceName;
 	}
 }

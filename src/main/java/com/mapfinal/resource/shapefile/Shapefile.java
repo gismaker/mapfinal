@@ -13,17 +13,19 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
-import com.mapfinal.cache.impl.MapCacheImpl;
 import com.mapfinal.converter.CRS;
 import com.mapfinal.converter.ConverterManager;
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.Dispatcher;
+import com.mapfinal.dispatcher.QueryParameter;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.FileKit;
+import com.mapfinal.kit.StringKit;
+import com.mapfinal.map.FeatureClass;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.FieldType;
-import com.mapfinal.resource.FeatureCollection;
+import com.mapfinal.resource.VectorResource;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
@@ -33,7 +35,7 @@ import com.mapfinal.resource.shapefile.shpx.ShpRandomAccess;
 import com.mapfinal.resource.shapefile.shpx.ShpType;
 import com.mapfinal.resource.shapefile.shpx.ShxRandomAccess;
 
-public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
+public class Shapefile extends VectorResource<Long> {
 
 	/**
 	 * Shp文件输入流
@@ -50,18 +52,19 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	
 	private boolean binit = false;
 	
+	private FeatureClass<Long> featureClass;
 	
 	public Shapefile(String url) {
 		// TODO Auto-generated constructor stub
-		this.url = url;
-		this.name = FileKit.getFileNameNoEx(url);
+		setUrl(url);
+		setName(FileKit.getFileNameNoEx(getUrl()));
 		try {
-			isShapefileExists(url);
+			isShapefileExists(getUrl());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		recordSet = new MapRecordSet();
-		setFeatures(new MapCacheImpl<>());
+		ShapefileManager.me().addResource(url, this);
 	}
 	
 	private void isShapefileExists(String filepath) throws FileNotFoundException {
@@ -101,47 +104,52 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 		return "shp";
 	}
 	
-	/**
-	 * 读入shp、shx、dbf文件
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean readInit() throws IOException {/* 已测试 */
-		if(binit) return binit;
+	@Override
+	public void prepare() {
+		// TODO Auto-generated method stub
+		if(binit) return;
 		long start = System.currentTimeMillis();
-		if (this.url == null) {
-			throw new NullPointerException();
+		try {
+			if (getUrl() == null) {
+				throw new NullPointerException();
+			}
+			// 判断shp文件是否存在
+			File fShp = new File(getUrl());
+			if (!fShp.exists()) {
+				//logger.error(fileName + " doesn't exist.");
+				throw new FileNotFoundException(getUrl() + " doesn't exist.");
+			}
+			// shp文件所在目录
+			String shpFilePath = getUrl().substring(0, getUrl().lastIndexOf('.'));
+			// 判断shx文件是否存在
+			String shxFileName = shpFilePath + ".shx";
+			File fShx = new File(shxFileName);
+			if (!fShx.exists()) {
+				//logger.error(shxFileName + " doesn't exist.");
+				throw new FileNotFoundException(shxFileName + " doesn't exist.");
+			}
+			// 判断dbf文件是否存在
+			String dbfFilePath = shpFilePath + ".dbf";
+			if (!new File(dbfFilePath).exists()) {
+				//logger.error(dbfFilePath + " doesn't exist.");
+				throw new FileNotFoundException(dbfFilePath + " doesn't exist.");
+			}
+			shxRandomAccess = new ShxRandomAccess(fShx);
+			shpRandomAccess = new ShpRandomAccess(fShp, shxRandomAccess);
+			if (!readDBF(dbfFilePath)) {
+				setFeatureClass(new FeatureClass<>(null));
+			} else {
+				setFeatureClass(new FeatureClass<>(getFields()));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		// 判断shp文件是否存在
-		File fShp = new File(this.url);
-		if (!fShp.exists()) {
-			//logger.error(fileName + " doesn't exist.");
-			throw new FileNotFoundException(this.url + " doesn't exist.");
-		}
-		// shp文件所在目录
-		String shpFilePath = this.url.substring(0, this.url.lastIndexOf('.'));
-		// 判断shx文件是否存在
-		String shxFileName = shpFilePath + ".shx";
-		File fShx = new File(shxFileName);
-		if (!fShx.exists()) {
-			//logger.error(shxFileName + " doesn't exist.");
-			throw new FileNotFoundException(shxFileName + " doesn't exist.");
-		}
-		// 判断dbf文件是否存在
-		String dbfFilePath = shpFilePath + ".dbf";
-		if (!new File(dbfFilePath).exists()) {
-			//logger.error(dbfFilePath + " doesn't exist.");
-			throw new FileNotFoundException(dbfFilePath + " doesn't exist.");
-		}
-		shxRandomAccess = new ShxRandomAccess(fShx);
-		shpRandomAccess = new ShpRandomAccess(fShp, shxRandomAccess);
-		if (!readDBF(dbfFilePath)) {
-			return false;
-		}
+		featureClass.setEnvelope(shpRandomAccess.getExtent());
+		featureClass.setName(getName());
+		String geometryType = ShpType.shpTypeName(shxRandomAccess.getShpType());
+		featureClass.setGeometryType(geometryType);
+		binit = true;
 		System.out.println("[ShapefileRandomAccess] readInit times: " + (System.currentTimeMillis() - start));
-		return true;
 	}
 	
 	/**
@@ -161,8 +169,7 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	public Dispatcher connection() {
 		// TODO Auto-generated method stub
 		try {
-			readInit();
-			setFields(getFields());
+			prepare();
 			return shpRandomAccess.buildDispatcher(this, shxRandomAccess);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -173,11 +180,12 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	@Override
 	public ShapefileFeature read(SpatialIndexObject sio) {
 		// TODO Auto-generated method stub
+		if(!binit) return null;
 		Long id = Long.valueOf(sio.getId());
 		if(id == null || id < 1 || id > shxRandomAccess.getRecordCount()) {
 			return null;
 		}
-		ShapefileFeature feature = get(id);
+		ShapefileFeature feature = (ShapefileFeature) getFeatureClass().getFeature(id);
 		if(feature==null) {
 			try {
 				feature = readRecord(id.intValue(), sio);
@@ -185,7 +193,7 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 				e.printStackTrace();
 			}
 			if(feature!=null) {
-				put(feature.getId(), feature);
+				getFeatureClass().putFeature(feature.getId(), feature);
 			}
 		}
 		return feature;
@@ -244,7 +252,12 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	}
 	
 	private ShapefileFeature readRecordPoint(int i, SpatialIndexObject obj) throws IOException {
-		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
+		Point point = null;
+		if(obj.getEnvelope()==null) {
+			point = shpRandomAccess.readRecordPoint(shxRandomAccess.getRecordPosition(i));
+		} else {
+			point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
+		}
 		point.setUserData(i - 1);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, point, shxRandomAccess.getShpType());
 		feature.setEnvelope(point.getEnvelopeInternal());
@@ -326,18 +339,23 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	}
 	
 	public SpatialReference getSpatialReference() {
-		if (super.getSpatialReference()==null) {
+		if (featureClass!=null && featureClass.getSpatialReference()==null) {
 			CRS crs = getCRS();
-			String crsName = ConverterManager.me().registCRS(crs.getName(), crs);
-			setSpatialReference(new SpatialReference(crsName));
+			if(crs!=null && StringKit.notBlank(crs.getName())) {
+				String crsName = ConverterManager.me().registCRS(crs.getName(), crs);
+				featureClass.setSpatialReference(new SpatialReference(crsName));
+			} else {
+				featureClass.setSpatialReference(SpatialReference.wgs84());
+			}
+			return featureClass.getSpatialReference();
 		}
-		return super.getSpatialReference();
+		return null;
 	}
 
 	public CRS getCRS() {
 		// TODO Auto-generated method stub
 		// shp文件所在目录
-		String shpFilePath = url.substring(0, url.lastIndexOf('.'));
+		String shpFilePath = getUrl().substring(0, getUrl().lastIndexOf('.'));
 		// 判断shx文件是否存在
 		String prjFileName = shpFilePath + ".prj";
 		File fprj = new File(prjFileName);
@@ -386,48 +404,97 @@ public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 	}
 	
 	public List<Field> getFields() {
-		if(super.getFields()==null) {
-			MapTableDesc desc = this.recordSet.getTableDesc();
-			short cnt = desc.getFieldCount();
-			List<Field> myfields = new ArrayList<Field>();
-			for (short i = 0; i < cnt; i++) {
-				String name = desc.getFieldName(i);
-				//System.out.print("name：" + name.trim());
-				long fieldType = desc.getFieldType(i);
-				//System.out.print(", type：" + fieldType);
-				short length = desc.getFieldLength(i);
-				//System.out.print(", length：" + length);
-				short fieldDecimal = desc.getFieldPrecision(i);
-				//System.out.println(", precision：" + fieldDecimal);
-				Field.FieldType ftype = FieldType.CHAR;
-				if (fieldType == 'N' || fieldType == 'F') {
-					if (fieldDecimal == 0) {
-						// 1表示整形
-						ftype = FieldType.INTEGER;
-					} else {
-						// 2表示double
-						ftype = FieldType.FLOAT;
-					}
-				} else if (fieldType == 'C') {
-					// 0表示string
-					ftype = FieldType.STRING;
-				} else if (fieldType == 'L') {
-					ftype = FieldType.BOOLEAN;
-				} else if (fieldType == 'B') {
-					ftype = FieldType.BLOB;
-				} else if (fieldType == 'D') {
-					ftype = FieldType.DATE;
+		MapTableDesc desc = this.recordSet.getTableDesc();
+		short cnt = desc.getFieldCount();
+		List<Field> myfields = new ArrayList<Field>();
+		for (short i = 0; i < cnt; i++) {
+			String name = desc.getFieldName(i);
+			//System.out.print("name：" + name.trim());
+			long fieldType = desc.getFieldType(i);
+			//System.out.print(", type：" + fieldType);
+			short length = desc.getFieldLength(i);
+			//System.out.print(", length：" + length);
+			short fieldDecimal = desc.getFieldPrecision(i);
+			//System.out.println(", precision：" + fieldDecimal);
+			Field.FieldType ftype = FieldType.CHAR;
+			if (fieldType == 'N' || fieldType == 'F') {
+				if (fieldDecimal == 0) {
+					// 1表示整形
+					ftype = FieldType.INTEGER;
 				} else {
-					// 3表示Invaild
-					ftype = FieldType.BYTE;
+					// 2表示double
+					ftype = FieldType.FLOAT;
 				}
-				Field fld = new Field(name.trim(), ftype);
-				fld.setLength(length);
-				fld.setPrecision(fieldDecimal);
-				myfields.add(fld);
+			} else if (fieldType == 'C') {
+				// 0表示string
+				ftype = FieldType.STRING;
+			} else if (fieldType == 'L') {
+				ftype = FieldType.BOOLEAN;
+			} else if (fieldType == 'B') {
+				ftype = FieldType.BLOB;
+			} else if (fieldType == 'D') {
+				ftype = FieldType.DATE;
+			} else {
+				// 3表示Invaild
+				ftype = FieldType.BYTE;
 			}
-			this.setFields(myfields);
+			Field fld = new Field(name.trim(), ftype);
+			fld.setLength(length);
+			fld.setPrecision(fieldDecimal);
+			myfields.add(fld);
 		}
-		return super.getFields();
+		return myfields;
+	}
+
+	@Override
+	public FeatureClass<Long> read() {
+		// TODO Auto-generated method stub
+		if(!binit) return null;
+		FeatureClass<Long> resultFeature = featureClass.clone();
+		for(int i = 0; i < shxRandomAccess.getRecordCount(); i++) {
+			Long id = Long.valueOf(i);
+			ShapefileFeature feature = (ShapefileFeature) getFeatureClass().getFeature(id);
+			if(feature==null) {
+				try {
+					String sid = String.valueOf(i);
+					String dataType = "shp";
+					String geometryType = ShpType.shpTypeName(shxRandomAccess.getShpType());
+					SpatialIndexObject sio = new SpatialIndexObject(sid, dataType, geometryType, null);
+					feature = readRecord(id.intValue(), sio);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if(feature!=null) {
+					getFeatureClass().putFeature(feature.getId(), feature);
+				}
+			}
+		}
+		return resultFeature;		
+	}
+
+	@Override
+	public void writer(FeatureClass<Long> data) {
+		// TODO Auto-generated method stub
+		//undo
+	}
+
+	public FeatureClass<Long> getFeatureClass() {
+		return featureClass;
+	}
+
+	public void setFeatureClass(FeatureClass<Long> featureClass) {
+		this.featureClass = featureClass;
+	}
+	
+	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		return featureClass!=null ? featureClass.getEnvelope() : null;
+	}
+
+	@Override
+	public FeatureClass<Long> queryFeatures(QueryParameter query) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

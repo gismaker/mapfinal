@@ -11,10 +11,10 @@ import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
 import com.mapfinal.map.Tile;
-import com.mapfinal.resource.ResourceCollection;
+import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
-public class BundleCollection extends TileResourceDispatcher<BundleFeature> implements ResourceCollection<String, BundleFeature> {
+public class BundleResource extends TileResourceDispatcher<BundleFeature> implements Resource<BundleFeature> {
 
 	private String name;
 	private Cache<String, BundleFeature> cache;
@@ -23,12 +23,28 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 	private int tmsType = Tile.TMS_LT;
 	private SpatialReference spatialReference = SpatialReference.mercator();
 	
-	public BundleCollection(String name, String url) {
+	public BundleResource(String name, String url) {
 		this.name = name;
 		this.url = url;
 		int cacheSize = 30;
 		cache = new ScreenLruCacheImpl<>(cacheSize);
-		BundleManager.me().addCollection(name, this);
+	}
+	
+	@Override
+	public void prepare() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public BundleFeature read() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void writer(BundleFeature data) {
+		// TODO Auto-generated method stub
+		data.writer();
 	}
 	
 	@Override
@@ -93,11 +109,6 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 		put(tileHash, tileFeature);
 	}
 	
-	@Override
-	public void clear() {
-		cache.clear();
-    }
-
 	public void setCacheScreenNum(int cacheScreenNum) {
 		this.cacheScreenNum = cacheScreenNum;
 		
@@ -130,29 +141,28 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 		// undo
 	}
 
-	@Override
 	public BundleFeature get(String tileHash) {
 		return cache.get(tileHash);
 	}
 
-	@Override
 	public void put(String tileHash, BundleFeature tileFeature) {
 		cache.put(tileHash, tileFeature);
 	}
 
-	@Override
 	public int size() {
 		// TODO Auto-generated method stub
 		return cache.size();
 	}
+	
+	public void clear() {
+		cache.clear();
+    }
 
-	@Override
 	public boolean remove(String key) {
 		// TODO Auto-generated method stub
 		return cache.remove(key);
 	}
 
-	@Override
 	public List<String> keys() {
 		// TODO Auto-generated method stub
 		return cache.keys();
@@ -164,6 +174,12 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 
 	public void setSpatialReference(SpatialReference spatialReference) {
 		this.spatialReference = spatialReference;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		clear();
 	}
 
 }

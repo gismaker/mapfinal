@@ -8,7 +8,7 @@ import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.resource.Resource;
-import com.mapfinal.resource.tile.TileCollection;
+import com.mapfinal.resource.tile.TileResource;
 
 import org.locationtech.jts.geom.Envelope;
 
@@ -17,11 +17,11 @@ public class TileLayer extends AbstractLayer {
 	// 调度器
 	private TileDispatcher dispatcher;
 	// 资源
-	private TileCollection resource;
+	private TileResource resource;
 
 	public TileLayer(String name, String url, Resource.FileType fileType) {
 		// TODO Auto-generated constructor stub
-		resource = new TileCollection(name, url, fileType);
+		resource = new TileResource(name, url, fileType);
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
@@ -30,7 +30,7 @@ public class TileLayer extends AbstractLayer {
 		setSpatialReference(SpatialReference.mercator());
 	}
 	
-	public TileLayer(TileCollection resource) {
+	public TileLayer(TileResource resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
@@ -72,11 +72,11 @@ public class TileLayer extends AbstractLayer {
 		this.dispatcher = dispatcher;
 	}
 
-	public TileCollection getResource() {
+	public TileResource getResource() {
 		return resource;
 	}
 
-	public void setResource(TileCollection resource) {
+	public void setResource(TileResource resource) {
 		this.resource = resource;
 	}
 	

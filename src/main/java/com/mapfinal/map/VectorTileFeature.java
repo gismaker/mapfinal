@@ -7,9 +7,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-import com.mapfinal.MapfinalObject;
-
-public class VectorTileFeature implements GeoElement, MapfinalObject {
+public class VectorTileFeature implements GeoElement {
 
 	private VectorTile vectorTile;
 	private Envelope envelope;

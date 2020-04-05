@@ -9,6 +9,7 @@ import com.mapfinal.cache.Cache;
 import com.mapfinal.cache.impl.MapCacheImpl;
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.kit.StringKit;
+import com.mapfinal.resource.Data;
 
 /**
  * 要素类：指具有相同的几何特征的要素集合，比如点的集合，表现为shapefile或者是Geodatabase中的feature class。
@@ -17,8 +18,9 @@ import com.mapfinal.kit.StringKit;
  *
  * @param <K>
  */
-public class FeatureClass<K, V extends Feature<K>> {
+public class FeatureClass<K> implements Data {
 
+	private String name;
 	/**
 	 * 字段信息
 	 */
@@ -26,11 +28,11 @@ public class FeatureClass<K, V extends Feature<K>> {
 	/**
 	 * 要素集合
 	 */
-	private Cache<K, V> features;
+	private Cache<K, Feature<K>> features;
 	/**
 	 * 坐标系统
 	 */
-	private SpatialReference spatialReference = SpatialReference.wgs84();
+	private SpatialReference spatialReference = null;
 	/**
 	 * 外接矩形
 	 */
@@ -46,14 +48,25 @@ public class FeatureClass<K, V extends Feature<K>> {
 
 	public FeatureClass(List<Field> fields) {
 		this.fields = fields;
-		features = new MapCacheImpl<K, V>();
+		features = new MapCacheImpl<K, Feature<K>>();
 	}
-
+	
+	public FeatureClass<K> clone() {
+		FeatureClass<K> result = new FeatureClass<>();
+		result.setEnvelope(getEnvelope());
+		result.setGeometryType(getGeometryType());
+		result.setFeatures(getFeatures());
+		result.setFields(getFields());
+		result.setName(getName());
+		result.setSpatialReference(getSpatialReference());
+		return result;
+	}
+	
 	/**
 	 * 增加要素
 	 * @param feature
 	 */
-	public void addFeature(V feature) {
+	public void addFeature(Feature<K> feature) {
 		if(feature.getEnvelope()!=null) {
 			if(this.envelope==null) {
 				this.envelope = new Envelope(feature.getEnvelope());
@@ -69,7 +82,7 @@ public class FeatureClass<K, V extends Feature<K>> {
 	 * @param id
 	 * @param feature
 	 */
-	public void putFeature(K id, V feature) {
+	public void putFeature(K id, Feature<K> feature) {
 		if(feature.getEnvelope()!=null) {
 			if(this.envelope==null) {
 				this.envelope = new Envelope(feature.getEnvelope());
@@ -85,7 +98,7 @@ public class FeatureClass<K, V extends Feature<K>> {
 	 * @param id
 	 * @return
 	 */
-	public V getFeature(K id) {
+	public Feature<K> getFeature(K id) {
 		return features.get(id);
 	}
 	
@@ -94,27 +107,27 @@ public class FeatureClass<K, V extends Feature<K>> {
 	 * @param ids
 	 * @return
 	 */
-	public FeatureClass<K, V> getFeatures(K[] ids) {
+	public FeatureClass<K> getFeatures(K[] ids) {
 		// TODO Auto-generated method stub
 		if(ids.length < 1) return null;
-		FeatureClass<K, V> featureResult = new FeatureClass<K, V>(fields);
+		FeatureClass<K> featureResult = new FeatureClass<K>(fields);
 		featureResult.setGeometryType(geometryType);
 		featureResult.setSpatialReference(spatialReference);
 		for (K id : ids) {
-			V feature = getFeature(id);
+			Feature<K> feature = getFeature(id);
 			featureResult.addFeature(feature);
 		}
 		return featureResult;
 	}
 	
-	public void updateFeature(V feature) {
+	public void updateFeature(Feature<K> feature) {
 		// TODO Auto-generated method stub
 		putFeature(feature.getId(), feature);
 	}
 
-	public void updateFeatures(List<V> features) {
+	public void updateFeatures(List<Feature<K>> features) {
 		// TODO Auto-generated method stub
-		for (V feature : features) {
+		for (Feature<K> feature : features) {
 			putFeature(feature.getId(), feature);
 		}
 	}
@@ -148,11 +161,11 @@ public class FeatureClass<K, V extends Feature<K>> {
 		return features.size();
 	}
 	
-	public Cache<K, V> getFeatures() {
+	public Cache<K, Feature<K>> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Cache<K, V> features) {
+	public void setFeatures(Cache<K, Feature<K>> features) {
 		this.features = features;
 	}
 	
@@ -228,5 +241,19 @@ public class FeatureClass<K, V extends Feature<K>> {
 
 	public void setGeometryType(String geometryType) {
 		this.geometryType = geometryType;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

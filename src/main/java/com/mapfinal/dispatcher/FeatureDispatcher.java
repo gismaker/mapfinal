@@ -5,21 +5,15 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.FeatureCollection;
+import com.mapfinal.resource.ResourceDispatcher;
 
 public class FeatureDispatcher extends Dispatcher {
 	private Event event;
 	private RenderEngine engine;
 	
-	@SuppressWarnings("rawtypes")
-	public FeatureDispatcher(SpatialIndexer indexer, FeatureCollection resource) {
+	public FeatureDispatcher(SpatialIndexer indexer, ResourceDispatcher resource) {
 		super(indexer, resource);
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public FeatureCollection getFeatureCollection() {
-		return (FeatureCollection) getResource();
-	} 
 	
 	@Override
 	@SuppressWarnings("rawtypes")
@@ -32,7 +26,7 @@ public class FeatureDispatcher extends Dispatcher {
 //			System.out.println("[FeatureDispatcher] id: " + sio.getId() + ", env: " + sio.getEnvelope().toString());
 //		}
 		//System.out.println("[FeatureDispatcher] resultAction id: " + id);
-		Feature feature = (Feature) getFeatureCollection().read(sio);
+		Feature feature = (Feature) getResource().read(sio);
 		if(feature!=null) {
 			//System.out.println("[FeatureDispatcher] resultAction render id: " + id);
 			Renderer renderer = event.get("renderer");

@@ -9,14 +9,13 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
+import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.SpatialReference;
-import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.Tile;
-import com.mapfinal.resource.Resource;
-import com.mapfinal.resource.image.ImageManager;
+import com.mapfinal.resource.Data;
 
-public class BundleFeature<M> implements GeoImage<M>, Resource {
+public class BundleFeature<M> implements GeoImage<M>, Data {
 
 	//名称
 	private String name;
@@ -52,15 +51,8 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 		this.image = image;
 	}
 		
-	@Override
-	public void execute(Event event) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public SpatialReference getSpatialReference() {
-		BundleCollection collection = BundleManager.me().getCollection(collectionKey);
-		return collection!=null ? collection.getSpatialReference() : null;
+		return tile!=null ? tile.getSpatialReference() : null;
 	}
 
 	public int getReference() {
@@ -68,14 +60,12 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 		return reference;
 	}
 	
-	@Override
 	public BundleFeature<M> reference() {
 		// TODO Auto-generated method stub
 		reference++;
 		return this;
 	}
 	
-	@Override
 	public int referenceRelease() {
 		// TODO Auto-generated method stub
 		this.reference--;
@@ -83,13 +73,11 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 		return this.reference;
 	}
 
-	@Override
 	public void prepare() {
 		// TODO Auto-generated method stub
 		//undo
 	}
 
-	@Override
 	public void read() {
 		// TODO Auto-generated method stub
 		byte[] img = readBundle(url, tile.getZ(), tile.getY(), tile.getX());
@@ -99,13 +87,12 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 //				System.out.println("bundle: img_" + tile.getImageName() + ", length: " + img.length);
 //			}
 //		}
-		this.image = img !=null ? (M) ImageManager.me().getHandle().toImage(img) : this.image;
+		this.image = img !=null ? (M) Mapfinal.me().getFactory().getImageHandle().toImage(img) : this.image;
 	}
 
-	@Override
 	public void writer() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

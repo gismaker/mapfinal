@@ -7,11 +7,11 @@ public class LocalImage<M> extends Image<M> {
 		setFileType(FileType.file);
 	}
 
-	@Override
-	public void read() {
+	public LocalImage<M> read() {
 		// TODO Auto-generated method stub
 		if(this.data==null) {
-			this.data = (M) ImageManager.me().getHandle().readFile(getUrl());
+			this.data = (M) getHandle().readFile(getUrl());
 		}
+		return this;
 	}
 }

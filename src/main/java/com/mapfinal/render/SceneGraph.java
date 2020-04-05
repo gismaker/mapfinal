@@ -107,7 +107,7 @@ public abstract class SceneGraph {
 	}
 
 	public void setRedraw(boolean isRedraw) {
-		if(isRendering) return;
+		//if(isRendering) return;
 		if(this.isRedraw==false) {
 			update();
 		}

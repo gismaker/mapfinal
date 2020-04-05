@@ -3,10 +3,10 @@ package com.mapfinal.map.layer;
 import com.mapfinal.dispatcher.FeatureDispatcher;
 import com.mapfinal.event.Event;
 import com.mapfinal.map.AbstractLayer;
-import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.resource.FeatureCollection;
+import com.mapfinal.resource.VectorResource;
+
 import org.locationtech.jts.geom.Envelope;
 
 /**
@@ -19,13 +19,13 @@ public class FeatureLayer extends AbstractLayer {
 	/**
 	 * 资源
 	 */
-	private FeatureCollection resource;
+	private VectorResource resource;
 	/**
 	 * 默认通过FeatureDispatcher调度器实现
 	 */
 	private FeatureDispatcher dispatcher;
 	
-	public FeatureLayer(FeatureCollection resource) {
+	public FeatureLayer(VectorResource resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
@@ -84,11 +84,11 @@ public class FeatureLayer extends AbstractLayer {
 		return resource.getEnvelope();
 	}
 
-	public FeatureCollection getResource() {
+	public VectorResource getResource() {
 		return resource;
 	}
 
-	public void setResource(FeatureCollection resource) {
+	public void setResource(VectorResource resource) {
 		this.resource = resource;
 	}
 }

@@ -17,6 +17,8 @@ mapfinal-0.3:
 优化：分离Tile的resource和feature
 优化：Tile和ScreenCacheImpl的屏幕大小缓存
 优化：增加FeatureClass，改写TileFeature
+优化：重构资源架构，采用资源目录-资源-数据结构管理资源
+优化：优化Tile切片的销毁机制，减小内存占用
 修复：修复文件下载后，写文件与读文件同时产生的读取错误
 
 -----------------------------

@@ -1,13 +1,11 @@
 package com.mapfinal.resource.shapefile;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
-import com.mapfinal.event.Event;
-import com.mapfinal.resource.FeatureResource;
-import com.mapfinal.resource.Resource;
+import com.mapfinal.map.Feature;
 
 import org.locationtech.jts.geom.Geometry;
 
-public class ShapefileFeature extends FeatureResource<Long> {
+public class ShapefileFeature extends Feature<Long> {
 	
 	private int shpType;
 	
@@ -23,29 +21,5 @@ public class ShapefileFeature extends FeatureResource<Long> {
 
 	public void setShpType(int shpType) {
 		this.shpType = shpType;
-	}
-
-	@Override
-	public void execute(Event event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void prepare() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void read() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void writer() {
-		// TODO Auto-generated method stub
-		
 	}
 }

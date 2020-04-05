@@ -1,4 +1,4 @@
-package com.mapfinal.map;
+package com.mapfinal.resource.tile;
 
 import java.util.Map;
 
@@ -7,9 +7,8 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.converter.SpatialReference;
-import com.mapfinal.resource.tile.TileCollection;
-import com.mapfinal.resource.tile.TileManager;
-import com.mapfinal.resource.tile.TileResource;
+import com.mapfinal.map.GeoImage;
+import com.mapfinal.map.Tile;
 
 /**
  * 瓦片要素
@@ -20,21 +19,23 @@ import com.mapfinal.resource.tile.TileResource;
 public class TileFeature<M> implements GeoImage<M> {
 
 	private Tile tile;
-	private String collectionKey;
-	private String resourceKey;
+	private TileData<M> data;
 	private long activeTime;
 
-	public TileFeature(String collectionKey, String resourceKey, Tile tile) {
-		this.collectionKey = collectionKey;
-		this.resourceKey = resourceKey;
+	public TileFeature(TileData<M> data, Tile tile) {
+		this.data = data.reference();
 		this.tile = tile;
+	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return tile.getId();
 	}
 
 	@Override
 	public M getImage() {
 		// TODO Auto-generated method stub
-		TileResource<M> resource = TileManager.me().getResource(collectionKey, resourceKey);
-		return resource!=null ? resource.getImage() : null;
+		return data!=null ? data.getImageData() : null;
 	}
 
 	public long getActiveTime() {
@@ -45,11 +46,8 @@ public class TileFeature<M> implements GeoImage<M> {
 		this.activeTime = activeTime;
 	}
 	
-	////////////////////////////////////////
-
 	public SpatialReference getSpatialReference() {
-		TileCollection collection = TileManager.me().getCollection(collectionKey);
-		return collection!=null ? collection.getSpatialReference() : null;
+		return tile!=null ? tile.getSpatialReference() : null;
 	}
 
 	public Envelope getEnvelope() {
@@ -120,9 +118,8 @@ public class TileFeature<M> implements GeoImage<M> {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		TileResource<M> resource = TileManager.me().getResource(collectionKey, resourceKey);
-		if(resource!=null) {
-			resource.referenceRelease();
+		if(data!=null) {
+			data.referenceRelease();
 		}
 	}
 }

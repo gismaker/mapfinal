@@ -19,13 +19,12 @@ public class Tile {
 	private int x = 0;
 	private int y = 0;
 	private Envelope envelope;
-//	private SpatialReference spatialReference;
+	private SpatialReference spatialReference = SpatialReference.mercator();
 	
 	public Tile(String name) {
 		// TODO Auto-generated constructor stub
 		double d = SphericalMercatorProjection.MAX_DIMENSION;
 		envelope =  new Envelope(-d, d, -d, d);
-//		setSpatialReference(new SpatialReference("EPSG:3857"));
 		this.setName(name);
 	}
 	
@@ -92,19 +91,19 @@ public class Tile {
 		this.envelope = envelope;
 	}
 
-//	public SpatialReference getSpatialReference() {
-//		return spatialReference;
-//	}
-//
-//	public void setSpatialReference(SpatialReference spatialReference) {
-//		this.spatialReference = spatialReference;
-//	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public SpatialReference getSpatialReference() {
+		return spatialReference;
+	}
+
+	public void setSpatialReference(SpatialReference spatialReference) {
+		this.spatialReference = spatialReference;
 	}
 }

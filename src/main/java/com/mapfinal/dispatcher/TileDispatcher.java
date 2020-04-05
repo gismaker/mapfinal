@@ -1,12 +1,11 @@
 package com.mapfinal.dispatcher;
 
-
 import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.tile.TileCollection;
+import com.mapfinal.resource.tile.TileResource;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
 public class TileDispatcher extends Dispatcher {
@@ -30,6 +29,8 @@ public class TileDispatcher extends Dispatcher {
 		GeoImage feature = (GeoImage) tro.read(sio);
 		if(feature!=null) {
 			engine.renderImageFeature(null, event.get("map"), feature);
+			feature.destroy();
+			feature = null;
 		}
 	}
 	
@@ -46,8 +47,8 @@ public class TileDispatcher extends Dispatcher {
 		}
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
 		query(event.set("type", resource.getTmsType()).set("name", resource.getName()), context.getSceneEnvelope(), this);
-		TileCollection collection = (TileCollection) resource;
-		collection.setCacheScreenNum(this.getSioNumber());
+		TileResource tileResource = (TileResource) resource;
+		tileResource.setCacheScreenNum(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 	}
 

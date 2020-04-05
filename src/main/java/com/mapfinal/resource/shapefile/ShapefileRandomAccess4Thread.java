@@ -12,7 +12,7 @@ import com.mapfinal.dispatcher.indexer.jts.KdTreeSpatialIndexer;
 import com.mapfinal.dispatcher.indexer.jts.QuadtreeSpatialIndexer;
 import com.mapfinal.dispatcher.indexer.jts.STRTreeSpatialIndexer;
 import com.mapfinal.map.Feature;
-import com.mapfinal.resource.FeatureCollection;
+import com.mapfinal.resource.ResourceDispatcher;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
 import com.mapfinal.resource.shapefile.shpx.ShpInfo;
 import com.mapfinal.resource.shapefile.shpx.ShpPoint;
@@ -38,7 +38,7 @@ public class ShapefileRandomAccess4Thread {
 		this.setReaderFactory(readerFactory);
 	}
 	
-	public Dispatcher buildDispatcher(FeatureCollection resource, ShapefileRandomAccess randomAccess) throws IOException {
+	public Dispatcher buildDispatcher(ResourceDispatcher resource, ShapefileRandomAccess randomAccess) throws IOException {
 		// TODO Auto-generated method stub
 		Dispatcher dispatchar = null;
 		SpatialIndexer indexer = null;

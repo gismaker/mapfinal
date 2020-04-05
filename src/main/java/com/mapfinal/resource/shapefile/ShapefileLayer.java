@@ -6,7 +6,7 @@ public class ShapefileLayer extends FeatureLayer {
 	
 	public ShapefileLayer(String filepath) {
 		// TODO Auto-generated constructor stub
-		super(new Shapefile(filepath));
+		super(ShapefileManager.me().create(filepath));
 	}
 
 	public ShapefileLayer(Shapefile resource) {

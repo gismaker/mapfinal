@@ -1,24 +1,46 @@
 package com.mapfinal.resource.image;
 
+import com.mapfinal.Mapfinal;
+import com.mapfinal.resource.Data;
 import com.mapfinal.resource.Resource;
-import com.mapfinal.resource.ResourceCollection;
 import com.mapfinal.resource.ResourceObject;
 
-public class Image<M> extends ResourceObject {
+public class Image<M> extends ResourceObject<Image<M>> implements Data {
+	
+	/**
+	 * 名称
+	 */
+	private String name;
+	/**
+	 * 文件路径 或 网络地址，唯一键
+	 */
+	private String url;
+	/**
+	 * 存储类型
+	 */
 	private FileType fileType = FileType.cache;
+	/**
+	 * 图像类型
+	 */
 	private Resource.ImageType imageType = ImageType.png;
+	/**
+	 * 图像数据
+	 */
 	protected M data;
-	protected ResourceCollection collection;
 	
 	public Image(String name, String url) {
-		super(name, url);
-		prepare();
+		this.setName(name);
+		this.setUrl(url);
 	}
 
 	public Image(String name, String url, M image) {
-		super(name, url);
+		this.setName(name);
+		this.setUrl(url);
 		this.data = image;
-		prepare();
+	}
+	
+	public ImageHandle<M> getHandle() {
+		return Mapfinal.me().getFactory().getImageHandle();
 	}
 	
 	@Override
@@ -27,15 +49,22 @@ public class Image<M> extends ResourceObject {
 	}
 
 	@Override
-	public void read() {
+	public Image<M> read() {
 		// TODO Auto-generated method stub
+		return this;
 	}
 
 	@Override
-	public void writer() {
+	public void writer(Image<M> image) {
 		// TODO Auto-generated method stub
+		if(image==null) {
+			getHandle().writeFile(image.getUrl(), image.getData());
+		}
+	}
+	
+	public void writer() {
 		if(this.data==null) {
-			ImageManager.me().getHandle().writeFile(getUrl(), this.data);
+			getHandle().writeFile(getUrl(), getData());
 		}
 	}
 	
@@ -76,11 +105,27 @@ public class Image<M> extends ResourceObject {
 		this.imageType = imageType;
 	}
 
-	public ResourceCollection getCollection() {
-		return collection;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setCollection(ResourceCollection collection) {
-		this.collection = collection;
+	public void setUrl(String url) {
+		this.url = url;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		data = null;
+	}
+
+	
 }

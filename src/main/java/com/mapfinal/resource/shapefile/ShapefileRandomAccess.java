@@ -122,7 +122,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 	public Dispatcher connection() {
 		// TODO Auto-generated method stub
 		try {
-			return shpRandomAccess.buildDispatcher(ShapefileManager.me().getCollection(filepath), shxRandomAccess);
+			return shpRandomAccess.buildDispatcher(this, shxRandomAccess);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
