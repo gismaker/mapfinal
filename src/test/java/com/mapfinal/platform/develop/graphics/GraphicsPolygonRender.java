@@ -83,7 +83,7 @@ public class GraphicsPolygonRender implements Renderable {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine, Renderer renderer) {
+	public void draw(Event event, RenderEngine engine, Renderer renderer) {
 		// TODO Auto-generated method stub
 		if(polygon!=null) {
 			//System.out.println("[GraphicsPolygonRenderer] id: " + id + ", points: " + points.size() + ", " + polygon.npoints);
@@ -118,7 +118,7 @@ public class GraphicsPolygonRender implements Renderable {
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public void cancelDraw(Event event) {
 		// TODO Auto-generated method stub
 
 	}

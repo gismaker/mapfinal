@@ -1,6 +1,5 @@
 package com.mapfinal.render;
 
-import com.mapfinal.event.Callback;
 import com.mapfinal.event.Event;
 
 public class RendererSceneNode implements SceneNode {
@@ -32,16 +31,19 @@ public class RendererSceneNode implements SceneNode {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		//System.out.println("Renderer onRender");
-		if(renderer!=null) renderer.onRender(event, engine);
+		//System.out.println("Renderer draw");
+		if(renderer!=null) renderer.draw(event, engine);
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if(renderer!=null) renderer.onEvent(event);
+		if(renderer!=null && Renderer.EVENT_CANCELDRAW.equals(event.getAction())) {
+			renderer.cancelDraw(event);
+		}
+		return false;
 	}
 
 	public Renderer getRenderer() {
@@ -64,4 +66,9 @@ public class RendererSceneNode implements SceneNode {
 		this.bVisible = bVisible;
 	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
 }

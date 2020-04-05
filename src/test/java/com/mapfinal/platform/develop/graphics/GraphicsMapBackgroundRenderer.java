@@ -20,7 +20,7 @@ public class GraphicsMapBackgroundRenderer extends SimpleRenderer {
 	}
 	
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		GraphicsPolygonRender render = (GraphicsPolygonRender) getRenderable();
 		if(render.getPolygon()==null) {
@@ -49,6 +49,6 @@ public class GraphicsMapBackgroundRenderer extends SimpleRenderer {
 			render.setPolygon(new Polygon(xPoints, yPoints, nPoints));
 			render.setPoints(points);
 		}
-		render.onRender(event, engine, this);
+		render.draw(event, engine, this);
 	}
 }

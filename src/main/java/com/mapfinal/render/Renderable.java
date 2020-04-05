@@ -8,7 +8,7 @@ import com.mapfinal.event.Event;
  *
  */
 public interface Renderable {
-	void onRender(Event event, RenderEngine engine, Renderer renderer);
-	void onEvent(Event event);
+	void draw(Event event, RenderEngine engine, Renderer renderer);
+	void cancelDraw(Event event);
 }
  

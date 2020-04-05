@@ -2,6 +2,7 @@ package com.mapfinal.map.layer;
 
 import com.mapfinal.dispatcher.FeatureDispatcher;
 import com.mapfinal.event.Event;
+import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
@@ -54,11 +55,11 @@ public class FeatureLayer extends AbstractLayer {
 	@Override
 	public boolean isDrawable() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		if(!isVisible()) return;
 		MapContext context = event.get("map");
@@ -67,13 +68,14 @@ public class FeatureLayer extends AbstractLayer {
 		//System.out.println("feature layer render.");
 		if(dispatcher!=null) {
 			event.set("renderer", getRenderer());
-			dispatcher.render(event, engine, getRenderer());
+			dispatcher.draw(event, engine, getRenderer());
 		}
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	@Override

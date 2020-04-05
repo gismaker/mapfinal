@@ -12,7 +12,7 @@ import com.mapfinal.resource.ResourceManager;
  * @author yangyong
  * @param 
  */
-public class ImageManager implements ResourceManager<Image, String, ImageCollection> {
+public class ImageManager implements ResourceManager<String, Image, ImageCollection> {
 
 	private Map<String, ImageCollection> collection;
 	private ImageHandle handle;
@@ -89,5 +89,17 @@ public class ImageManager implements ResourceManager<Image, String, ImageCollect
 	public ImageCollection getCollection(String key) {
 		// TODO Auto-generated method stub
 		return this.collection.get(key);
+	}
+
+	@Override
+	public void remove(String collectionKey) {
+		// TODO Auto-generated method stub
+		this.collection.remove(collectionKey);
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.collection.clear();
 	}
 }

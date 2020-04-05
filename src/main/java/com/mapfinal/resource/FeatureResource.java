@@ -2,7 +2,6 @@ package com.mapfinal.resource;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.map.Feature;
-import com.mapfinal.resource.shapefile.ShapefileFeature;
 
 import org.locationtech.jts.geom.Geometry;
 

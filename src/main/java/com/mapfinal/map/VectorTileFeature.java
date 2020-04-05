@@ -7,7 +7,9 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-public class VectorTileFeature implements GeoElement {
+import com.mapfinal.MapfinalObject;
+
+public class VectorTileFeature implements GeoElement, MapfinalObject {
 
 	private VectorTile vectorTile;
 	private Envelope envelope;
@@ -101,5 +103,11 @@ public class VectorTileFeature implements GeoElement {
 
 	public void setActiveTime(long activeTime) {
 		this.activeTime = activeTime;
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }

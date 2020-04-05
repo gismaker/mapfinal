@@ -48,15 +48,25 @@ public abstract class SceneGraph {
 		return sceneRoot.getSceneGroup();
 	}
 	
-	public void onRender(Event event, RenderEngine engine) {
+	/**
+	 * 渲染
+	 * @param event
+	 * @param engine
+	 */
+	public void draw(Event event, RenderEngine engine) {
 		isRendering = true;
 		isRedraw = false;
-		sceneRoot.onRender(event, engine);
+		sceneRoot.draw(event, engine);
 		isRendering = false;
 	}
 	
-	public void onEvent(Event event) {
-		sceneRoot.onEvent(event);
+	/**
+	 * 事件处理
+	 * @param event
+	 * @return
+	 */
+	public boolean handleEvent(Event event) {
+		return sceneRoot.handleEvent(event);
 	}
 	
 	public void resize(int width, int height) {

@@ -8,6 +8,9 @@ import org.locationtech.jts.geom.Envelope;
 
 public class SpatialIndexObject {
 
+	/**
+	 * 主键
+	 */
 	private String id;
 	/**
 	 * 数据类型
@@ -17,7 +20,13 @@ public class SpatialIndexObject {
 	 * 图形类型
 	 */
 	private String geometryType;
+	/**
+	 * 图形单元的包围盒
+	 */
 	private Envelope envelope;
+	/**
+	 * 其他属性
+	 */
 	private Map<String, Object> optionMap;
 	
 	public SpatialIndexObject(String id, String dataType, String geometryType, Envelope envelop) {

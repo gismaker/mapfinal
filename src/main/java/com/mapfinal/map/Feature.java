@@ -3,11 +3,16 @@ package com.mapfinal.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
+/**
+ * 要素：管理几何及属性的对象
+ * @author yangyong
+ *
+ * @param <K>
+ */
 public class Feature<K> implements GeoElement {
 
 	private K id;
@@ -15,10 +20,6 @@ public class Feature<K> implements GeoElement {
 	 * 图形对象
 	 */
 	private Geometry geometry;
-	/**
-	 * 坐标系统
-	 */
-	private SpatialReference spatialReference;
 	/**
 	 * 索引对象
 	 */
@@ -40,19 +41,19 @@ public class Feature<K> implements GeoElement {
 		this.id = id;
 		this.spatialIndexObject = spatialIndexObject;
 		this.geometry = geometry;
-		this.spatialReference = SpatialReference.wgs84();
 	}
 
 	/*
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		// if(renderer!=null) renderer.onRender(event, engine);
+		// if(renderer!=null) renderer.draw(event, engine);
 		setActiveTime(System.currentTimeMillis());
 	}
 
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		// if(renderer!=null) renderer.onEvent(event);
+		// if(renderer!=null) renderer.cancelDraw(event);
+		return false;
 	}*/
 	
 	/**
@@ -167,13 +168,5 @@ public class Feature<K> implements GeoElement {
 		this.geometry = geometry;
 	}
 
-	public SpatialReference getSpatialReference() {
-		return spatialReference;
-	}
-
-	public void setSpatialReference(SpatialReference spatialReference) {
-		this.spatialReference = spatialReference;
-	}
-	
 	//Symbol getSymbol();
 }

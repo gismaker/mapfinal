@@ -16,13 +16,13 @@ public class GraphicsScene extends SceneGraph {
 		engine = new GraphicsRenderEngine(panel);
 	}
 	
-	public void onRender(Graphics g, int width, int height) {
+	public void draw(Graphics g, int width, int height) {
 		engine.setGraphics(g);
 		//System.out.println(width+"," + height);
 		setWidth(width);
 		setHeight(height);
 		Event event = new Event("render").set("width", getWidth()).set("height", getHeight());
-		super.onRender(event, engine);
+		super.draw(event, engine);
 	}
 
 	@Override

@@ -57,21 +57,25 @@ public class SceneGroupNode implements SceneNode {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < sceneGroup.size(); i++) {
 			SceneNode node = sceneGroup.get(i);
-			if(node!=null) node.onRender(event, engine);
+			if(node!=null) node.draw(event, engine);
 		}
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < sceneGroup.size(); i++) {
 			SceneNode node = sceneGroup.get(i);
-			if(node!=null) node.onEvent(event);
+			if(node!=null) {
+				boolean flag = node.handleEvent(event);
+				if(flag) return flag;
+			}
 		}
+		return false;
 	}
 	
 	@Override
@@ -84,5 +88,11 @@ public class SceneGroupNode implements SceneNode {
 	public void setVisible(boolean bVisible) {
 		// TODO Auto-generated method stub
 		this.bVisible = bVisible;
+	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.mapfinal.map;
 
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
@@ -24,7 +25,7 @@ public class MapView extends LayerGroup {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		event.set("map", context);
 		// Latlng center = context.getCenter();
@@ -35,17 +36,17 @@ public class MapView extends LayerGroup {
 				-ct.getY() + context.getHeight() / 2 + dy);
 		engine.renderInit(t);
 		if (backgroundRenderer != null) {
-			backgroundRenderer.onRender(event, engine);
+			backgroundRenderer.draw(event, engine);
 		}
-		super.onRender(event, engine);
+		super.draw(event, engine);
 		engine.renderEnd();
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		if (StringKit.isBlank(event.getAction()))
-			return;
+			return false;
 		switch (event.getAction()) {
 		case "mouseWheel":
 			if(event.get("rotation")!=null) {
@@ -102,9 +103,10 @@ public class MapView extends LayerGroup {
 			System.out.println("mouse latlng: " + latlng.toString());
 			break;
 		default:
-			super.onEvent(event);
+			super.handleEvent(event);
 			break;
 		}
+		return false;
 	}
 	
 	public Latlng mouseCoordinate(int x, int y) {
@@ -183,19 +185,25 @@ public class MapView extends LayerGroup {
 		context.setZoomDelta(zoomDelta);
 	}
 
+	@Override
 	public float getMinZoom() {
 		return context.getMinZoom();
 	}
 
+	@Override
 	public void setMinZoom(float minZoom) {
+		super.setMinZoom(minZoom);
 		context.setMinZoom(minZoom);
 	}
 
+	@Override
 	public float getMaxZoom() {
 		return context.getMaxZoom();
 	}
 
+	@Override
 	public void setMaxZoom(float maxZoom) {
+		super.setMaxZoom(maxZoom);
 		context.setMaxZoom(maxZoom);
 	}
 
@@ -254,15 +262,18 @@ public class MapView extends LayerGroup {
 	public void setMapEnvelop(Envelope mapEnvelop) {
 		context.setMapEnvelop(mapEnvelop);
 	}
-
-	public String getCrsName() {
-		return context.getCrsName();
+	
+	@Override
+	public SpatialReference getSpatialReference() {
+		return context.getSpatialReference();
 	}
-
-	public void setCrsName(String crsName) {
-		context.setCrsName(crsName);
+	
+	@Override
+	public void setSpatialReference(SpatialReference spatialReference) {
+		super.setSpatialReference(spatialReference);
+		context.setSpatialReference(spatialReference);
 	}
-
+	
 	public Renderer getBackgroundRenderer() {
 		return backgroundRenderer;
 	}

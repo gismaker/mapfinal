@@ -35,4 +35,9 @@ public abstract class LineSymbol implements Symbol {
 	 * @param width
 	 */
 	public abstract void	setWidth(float width);
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 }

@@ -3,11 +3,11 @@ package com.mapfinal.resource;
 import java.util.List;
 
 /**
- * 资源管理，管理资源内存、资源调用、资源创建
+ * 资源（集合），管理资源内存、资源调用、资源创建
  * @author yangyong
  *
  */
-public interface ResourceCollection<V extends Resource, K> {
+public interface ResourceCollection<K, V extends Resource> {
 	
 	/**
 	 * 资源名称
@@ -36,20 +36,6 @@ public interface ResourceCollection<V extends Resource, K> {
 	 * @return
 	 */
 	public V get(K key);
-	
-	/**
-	 * 直接读取缓存内容
-	 * @param key
-	 * @return
-	 */
-	//public V getValue(K key);
-    
-    /**
-     * 异步读取
-     * @param url 缓存的key值
-     * @param callback 处理类
-     */
-    //void getAsync(K key, Callback callback);
 
     /**
      * 存储缓存类

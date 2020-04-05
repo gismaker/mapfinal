@@ -1,11 +1,11 @@
 package com.mapfinal.resource;
 
 /**
- * 资源管理，管理资源内存、资源调用、资源创建
+ * 资源集合管理，管理资源集合内存、资源调用
  * @author yangyong
  *
  */
-public interface ResourceManager<V extends Resource, K, C extends ResourceCollection<V,K>> {
+public interface ResourceManager<K, V extends Resource, C extends ResourceCollection<K, V>> {
 	
 	/**
 	 * 资源类型
@@ -40,5 +40,16 @@ public interface ResourceManager<V extends Resource, K, C extends ResourceCollec
      * @return
      */
     public V getResource(String collectionKey, K resourceKey);
+    
+    /**
+     * 移除collection
+     * @param collectionKey
+     */
+    public void remove(String collectionKey);
+    
+    /**
+     * 清空collection
+     */
+    public void clear();
     
 }

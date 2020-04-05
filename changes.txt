@@ -16,6 +16,7 @@ mapfinal-0.3:
 优化：重构resource资源管理器的所有代码
 优化：分离Tile的resource和feature
 优化：Tile和ScreenCacheImpl的屏幕大小缓存
+优化：增加FeatureClass，改写TileFeature
 修复：修复文件下载后，写文件与读文件同时产生的读取错误
 
 -----------------------------

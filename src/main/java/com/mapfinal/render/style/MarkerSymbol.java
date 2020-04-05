@@ -106,4 +106,9 @@ public class MarkerSymbol implements Symbol {
 	public void setBillboard(boolean isBillboard) {
 		this.isBillboard = isBillboard;
 	}
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 }

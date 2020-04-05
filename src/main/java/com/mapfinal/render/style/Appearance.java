@@ -137,5 +137,9 @@ public class Appearance implements Symbol {
 	public void setBubblingMouseEvents(boolean bubblingMouseEvents) {
 		this.bubblingMouseEvents = bubblingMouseEvents;
 	}
-
+	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 }

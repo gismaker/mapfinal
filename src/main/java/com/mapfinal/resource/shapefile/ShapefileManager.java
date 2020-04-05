@@ -2,7 +2,7 @@ package com.mapfinal.resource.shapefile;
 
 import com.mapfinal.resource.FeatureResourceManager;
 
-public class ShapefileManager extends FeatureResourceManager<ShapefileFeature, Long, Shapefile> {
+public class ShapefileManager extends FeatureResourceManager<Long, ShapefileFeature, Shapefile> {
 
 	private ShapefileReaderFactory readerFactory;
 	

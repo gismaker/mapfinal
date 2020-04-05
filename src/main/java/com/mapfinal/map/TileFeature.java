@@ -1,4 +1,4 @@
-package com.mapfinal.resource.tile;
+package com.mapfinal.map;
 
 import java.util.Map;
 
@@ -6,31 +6,35 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-import com.mapfinal.MapfinalObject;
 import com.mapfinal.converter.SpatialReference;
-import com.mapfinal.map.GeoImage;
-import com.mapfinal.map.Tile;
+import com.mapfinal.resource.tile.TileCollection;
+import com.mapfinal.resource.tile.TileManager;
+import com.mapfinal.resource.tile.TileResource;
 
-public class TileFeature<M> implements GeoImage<M>, MapfinalObject {
+/**
+ * 瓦片要素
+ * @author yangyong
+ *
+ * @param <M>
+ */
+public class TileFeature<M> implements GeoImage<M> {
 
-	private TileResource<M> resource;
-	private TileCollection collection;
 	private Tile tile;
-	/**
-	 * 最后一次渲染时间
-	 */
+	private String collectionKey;
+	private String resourceKey;
 	private long activeTime;
 
-	public TileFeature(TileCollection collection, TileResource<M> resource, Tile tile) {
-		this.setCollection(collection);
-		this.resource = resource.reference();
+	public TileFeature(String collectionKey, String resourceKey, Tile tile) {
+		this.collectionKey = collectionKey;
+		this.resourceKey = resourceKey;
 		this.tile = tile;
 	}
 
 	@Override
 	public M getImage() {
 		// TODO Auto-generated method stub
-		return resource.getImage();
+		TileResource<M> resource = TileManager.me().getResource(collectionKey, resourceKey);
+		return resource!=null ? resource.getImage() : null;
 	}
 
 	public long getActiveTime() {
@@ -44,7 +48,8 @@ public class TileFeature<M> implements GeoImage<M>, MapfinalObject {
 	////////////////////////////////////////
 
 	public SpatialReference getSpatialReference() {
-		return tile.getSpatialReference();
+		TileCollection collection = TileManager.me().getCollection(collectionKey);
+		return collection!=null ? collection.getSpatialReference() : null;
 	}
 
 	public Envelope getEnvelope() {
@@ -104,22 +109,6 @@ public class TileFeature<M> implements GeoImage<M>, MapfinalObject {
 		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMinY());
 	}
 
-	public TileCollection getCollection() {
-		return collection;
-	}
-
-	public void setCollection(TileCollection collection) {
-		this.collection = collection;
-	}
-
-	public TileResource<M> getResource() {
-		return resource;
-	}
-
-	public void setResource(TileResource<M> resource) {
-		this.resource = resource;
-	}
-
 	public Tile getTile() {
 		return tile;
 	}
@@ -131,12 +120,9 @@ public class TileFeature<M> implements GeoImage<M>, MapfinalObject {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		int r = resource.referenceRelease();
-		if(r< 1) {
-			System.out.println("[TileFeature] resource destroy : " + resource.getName());
-			collection.remove(resource.getName());
-			resource.destroy();
-			resource=null;
+		TileResource<M> resource = TileManager.me().getResource(collectionKey, resourceKey);
+		if(resource!=null) {
+			resource.referenceRelease();
 		}
 	}
 }

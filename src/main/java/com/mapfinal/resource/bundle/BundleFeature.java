@@ -22,9 +22,8 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 	private String name;
 	//文件路径 或 网络地址，唯一键
 	private String url;
-	//ResourceObject外接矩形
-	//private Envelope envelope;
-	//ResourceObject被调用次数
+	private String collectionKey;
+	//被调用次数
 	private int reference = 0;
 	/**
 	 * 切片数据
@@ -60,7 +59,8 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 	}
 	
 	public SpatialReference getSpatialReference() {
-		return tile.getSpatialReference();
+		BundleCollection collection = BundleManager.me().getCollection(collectionKey);
+		return collection!=null ? collection.getSpatialReference() : null;
 	}
 
 	public int getReference() {
@@ -272,5 +272,13 @@ public class BundleFeature<M> implements GeoImage<M>, Resource {
 	public void destroy() {
 		// TODO Auto-generated method stub
 		image = null;
+	}
+
+	public String getCollectionKey() {
+		return collectionKey;
+	}
+
+	public void setCollectionKey(String collectionKey) {
+		this.collectionKey = collectionKey;
 	}
 }

@@ -33,7 +33,7 @@ import com.mapfinal.resource.shapefile.shpx.ShpRandomAccess;
 import com.mapfinal.resource.shapefile.shpx.ShpType;
 import com.mapfinal.resource.shapefile.shpx.ShxRandomAccess;
 
-public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
+public class Shapefile extends FeatureCollection<Long, ShapefileFeature> {
 
 	/**
 	 * Shp文件输入流
@@ -61,7 +61,7 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 			e.printStackTrace();
 		}
 		recordSet = new MapRecordSet();
-		this.features = new MapCacheImpl<>();
+		setFeatures(new MapCacheImpl<>());
 	}
 	
 	private void isShapefileExists(String filepath) throws FileNotFoundException {
@@ -326,12 +326,12 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 	}
 	
 	public SpatialReference getSpatialReference() {
-		if (this.spatialReference==null) {
+		if (super.getSpatialReference()==null) {
 			CRS crs = getCRS();
 			String crsName = ConverterManager.me().registCRS(crs.getName(), crs);
 			setSpatialReference(new SpatialReference(crsName));
 		}
-		return this.spatialReference;
+		return super.getSpatialReference();
 	}
 
 	public CRS getCRS() {
@@ -386,10 +386,10 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 	}
 	
 	public List<Field> getFields() {
-		if(this.fields==null) {
+		if(super.getFields()==null) {
 			MapTableDesc desc = this.recordSet.getTableDesc();
 			short cnt = desc.getFieldCount();
-			this.fields = new ArrayList<Field>();
+			List<Field> myfields = new ArrayList<Field>();
 			for (short i = 0; i < cnt; i++) {
 				String name = desc.getFieldName(i);
 				//System.out.print("name：" + name.trim());
@@ -424,9 +424,10 @@ public class Shapefile extends FeatureCollection<ShapefileFeature, Long> {
 				Field fld = new Field(name.trim(), ftype);
 				fld.setLength(length);
 				fld.setPrecision(fieldDecimal);
-				this.fields.add(fld);
+				myfields.add(fld);
 			}
+			this.setFields(myfields);
 		}
-		return this.fields;
+		return super.getFields();
 	}
 }

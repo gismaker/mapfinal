@@ -2,7 +2,7 @@ package com.mapfinal.resource;
 
 import java.util.Map;
 
-public abstract class FeatureResourceManager<V extends FeatureResource<K>, K, C extends FeatureCollection<V,K>> implements ResourceManager<V, K, C> {
+public abstract class FeatureResourceManager<K, V extends FeatureResource<K>, C extends FeatureCollection<K, V>> implements ResourceManager<K, V, C> {
 
 	private Map<String, C> collection;
 	
@@ -35,4 +35,15 @@ public abstract class FeatureResourceManager<V extends FeatureResource<K>, K, C 
 		return c!=null ? c.get(resourceKey) : null;
 	}
 	
+	@Override
+	public void remove(String collectionKey) {
+		// TODO Auto-generated method stub
+		this.collection.remove(collectionKey);
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.collection.clear();
+	}
 }

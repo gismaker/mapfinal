@@ -4,10 +4,12 @@ import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.event.Event;
 import com.mapfinal.map.MapView;
+import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.tile.TileCollection;
+
 import org.locationtech.jts.geom.Envelope;
 
 public class TileLayer extends AbstractLayer {
@@ -43,7 +45,7 @@ public class TileLayer extends AbstractLayer {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		if(!isVisible()) return;
 		MapContext context = event.get("map");
@@ -52,16 +54,14 @@ public class TileLayer extends AbstractLayer {
 		//System.out.println("feature layer render.");
 		if(dispatcher!=null) {
 			event.set("layer", this);
-			dispatcher.onRender(event, engine, getRenderer());
+			dispatcher.draw(event, engine, getRenderer());
 		}
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if(dispatcher!=null) {
-			dispatcher.onEvent(event);
-		}
+		return !super.handleEvent(event) && dispatcher!=null ? dispatcher.handleEvent(event) : false;
 	}
 
 	public TileDispatcher getDispatcher() {
@@ -87,14 +87,14 @@ public class TileLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public void setMinZoom(int minZoom) {
+	public void setMinZoom(float minZoom) {
 		// TODO Auto-generated method stub
 		super.setMinZoom(minZoom);
 		this.dispatcher.setMinZoom(minZoom);
 	}
 	
 	@Override
-	public void setMaxZoom(int maxZoom) {
+	public void setMaxZoom(float maxZoom) {
 		// TODO Auto-generated method stub
 		super.setMaxZoom(maxZoom);
 		this.dispatcher.setMaxZoom(maxZoom);

@@ -2,7 +2,9 @@ package com.mapfinal.map;
 
 import org.locationtech.jts.geom.Geometry;
 
-public interface GeoElement {
+import com.mapfinal.MapfinalObject;
+
+public interface GeoElement extends MapfinalObject {
 	
 	java.util.Map<String, Object> getAttributes();
 

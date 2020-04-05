@@ -11,30 +11,30 @@ import com.mapfinal.resource.tile.TileResourceDispatcher;
 
 public class TileDispatcher extends Dispatcher {
 
-	private int zoom = -1;
+	private float zoom = -1;
 	private Event event;
 	private RenderEngine engine;
-	private int minZoom = 0;
-	private int maxZoom = 18;
+	private float minZoom = 0;
+	private float maxZoom = 18;
 	
+	@SuppressWarnings("rawtypes")
 	public TileDispatcher(SpatialIndexer indexer, TileResourceDispatcher resource) {
 		super(indexer, resource);
 	}
 	
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void resultAction(SpatialIndexObject sio) {
 		// TODO Auto-generated method stub
 		TileResourceDispatcher tro = (TileResourceDispatcher) getResource();
 		GeoImage feature = (GeoImage) tro.read(sio);
 		if(feature!=null) {
-			//System.out.println("tile render: " + feature.getId());
-			//tile.onRender(event, engine);
-			//feature.setEnvelope(sio.getEnvelope());
 			engine.renderImageFeature(null, event.get("map"), feature);
 		}
 	}
 	
-	public void onRender(Event event, RenderEngine engine, Renderer renderer) {
+	@SuppressWarnings("rawtypes")
+	public void draw(Event event, RenderEngine engine, Renderer renderer) {
 		this.event = event;
 		if(!event.isRender()) return;
 		this.engine = engine;
@@ -51,43 +51,24 @@ public class TileDispatcher extends Dispatcher {
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 	}
 
-	public void onEvent(Event event) {
-		//TileCollection tro = (TileCollection) getResource();
-		//List<String> keys = tro.getTileCache().getKeys();
-		//for (String key : keys) {
-		//}
+	public boolean handleEvent(Event event) {
+		return false;
 	}
 	
-//	public ImageFeature getImageFeature(String featureId) {
-//		TileCollection tro = (TileCollection) getResource();
-//		return tro.getTileCache().get(featureId);
-//	}
-//
-//	public void removeImageFeature(String featureId) {
-//		TileCollection tro = (TileCollection) getResource();
-//		tro.getTileCache().remove(featureId);
-//	}
-//	
-//	public List<String> getFeatureIds() {
-//		TileCollection tro = (TileCollection) getResource();
-//		return tro.getTileCache().keys();
-//	}
-
-	public int getMinZoom() {
+	public float getMinZoom() {
 		return minZoom;
 	}
 
-	public void setMinZoom(int minZoom) {
+	public void setMinZoom(float minZoom) {
 		this.minZoom = minZoom;
 	}
 
-	public int getMaxZoom() {
+	public float getMaxZoom() {
 		return maxZoom;
 	}
 
-	public void setMaxZoom(int maxZoom) {
+	public void setMaxZoom(float maxZoom) {
 		this.maxZoom = maxZoom;
 	}
-
 	
 }

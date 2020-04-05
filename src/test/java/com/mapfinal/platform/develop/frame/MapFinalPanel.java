@@ -61,7 +61,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 				Event event = new Event("mouseUp", "event", paramMouseEvent);
 		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.onEvent(event);
+		    	scene.handleEvent(event);
 			}
 			
 			@Override
@@ -69,7 +69,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 				Event event = new Event("mouseDown", "event", paramMouseEvent);
 		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.onEvent(event);
+		    	scene.handleEvent(event);
 			}
 			
 			@Override
@@ -106,7 +106,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 				Event event = new Event("mouseMove", "event", paramMouseEvent);
 		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.onEvent(event);
+		    	scene.handleEvent(event);
 			}
 		});
         
@@ -117,7 +117,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 				Event event = new Event("mouseWheel", "event", paramMouseWheelEvent);
 		    	event.set("rotation", paramMouseWheelEvent.getWheelRotation());
-		    	scene.onEvent(event);
+		    	scene.handleEvent(event);
 			}
 		});
     }
@@ -132,6 +132,6 @@ public class MapFinalPanel extends JPanel {
         super.paintComponent(g);
         setBackground(Color.lightGray); //背景色
         Mapfinal.me().getMap().resize(this.getWidth(), this.getHeight());
-        scene.onRender(g, this.getWidth(), this.getHeight());
+        scene.draw(g, this.getWidth(), this.getHeight());
     }
 }

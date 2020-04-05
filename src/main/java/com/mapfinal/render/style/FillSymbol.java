@@ -36,4 +36,8 @@ public abstract class FillSymbol implements Symbol {
 	 */
 	public abstract void	setOutline(LineSymbol outline);
 	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 }

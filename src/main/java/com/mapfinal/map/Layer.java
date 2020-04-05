@@ -11,30 +11,83 @@ import org.locationtech.jts.geom.Envelope;
  */
 public interface Layer extends SceneNode {	
 
-	public void addTo(MapView map);
+	public void addTo(LayerGroup layerGroup);
+	
+	/**
+	 * 名称，主键
+	 */
+	public String getName();
 	
 	public void setName(String name);
+	
+	/**
+	 * Envelope
+	 * @return
+	 */
 	public Envelope getEnvelope();
+	
+	/**
+	 * SpatialReference
+	 * @return
+	 */
 	public SpatialReference getSpatialReference();
 
+	/**
+     * set layer parent
+     * @param layer Layer parent object
+     */
+    void setParent(Layer layer);
+
+    /**
+     * @return Layer parent object
+     */
+    Layer getParent();
+    
+	/**
+	 * 标题
+	 * @return
+	 */
 	public String getTitle();
 
 	public void setTitle(String title);
 
-	public int getMinZoom();
+	/**
+	 * min zoom for layer
+	 * @return
+	 */
+	public float getMinZoom();
 
-	public void setMinZoom(int minZoom);
+	public void setMinZoom(float minZoom);
 
-	public int getMaxZoom();
+	/**
+	 * max zoom for layer
+	 * @return
+	 */
+	public float getMaxZoom();
 
-	public void setMaxZoom(int maxZoom);
+	public void setMaxZoom(float maxZoom);
 
+	/**
+	 * renderer
+	 * @return
+	 */
 	public Renderer getRenderer();
 	
 	public void setRenderer(Renderer renderer);
 	
+	/**
+	 * 透明度
+	 * @return
+	 */
 	public float getOpacity();
 	
 	public void setOpacity(float opacity);
+	
+	/**
+	 * 
+	 * @param id The layer identificator
+     * @param percent The draw progress percent
+     */
+	public void drawFinished(int id, float percent);
 
 }

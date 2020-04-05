@@ -11,7 +11,7 @@ import com.mapfinal.resource.ResourceCollection;
  * @author yangyong
  * @param <M>
  */
-public class ImageCollection implements ResourceCollection<Image, String> {
+public class ImageCollection implements ResourceCollection<String, Image> {
 
 	//名称
 	private String name = "default";

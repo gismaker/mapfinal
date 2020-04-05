@@ -9,6 +9,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.map.Tile;
+
 import org.locationtech.jts.geom.Envelope;
 
 public class TileWGS84Indexer implements SpatialIndexer {

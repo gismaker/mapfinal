@@ -3,6 +3,7 @@ package com.mapfinal.map.layer;
 import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.render.RenderEngine;
 
 public class WmsLayer extends AbstractLayer {
@@ -14,15 +15,15 @@ public class WmsLayer extends AbstractLayer {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
 
 }

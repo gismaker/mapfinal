@@ -11,8 +11,18 @@ import org.locationtech.jts.geom.Envelope;
  *
  */
 public interface SpatialIndexer {
-	//查询
+	/**
+	 * 返回List的查询
+	 * @param event
+	 * @param env
+	 * @return
+	 */
 	List<SpatialIndexObject> query(Event event, Envelope env);
-	//查询
+	/**
+	 * 访问者模式的查询
+	 * @param event
+	 * @param env
+	 * @param visitor
+	 */
 	void query(Event event, Envelope env, Dispatcher visitor);
 }

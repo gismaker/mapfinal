@@ -5,7 +5,7 @@ import java.util.Map;
 import com.mapfinal.common.SyncWriteMap;
 import com.mapfinal.resource.ResourceManager;
 
-public class TileManager implements ResourceManager<TileResource, String, TileCollection> {
+public class TileManager implements ResourceManager<String, TileResource, TileCollection> {
 
 	private Map<String, TileCollection> collection = null;
 	
@@ -53,4 +53,17 @@ public class TileManager implements ResourceManager<TileResource, String, TileCo
 		TileCollection c = getCollection(collectionKey);
 		return c!=null ? c.get((String)resourceKey) : null;
 	}
+	
+	@Override
+	public void remove(String collectionKey) {
+		// TODO Auto-generated method stub
+		this.collection.remove(collectionKey);
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.collection.clear();
+	}
+
 }

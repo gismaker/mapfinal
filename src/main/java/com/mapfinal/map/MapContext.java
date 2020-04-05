@@ -1,8 +1,8 @@
 package com.mapfinal.map;
 
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.SceneEPSG3857CRS;
-import com.mapfinal.converter.scene.SceneEPSG4326CRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.geometry.Latlng;
 import org.locationtech.jts.geom.Envelope;
@@ -10,15 +10,23 @@ import org.locationtech.jts.geom.Envelope;
 public class MapContext {
 
 	private SceneCRS sceneCRS;
-	private String crsName;
-	//当前窗口对应的地图坐标系包围盒
+	private SpatialReference spatialReference;
+	/**
+	 * 当前窗口对应的地图坐标系包围盒
+	 */
 	private Envelope sceneEnvelope;
-	//地图本身的包围盒
+	/**
+	 * 地图本身的包围盒
+	 */
 	private Envelope mapEnvelop;
-	//当前窗口的中心点
+	/**
+	 * 当前窗口的中心点
+	 */
 	private Latlng center;
 	private ScenePoint centerPoint;
-	//当前地图的缩放级别
+	/**
+	 * 当前地图的缩放级别
+	 */
 	private float zoom = 1;
 	private float zoomSnap = 0;
 	private float zoomDelta = 0.1f;
@@ -28,11 +36,17 @@ public class MapContext {
 	private int zoomAnimationThreshold = 4;
 	private boolean fadeAnimation = true;
 	private boolean markerZoomAnimation = true;
-	//地图窗口的大小
+	/**
+	 * 地图窗口的大小
+	 */
 	private int width = 256;
-	//地图窗口的大小
+	/**
+	 * 地图窗口的大小
+	 */
 	private int height = 256;
-	
+	/**
+	 * 屏幕的长宽
+	 */
 	private ScenePoint sceneSize;
 	
 	public MapContext() {
@@ -221,14 +235,6 @@ public class MapContext {
 		this.mapEnvelop = mapEnvelop;
 	}
 
-	public String getCrsName() {
-		return crsName;
-	}
-
-	public void setCrsName(String crsName) {
-		this.crsName = crsName;
-	}
-
 	public ScenePoint getCenterPoint() {
 		return centerPoint;
 	}
@@ -243,6 +249,14 @@ public class MapContext {
 
 	public void setSceneSize(ScenePoint sceneSize) {
 		this.sceneSize = sceneSize;
+	}
+
+	public SpatialReference getSpatialReference() {
+		return spatialReference;
+	}
+
+	public void setSpatialReference(SpatialReference spatialReference) {
+		this.spatialReference = spatialReference;
 	}
 	
 }

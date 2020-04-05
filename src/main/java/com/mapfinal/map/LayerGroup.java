@@ -3,15 +3,15 @@ package com.mapfinal.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Envelope;
+
 import com.mapfinal.event.Event;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.SceneNode;
 
-public class LayerGroup implements SceneNode {
+public class LayerGroup extends AbstractLayer implements SceneNode {
 
 	private List<Layer> layers;
-	private String name;
-	private boolean bVisible = true;
 	
 	public LayerGroup() {
 		setLayers(new ArrayList<Layer>());
@@ -55,46 +55,39 @@ public class LayerGroup implements SceneNode {
 	}
 
 	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
 	public boolean isDrawable() {
 		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void draw(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		if(!isVisible()) return;
+		for (int i = 0; i < layers.size(); i++) {
+			layers.get(i).draw(event, engine);
+		}
+	}
+
+	@Override
+	public boolean handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < layers.size(); i++) {
+			boolean flag = layers.get(i).handleEvent(event);
+			if(flag) return flag;
+		}
 		return false;
-	}
-
-	@Override
-	public void onRender(Event event, RenderEngine engine) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < layers.size(); i++) {
-			layers.get(i).onRender(event, engine);
-		}
-	}
-
-	@Override
-	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < layers.size(); i++) {
-			layers.get(i).onEvent(event);
-		}
 	}
 	
 	@Override
-	public boolean isVisible() {
+	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
-		return bVisible;
+		return null;
 	}
 
 	@Override
-	public void setVisible(boolean bVisible) {
+	public void drawFinished(int id, float percent) {
 		// TODO Auto-generated method stub
-		this.bVisible = bVisible;
 	}
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.render.RenderEngine;
 
 public class FeatureGroupLayer extends AbstractLayer {
@@ -56,18 +57,20 @@ public class FeatureGroupLayer extends AbstractLayer {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < layers.size(); i++) {
-			layers.get(i).onRender(event, engine);
+			layers.get(i).draw(event, engine);
 		}
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < layers.size(); i++) {
-			layers.get(i).onEvent(event);
+			boolean flag = layers.get(i).handleEvent(event);
+			if(flag) return flag;
 		}
+		return false;
 	}
 }

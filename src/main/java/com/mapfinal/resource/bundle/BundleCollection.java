@@ -5,6 +5,7 @@ import java.util.List;
 import com.mapfinal.cache.Cache;
 import com.mapfinal.cache.impl.ScreenLruCacheImpl;
 import com.mapfinal.converter.CRS;
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.TileDispatcher;
@@ -13,19 +14,21 @@ import com.mapfinal.map.Tile;
 import com.mapfinal.resource.ResourceCollection;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
-public class BundleCollection extends TileResourceDispatcher<BundleFeature> implements ResourceCollection<BundleFeature, String> {
+public class BundleCollection extends TileResourceDispatcher<BundleFeature> implements ResourceCollection<String, BundleFeature> {
 
 	private String name;
 	private Cache<String, BundleFeature> cache;
 	private int cacheScreenNum = 2;
 	private String url;
 	private int tmsType = Tile.TMS_LT;
+	private SpatialReference spatialReference = SpatialReference.mercator();
 	
 	public BundleCollection(String name, String url) {
 		this.name = name;
 		this.url = url;
 		int cacheSize = 30;
 		cache = new ScreenLruCacheImpl<>(cacheSize);
+		BundleManager.me().addCollection(name, this);
 	}
 	
 	@Override
@@ -41,6 +44,7 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 			String tileUrl = tile.getIntactUrl(this.url);
 			feature = new BundleFeature(tileUrl, tile);
 			if(feature!=null) {
+				feature.setCollectionKey(this.name);
 				putToCache(sio.getId(), feature);
 			}
 		}
@@ -127,11 +131,6 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 	}
 
 	@Override
-	public CRS getCRS() {
-		return null;
-	}
-
-	@Override
 	public BundleFeature get(String tileHash) {
 		return cache.get(tileHash);
 	}
@@ -157,6 +156,14 @@ public class BundleCollection extends TileResourceDispatcher<BundleFeature> impl
 	public List<String> keys() {
 		// TODO Auto-generated method stub
 		return cache.keys();
+	}
+
+	public SpatialReference getSpatialReference() {
+		return spatialReference;
+	}
+
+	public void setSpatialReference(SpatialReference spatialReference) {
+		this.spatialReference = spatialReference;
 	}
 
 }

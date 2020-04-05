@@ -37,14 +37,14 @@ public class SimpleRenderer implements Renderer {
 	}
 
 	@Override
-	public void onRender(Event event, RenderEngine engine) {
+	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		if(renderable!=null) renderable.onRender(event, engine, this);
+		if(renderable!=null) renderable.draw(event, engine, this);
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public void cancelDraw(Event event) {
 		// TODO Auto-generated method stub
-		if(renderable!=null) renderable.onEvent(event);
+		if(renderable!=null) renderable.cancelDraw(event);
 	}
 }

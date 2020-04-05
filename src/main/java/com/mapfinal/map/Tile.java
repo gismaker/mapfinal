@@ -4,11 +4,13 @@ import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.converter.scene.SphericalMercatorProjection;
 import org.locationtech.jts.geom.Envelope;
 
+/**
+ * 瓦片属性
+ * @author yangyong
+ *
+ */
 public class Tile {
 
-	public static final String TILE_FILE = "tile_file";
-	public static final String TILE_WEB = "tile_web";
-	
 	public static final int TMS_LT = 0;
 	public static final int TMS_LB = 1;
 	
@@ -17,13 +19,13 @@ public class Tile {
 	private int x = 0;
 	private int y = 0;
 	private Envelope envelope;
-	private SpatialReference spatialReference;
+//	private SpatialReference spatialReference;
 	
 	public Tile(String name) {
 		// TODO Auto-generated constructor stub
 		double d = SphericalMercatorProjection.MAX_DIMENSION;
 		envelope =  new Envelope(-d, d, -d, d);
-		setSpatialReference(new SpatialReference("EPSG:3857"));
+//		setSpatialReference(new SpatialReference("EPSG:3857"));
 		this.setName(name);
 	}
 	
@@ -90,13 +92,13 @@ public class Tile {
 		this.envelope = envelope;
 	}
 
-	public SpatialReference getSpatialReference() {
-		return spatialReference;
-	}
-
-	public void setSpatialReference(SpatialReference spatialReference) {
-		this.spatialReference = spatialReference;
-	}
+//	public SpatialReference getSpatialReference() {
+//		return spatialReference;
+//	}
+//
+//	public void setSpatialReference(SpatialReference spatialReference) {
+//		this.spatialReference = spatialReference;
+//	}
 
 	public String getName() {
 		return name;

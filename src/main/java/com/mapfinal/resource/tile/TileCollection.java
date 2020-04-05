@@ -3,19 +3,18 @@ package com.mapfinal.resource.tile;
 import java.util.List;
 
 import com.mapfinal.cache.Cache;
-import com.mapfinal.cache.impl.LruCacheImpl;
-import com.mapfinal.cache.impl.MapCacheImpl;
 import com.mapfinal.cache.impl.ScreenLruCacheImpl;
-import com.mapfinal.converter.CRS;
+import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
 import com.mapfinal.map.Tile;
+import com.mapfinal.map.TileFeature;
 import com.mapfinal.resource.Resource.FileType;
 import com.mapfinal.resource.ResourceCollection;
 
-public class TileCollection extends TileResourceDispatcher<TileFeature> implements ResourceCollection<TileResource, String> {
+public class TileCollection extends TileResourceDispatcher<TileFeature> implements ResourceCollection<String, TileResource> {
 
 	private String name;
 	private Cache<String, TileResource> resourceCache;
@@ -24,6 +23,7 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 	private String url;
 	private int tmsType = Tile.TMS_LT;
 	private FileType fileType = FileType.file;
+	private SpatialReference spatialReference = SpatialReference.mercator();
 	//分布式节点， 待完善
 	private String[] subdomains;
 	
@@ -34,11 +34,12 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 		this.screenTileNumber = 15;
 		int cacheSize = cacheScreenNum * screenTileNumber;
 		resourceCache = new ScreenLruCacheImpl<String, TileResource>(cacheSize);
+		TileManager.me().addCollection(name, this);
 	}
 	
 	public TileFeature createFeature(String url, Tile tile) {
 		TileResource resource = getResource(url, tile);
-		TileFeature feature = new TileFeature(this, resource, tile);
+		TileFeature feature = new TileFeature(this.name, resource.getName(), tile);
 		return feature;
 	}
 	
@@ -147,11 +148,6 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 	}
 
 	@Override
-	public CRS getCRS() {
-		return null;
-	}
-
-	@Override
 	public TileResource get(String tileHash) {
 		return resourceCache.get(tileHash);
 	}
@@ -186,5 +182,13 @@ public class TileCollection extends TileResourceDispatcher<TileFeature> implemen
 
 	public void setFileType(FileType fileType) {
 		this.fileType = fileType;
+	}
+
+	public SpatialReference getSpatialReference() {
+		return spatialReference;
+	}
+
+	public void setSpatialReference(SpatialReference spatialReference) {
+		this.spatialReference = spatialReference;
 	}
 }

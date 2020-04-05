@@ -10,6 +10,7 @@ import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.map.Tile;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.mapfinal.common.SyncWriteMap;
 import com.mapfinal.resource.ResourceManager;
 
-public class BundleManager implements ResourceManager<BundleFeature, String, BundleCollection> {
+public class BundleManager implements ResourceManager<String, BundleFeature, BundleCollection> {
 
 	private Map<String, BundleCollection> collection = null;
 	
@@ -102,6 +102,18 @@ public class BundleManager implements ResourceManager<BundleFeature, String, Bun
 	     c = "C" + c;
 	     String bundlePath=String.format("%s\\_alllayers\\%s\\%s%s", bundlesDir, l, r, c);
 	     return bundlePath;
+	}
+
+	@Override
+	public void remove(String collectionKey) {
+		// TODO Auto-generated method stub
+		this.collection.remove(collectionKey);
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.collection.clear();
 	}
 
 }
