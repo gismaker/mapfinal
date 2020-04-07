@@ -2,6 +2,10 @@ package com.mapfinal.map;
 
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventKit;
+import com.mapfinal.event.EventListener;
+import com.mapfinal.event.EventObject;
+import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.Renderer;
 
 /**
@@ -9,7 +13,7 @@ import com.mapfinal.render.Renderer;
  * @author yangyong
  *
  */
-public abstract class AbstractLayer implements Layer {
+public abstract class AbstractLayer implements Layer, EventObject {
 
 	private String name;
 	private String title;
@@ -39,8 +43,11 @@ public abstract class AbstractLayer implements Layer {
 
 	@Override
 	public void addTo(LayerGroup layerGroup) {
-		layerGroup.add(this);
+		int id = layerGroup.add(this);
 		this.setParent(layerGroup);
+		if(id > -1 && StringKit.isBlank(name)) {
+			this.name = String.valueOf(id);
+		}
 	}
 	
 	@Override
@@ -76,6 +83,26 @@ public abstract class AbstractLayer implements Layer {
 			renderer.cancelDraw(event);
 		}
 		return false;
+	}
+	
+	@Override
+	public String getEventAction(String eventName) {
+		return "Layer:" + getName() + ":" + eventName;
+	}
+
+	@Override
+	public void removeListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		EventKit.removeListener(eventAction, listenerClass);
+	}
+
+	@Override
+	public void addListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		EventKit.addListener(eventAction, listenerClass);
+	}
+
+	@Override
+	public void sendEvent(final Event event) {
+		EventKit.sendEvent(event);
 	}
 
 	@Override

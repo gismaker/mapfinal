@@ -1,5 +1,8 @@
 package com.mapfinal.render.style;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 public class MarkerSymbol implements Symbol {
 
 	/**
@@ -110,5 +113,17 @@ public class MarkerSymbol implements Symbol {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void fromJson(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return (JSONObject) JSON.toJSON(this);
 	}
 }

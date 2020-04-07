@@ -68,6 +68,25 @@ public class EventManager {
 			}
 		}
 	}
+	
+	public void unRegisterListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		deleteListner(listenerMap.get(eventAction), listenerClass);
+		deleteListner(asyncListenerMap.get(eventAction), listenerClass);
+	}
+
+	private void deleteListner(List<EventListener> listenerList, Class<? extends EventListener> listenerClass) {
+		if(listenerList==null) return;
+		EventListener deleteListener = null;
+		for (EventListener listener : listenerList) {
+			if (listener.getClass() == listenerClass) {
+				deleteListener = listener;
+			}
+		}
+		if (deleteListener != null) {
+			listenerList.remove(deleteListener);
+		}
+	}
+
 
 	public void registerListener(Class<? extends EventListener> listenerClass) {
 		if (listenerClass == null) {
@@ -118,6 +137,71 @@ public class EventManager {
 			});
 
 			if (listenerAnnotation.async()) {
+				asyncListenerMap.put(action, list);
+			} else {
+				listenerMap.put(action, list);
+			}
+		}
+		
+		//if (getConstants().getDevMode()) {
+			//System.out.println(String.format("listener[%s]-->>registered.", listener));
+		//}
+
+	}
+	
+	public void registerListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		if (listenerClass == null) {
+			return;
+		}
+
+		String[] actions = null;
+		boolean async = true;
+		Listener listenerAnnotation = listenerClass.getAnnotation(Listener.class);
+		if (listenerAnnotation == null) {
+			actions = new String[1];
+			actions[0] = eventAction;
+		} else {
+			actions = listenerAnnotation.action();
+			async = listenerAnnotation.async();
+		}
+		
+		if (actions == null || actions.length == 0) {
+			System.out.println("listenerClass[" + listenerAnnotation + "] resigter fail,because action is null or blank.");
+			return;
+		}
+
+		if (listenerHasRegisterBefore(listenerClass)) {
+			return;
+		}
+
+		EventListener listener = newListener(listenerClass);
+		if (listener == null) {
+			return;
+		}
+
+		for (String action : actions) {
+			List<EventListener> list = null;
+			if (async) {
+				list = asyncListenerMap.get(action);
+			} else {
+				list = listenerMap.get(action);
+			}
+			if (null == list) {
+				list = new ArrayList<EventListener>();
+			}
+			if (list.isEmpty() || !list.contains(listener)) {
+				list.add(listener);
+			}
+			Collections.sort(list, new Comparator<EventListener>() {
+				@Override
+				public int compare(EventListener o1, EventListener o2) {
+					Listener l1 = o1.getClass().getAnnotation(Listener.class);
+					Listener l2 = o2.getClass().getAnnotation(Listener.class);
+					return l1.weight() - l2.weight();
+				}
+			});
+
+			if (async) {
 				asyncListenerMap.put(action, list);
 			} else {
 				listenerMap.put(action, list);

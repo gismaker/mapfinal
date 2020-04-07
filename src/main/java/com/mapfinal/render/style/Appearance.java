@@ -1,5 +1,7 @@
 package com.mapfinal.render.style;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class Appearance implements Symbol {
 
 	// Whether to draw stroke along the path. Set it to false to disable borders
@@ -141,5 +143,17 @@ public class Appearance implements Symbol {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void fromJson(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

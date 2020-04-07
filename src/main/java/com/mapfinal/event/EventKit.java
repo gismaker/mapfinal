@@ -24,6 +24,14 @@ public class EventKit {
 	public static void unRegister(Class<? extends EventListener> listenerClass) {
 		EventManager.me().unRegisterListener(listenerClass);
 	}
+	
+	public static void removeListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		EventManager.me().unRegisterListener(eventAction, listenerClass);
+	}
+
+	public static void addListener(String eventAction, Class<? extends EventListener> listenerClass) {
+		EventManager.me().registerListener(eventAction, listenerClass);
+	}
 
 	public static void sendEvent(Event event) {
 		EventManager.me().pulish(event);

@@ -38,11 +38,20 @@ public class Feature<K> implements GeoElement {
 	 */
 	private long activeTime;
 	
+	public Feature() {
+	}
 
 	public Feature(K id, SpatialIndexObject spatialIndexObject, Geometry geometry) {
 		this.id = id;
 		this.spatialIndexObject = spatialIndexObject;
 		this.geometry = geometry;
+		this.envelope = geometry!=null ? geometry.getEnvelopeInternal() : envelope;
+	}
+	
+	public Feature(Geometry geometry, Map<String, Object> attributes) {
+		this.geometry = geometry;
+		this.attributes = attributes;
+		this.envelope = geometry!=null ? geometry.getEnvelopeInternal() : envelope;
 	}
 
 	/**
@@ -82,6 +91,7 @@ public class Feature<K> implements GeoElement {
 		initAttributes();
 		attributes.put(name, value);
 	}
+	
 
 	/**
 	 * 外接矩形是否相交或包含

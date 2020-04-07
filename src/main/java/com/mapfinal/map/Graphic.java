@@ -2,6 +2,10 @@ package com.mapfinal.map;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.converter.JsonConverter;
+import com.mapfinal.converter.JsonStore;
 import com.mapfinal.render.style.Symbol;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -10,13 +14,14 @@ import org.locationtech.jts.geom.Geometry;
  * Graphic类用于表示一个地物，可以包含地物的几何信息、属性信息、绘制样式。
  * @author yangyong
  */
-public class Graphic implements GeoElement {
+public class Graphic implements GeoElement, JsonStore {
 
 	private Long id;
 	private Geometry geometry;
 	private Symbol symbol;
 	private Map<String, Object> attributes;
 	private int zIndex;
+	private boolean visible = true;
 	
 	public Graphic(Geometry geometry, Symbol symbol){
 		this.geometry = geometry;
@@ -88,4 +93,36 @@ public class Graphic implements GeoElement {
 		this.zIndex = zIndex;
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+	
+	public void show() {
+		this.visible = true;
+	}
+	public void hide() {
+		this.visible = false;
+	}
+
+	@Override
+	public void fromJson(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		JsonConverter jsonConverter = new JsonConverter();
+		Map<String, Object> properties = (Map) jsonObject.get("properties");
+		Geometry geometry = jsonConverter.parseGeometry(jsonObject.getJSONObject("geometry"));
+		id = jsonObject.getLong("id");
+		symbol.fromJson(jsonObject.getJSONObject("symbol"));
+		zIndex = jsonObject.getIntValue("zIndex");
+		visible = jsonObject.getBooleanValue("visible");
+	}
+
+	@Override
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return (JSONObject) JSON.toJSON(this);
+	}
 }

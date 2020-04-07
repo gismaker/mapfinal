@@ -1,5 +1,8 @@
 package com.mapfinal.render.style;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 public class SimpleLineSymbol extends LineSymbol {
 
 	public enum STYLE {
@@ -36,15 +39,26 @@ public class SimpleLineSymbol extends LineSymbol {
 	private float width;
 
 	public SimpleLineSymbol(int color, float width) {
-
+		this.color = color;
+		this.width = width;
 	}
 
 	public SimpleLineSymbol(int color, float width, SimpleLineSymbol.STYLE style) {
-
+		this.color = color;
+		this.width = width;
+		this.style = style;
 	}
 
 	public SimpleLineSymbol(SimpleLineSymbol symbol) {
-
+		this.color = symbol.getColor();
+		this.width = symbol.getWidth();
+		this.style = symbol.getStyle();
+		this.outline = symbol.getOutline();
+		this.alpha = symbol.alpha;
+	}
+	
+	public SimpleLineSymbol() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -107,6 +121,22 @@ public class SimpleLineSymbol extends LineSymbol {
 	 */
 	public void setStyle(SimpleLineSymbol.STYLE style) {
 		this.style = style;
+	}
+
+	@Override
+	public void fromJson(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		alpha = jsonObject.getIntValue("alpha");
+		color = jsonObject.getIntValue("color");
+		style = jsonObject.getObject("style", SimpleLineSymbol.STYLE.class);
+		outline = jsonObject.getObject("outline", SimpleLineSymbol.class);
+		width = jsonObject.getFloatValue("width");
+	}
+
+	@Override
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return (JSONObject) JSON.toJSON(this);
 	}
 
 }

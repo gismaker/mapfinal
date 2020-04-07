@@ -30,8 +30,8 @@ public class TileDispatcher extends Dispatcher {
 		if(feature!=null) {
 			engine.renderImageFeature(null, event.get("map"), feature);
 			feature.destroy();
-			feature = null;
 		}
+		feature = null;
 	}
 	
 	@SuppressWarnings("rawtypes")
