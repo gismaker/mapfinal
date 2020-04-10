@@ -23,7 +23,6 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
-		System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}
@@ -33,7 +32,6 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
-		System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}

@@ -1,4 +1,4 @@
-package com.mapfinal.operator;
+package com.mapfinal.processor;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import com.mapfinal.event.Event;
 
 /**
- * 点抽稀算法
+ * 抽稀压缩算法接口
  * 
  * @author yangyong
  *

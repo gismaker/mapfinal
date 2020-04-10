@@ -1,6 +1,6 @@
 package com.mapfinal;
 
-import com.mapfinal.operator.GeoCompress;
+import com.mapfinal.processor.GeoCompress;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.resource.image.ImageHandle;
 

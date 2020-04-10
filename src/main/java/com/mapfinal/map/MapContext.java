@@ -9,7 +9,13 @@ import org.locationtech.jts.geom.Envelope;
 
 public class MapContext {
 
+	/**
+	 * 场景坐标系
+	 */
 	private SceneCRS sceneCRS;
+	/**
+	 * 空间坐标系统，通常和场景的坐标系一致	
+	 */
 	private SpatialReference spatialReference;
 	/**
 	 * 当前窗口对应的地图坐标系包围盒
@@ -23,18 +29,45 @@ public class MapContext {
 	 * 当前窗口的中心点
 	 */
 	private Latlng center;
+	/**
+	 * 场景坐标系下的中心点坐标
+	 */
 	private ScenePoint centerPoint;
 	/**
 	 * 当前地图的缩放级别
 	 */
 	private float zoom = 1;
+	/**
+	 * 强制map的缩放尺寸是该值的多倍
+	 */
 	private float zoomSnap = 0;
+	/**
+	 * 缩放粒度，缩放级别变化一次的大小，控制map的缩放水平
+	 */
 	private float zoomDelta = 0.1f;
+	/**
+	 * 最小缩放级别
+	 */
 	private float minZoom = 0;
+	/**
+	 * 最大缩放级别
+	 */
 	private float maxZoom = 24;
+	/**
+	 * 是否缩放动画
+	 */
 	private boolean zoomAnimation = true;
+	/**
+	 * 缩放大小超过该设定值时缩放动画失效
+	 */
 	private int zoomAnimationThreshold = 4;
+	/**
+	 * 淡入淡出动画
+	 */
 	private boolean fadeAnimation = true;
+	/**
+	 * marker是否激活缩放动画
+	 */
 	private boolean markerZoomAnimation = true;
 	/**
 	 * 地图窗口的大小

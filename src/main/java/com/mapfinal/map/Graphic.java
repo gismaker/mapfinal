@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.mapfinal.converter.JsonConverter;
 import com.mapfinal.converter.JsonStore;
 import com.mapfinal.render.style.Symbol;
+import com.mapfinal.resource.Data;
+
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
@@ -14,7 +16,7 @@ import org.locationtech.jts.geom.Geometry;
  * Graphic类用于表示一个地物，可以包含地物的几何信息、属性信息、绘制样式。
  * @author yangyong
  */
-public class Graphic implements GeoElement, JsonStore {
+public class Graphic implements GeoElement, JsonStore, Data {
 
 	private Long id;
 	private Geometry geometry;
@@ -43,6 +45,12 @@ public class Graphic implements GeoElement, JsonStore {
 	public <M> M getAttribute(String fieldName) {
 		// TODO Auto-generated method stub
 		return attributes!=null ? (M)attributes.get(fieldName) : null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return String.valueOf(id);
 	}
 
 	public long getId() {

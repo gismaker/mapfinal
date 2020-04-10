@@ -14,8 +14,6 @@ import org.locationtech.jts.geom.Geometry;
  * 渲染器
  * 等待升级，支持双缓冲
  * 
- * 
- * 
  * 高德渲染器 http://a.amap.com/lbs/static/unzip/Android_Map_Doc/index.html
  * @author yangyong
  *

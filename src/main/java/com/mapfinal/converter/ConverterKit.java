@@ -1,5 +1,10 @@
 package com.mapfinal.converter;
 
+/**
+ * 转换工具，百度、gcj02等坐标的转换
+ * @author yangyong
+ *
+ */
 public class ConverterKit {
 	//a: 卫星椭球坐标投影到平面地图坐标系的投影因子。
 	static double a = 6378245.0;

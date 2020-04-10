@@ -6,10 +6,10 @@ import org.locationtech.jts.geom.CoordinateSequence;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.map.MapContext;
-import com.mapfinal.operator.DouglasCompress;
-import com.mapfinal.operator.GeoCompress;
-import com.mapfinal.operator.UniformDistributionCompress;
-import com.mapfinal.operator.UniformStepCompress;
+import com.mapfinal.processor.DouglasCompress;
+import com.mapfinal.processor.GeoCompress;
+import com.mapfinal.processor.UniformDistributionCompress;
+import com.mapfinal.processor.UniformStepCompress;
 
 public class SimpleRenderCompress implements RenderCompress {
 	

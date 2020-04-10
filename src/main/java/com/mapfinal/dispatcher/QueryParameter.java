@@ -5,7 +5,7 @@ import java.util.Map;
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.Orderby;
-import com.mapfinal.operator.SpatialRelationship;
+import com.mapfinal.processor.SpatialRelationship;
 
 import org.locationtech.jts.geom.Geometry;
 

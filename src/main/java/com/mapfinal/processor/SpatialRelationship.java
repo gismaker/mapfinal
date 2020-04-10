@@ -1,4 +1,4 @@
-package com.mapfinal.operator;
+package com.mapfinal.processor;
 
 public enum SpatialRelationship {
 	/**

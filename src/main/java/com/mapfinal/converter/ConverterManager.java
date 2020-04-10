@@ -8,6 +8,11 @@ import com.mapfinal.kit.StringKit;
 
 import org.locationtech.jts.geom.Coordinate;
 
+/**
+ * 转换器和坐标系的管理：注册、获取、转换
+ * @author yangyong
+ *
+ */
 public class ConverterManager {
 	
 	private static final ConverterManager me = new ConverterManager();

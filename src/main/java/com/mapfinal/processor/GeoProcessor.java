@@ -1,4 +1,4 @@
-package com.mapfinal.operator;
+package com.mapfinal.processor;
 
 import com.mapfinal.geometry.GeoKit;
 
@@ -22,7 +22,7 @@ import org.locationtech.jts.operation.polygonize.Polygonizer;
  * JTS Geometry Operations(二)
  * https://blog.csdn.net/cdl2008sky/article/details/7578886
  */
-public class Operator {
+public class GeoProcessor {
 	/**
 	 * 返回(A)与(B)中距离最近的两个点的距离
 	 * @param a
@@ -162,7 +162,7 @@ public class Operator {
 	}
 	
 	public static void main(String[] args){
-		Operator op = new Operator();
+		GeoProcessor op = new GeoProcessor();
 		//创建一条线
 		List<Coordinate> points1 = new ArrayList<Coordinate>();
 		points1.add(GeoKit.point(0,0));

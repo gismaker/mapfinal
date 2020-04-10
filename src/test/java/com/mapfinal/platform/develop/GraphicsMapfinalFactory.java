@@ -2,8 +2,8 @@ package com.mapfinal.platform.develop;
 
 import com.mapfinal.MapfinalFactory;
 import com.mapfinal.geometry.GeoKit;
-import com.mapfinal.operator.GeoCompress;
 import com.mapfinal.platform.develop.graphics.BufferedImageHandle;
+import com.mapfinal.processor.GeoCompress;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.render.SimpleRenderCompress;
 import com.mapfinal.resource.image.ImageHandle;

@@ -6,7 +6,6 @@ import com.mapfinal.event.Event;
 
 /**
  * 场景图
- * https://blog.csdn.net/sdnulyc/article/details/77555348
  * @author yangyong
  *
  */
