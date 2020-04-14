@@ -3,10 +3,10 @@ package com.mapfinal.dispatcher.indexer.jts;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 public class KdTree {
 	private KdNode root = null;
@@ -143,7 +143,7 @@ public class KdTree {
 		}
 	}
 	
-	private void queryVisitor(KdNode currentNode, KdNode bottomNode, Envelope queryEnv, boolean odd, Dispatcher result) {
+	private void queryVisitor(KdNode currentNode, KdNode bottomNode, Envelope queryEnv, boolean odd, ItemVisitor result) {
 		if (currentNode == bottomNode)
 			return;
 		double discriminant;
@@ -197,7 +197,7 @@ public class KdTree {
 		querySIO(root, last, queryEnv, true, result);
 	}
 	
-	public void query(Envelope queryEnv, Dispatcher result) {
+	public void query(Envelope queryEnv, ItemVisitor result) {
 		queryVisitor(root, last, queryEnv, true, result);
 	}
 	

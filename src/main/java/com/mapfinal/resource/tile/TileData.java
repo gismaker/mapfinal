@@ -23,12 +23,12 @@ public class TileData<M> implements Data {
 	 */
 	private Tile tile;
 
-	public TileData(String url, Tile tile, FileType fileType) {
+	public TileData(String url, Tile tile, FileType fileType, boolean renderOnCache) {
 		this.name = tile.getImageId();
 		this.url = url;
 		this.setTile(tile);
 		if(FileType.http == fileType) {
-			this.image = new TileRemoteImage<M>(tile.getImageId(), url, tile.getName());
+			this.image = new TileRemoteImage<M>(tile.getImageId(), url, tile.getName(), renderOnCache);
 		} else {
 			this.image = new LocalImage<M>(tile.getImageId(), url);
 		}

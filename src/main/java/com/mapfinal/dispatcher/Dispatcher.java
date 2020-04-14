@@ -49,7 +49,7 @@ public abstract class Dispatcher implements ItemVisitor {
 		return indexer!=null ? indexer.query(event, env) : null;
 	}
 	//查询
-	public void query(Event event, Envelope env, Dispatcher visitor) {
+	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		visitor = visitor==null ? this : visitor;
 		setSioNumber(0);
 		indexer.query(event, env, visitor);

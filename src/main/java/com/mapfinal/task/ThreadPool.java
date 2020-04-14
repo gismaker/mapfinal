@@ -15,7 +15,7 @@ public final class ThreadPool {
     /**
      * 最大线程个数.
      */
-    private static final int MAX_SIZE = 32;
+    private static final int MAX_SIZE = 16;
 
     /**
      * 当前实例.

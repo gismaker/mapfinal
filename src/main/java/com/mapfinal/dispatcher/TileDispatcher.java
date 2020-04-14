@@ -1,5 +1,7 @@
 package com.mapfinal.dispatcher;
 
+import org.locationtech.jts.index.ItemVisitor;
+
 import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
@@ -12,6 +14,8 @@ public class TileDispatcher extends Dispatcher {
 
 	private Event event;
 	private RenderEngine engine;
+	private int lastZoom = -1;
+	private boolean randerCacheLayer = true;
 	
 	@SuppressWarnings("rawtypes")
 	public TileDispatcher(SpatialIndexer indexer, TileResourceDispatcher resource) {
@@ -36,16 +40,47 @@ public class TileDispatcher extends Dispatcher {
 		if(!event.isRender()) return;
 		this.event = event;
 		this.engine = engine;
+		randerCacheLayer = event.get("tile_randerCacheLayer", randerCacheLayer);
 		MapContext context = event.get("map");
+		if(lastZoom==-1) lastZoom = (int) context.getZoom();
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
-		query(event.set("type", resource.getTmsType()).set("name", resource.getName()), context.getSceneEnvelope(), this);
+		int izoom = (int) context.getZoom();
+		event.set("type", resource.getTmsType()).set("name", resource.getName());
+		if(izoom > 0 && randerCacheLayer){
+			query(event.set("zoom", izoom-1), context.getSceneEnvelope(), new ItemVisitor() {
+				@Override
+				public void visitItem(Object item) {
+					// TODO Auto-generated method stub
+					if (item instanceof SpatialIndexObject) {
+						SpatialIndexObject sio = (SpatialIndexObject) item;
+						sio.setOption("rendertype", "renderOnCache");
+						GeoImage feature = (GeoImage) resource.read(sio);
+						if(feature!=null) {
+							engine.renderImageFeature(null, event.get("map"), feature);
+							feature.destroy();
+						}
+						feature = null;
+					}
+				}
+			});
+		}
+		query(event.set("zoom", izoom), context.getSceneEnvelope(), this);
 		TileResource tileResource = (TileResource) resource;
 		tileResource.setCurrentTileNumberOnScreen(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
+		lastZoom = (int) context.getZoom();
 	}
 
 	public boolean handleEvent(Event event) {
 		return false;
+	}
+
+	public boolean isRanderCacheLayer() {
+		return randerCacheLayer;
+	}
+
+	public void setRanderCacheLayer(boolean randerCacheLayer) {
+		this.randerCacheLayer = randerCacheLayer;
 	}
 	
 }

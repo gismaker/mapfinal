@@ -2,12 +2,12 @@ package com.mapfinal.dispatcher.indexer.jts;
 
 import java.util.List;
 
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 public class KdTreeSpatialIndexer implements SpatialIndexer {
 
@@ -40,7 +40,7 @@ public class KdTreeSpatialIndexer implements SpatialIndexer {
 	}
 	
 	@Override
-	public void query(Event event, Envelope env, Dispatcher visitor) {
+	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
 		kdTree.query(env, visitor);
 	}

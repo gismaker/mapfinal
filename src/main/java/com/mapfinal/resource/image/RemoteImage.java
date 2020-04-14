@@ -12,10 +12,12 @@ import com.mapfinal.task.ThreadPool;
 
 public class RemoteImage<M> extends Image<M> {
 	private boolean isDestroy = false;
+	private boolean renderOnCache = false;
 	
-	public RemoteImage(String name, String url) {
+	public RemoteImage(String name, String url, boolean renderOnCache) {
 		super(name, url, null);
 		setFileType(FileType.http);
+		this.renderOnCache = renderOnCache;
 	}
 	
 	public String cachePath() {
@@ -79,7 +81,7 @@ public class RemoteImage<M> extends Image<M> {
 		if(this.data==null) {
 			//本地缓存
 			this.data = readFromLocal();
-			if(this.data==null) {
+			if(this.data==null && !renderOnCache) {
  				ThreadPool.getInstance().submit(new DownloadRunnable(getUrl(), new Callback() {
 					@Override
 					public void execute(Event event) {
@@ -107,5 +109,13 @@ public class RemoteImage<M> extends Image<M> {
 		super.destroy();
 		isDestroy = true;
 		//System.out.println("[RemoteImage] downloadThread stop ： " +  getName());
+	}
+	
+	public boolean isRenderOnCache() {
+		return renderOnCache;
+	}
+
+	public void setRenderOnCache(boolean renderOnCache) {
+		this.renderOnCache = renderOnCache;
 	}
 }

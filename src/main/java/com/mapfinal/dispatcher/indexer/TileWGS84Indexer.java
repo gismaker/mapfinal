@@ -2,7 +2,6 @@ package com.mapfinal.dispatcher.indexer;
 
 import java.util.List;
 
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
@@ -11,6 +10,7 @@ import com.mapfinal.map.MapContext;
 import com.mapfinal.map.Tile;
 
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 public class TileWGS84Indexer implements SpatialIndexer {
 
@@ -23,7 +23,7 @@ public class TileWGS84Indexer implements SpatialIndexer {
 	}
 
 	@Override
-	public void query(Event event, Envelope env, Dispatcher visitor) {
+	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
 		if(event==null || event.get("map")==null) {
 			return;
@@ -31,16 +31,16 @@ public class TileWGS84Indexer implements SpatialIndexer {
 		MapContext context = event.get("map");
 		int tmsType =  event.get("type", Tile.TMS_LT);
 		String name = event.get("name");
-		int decimalZoom = (int) context.getZoom();
+		int decimalZoom = event.get("zoom",(int) context.getZoom());
 		if(decimalZoom==0) {
 			Tile tile = new Tile(name);
 			SpatialIndexObject sio = new SpatialIndexObject(tile.getId(), "image", "tile", null);
 			sio.setOption("tile", tile);
 			visitor.visitItem(sio);
 		}
-		Envelope sceneEnvelope = context.getSceneEnvelope();
-		Latlng latlng1 = new Latlng(sceneEnvelope.getMaxX(), sceneEnvelope.getMinY());
-		Latlng latlng2 = new Latlng(sceneEnvelope.getMinX(), sceneEnvelope.getMaxY());
+		//Envelope sceneEnvelope = context.getSceneEnvelope();
+		Latlng latlng1 = new Latlng(env.getMaxX(), env.getMinY());
+		Latlng latlng2 = new Latlng(env.getMinX(), env.getMaxY());
 		//System.out.println("[TileDispatcher] latlng1: " + latlng1.toString());
 		//System.out.println("[TileDispatcher] latlng2: " + latlng2.toString());
 		int tilesInMapOneDimension = 1 << decimalZoom;

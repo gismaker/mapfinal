@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -40,10 +41,10 @@ public class MapFinalPanel extends JPanel {
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
         
-        //shp
-        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
-        layer.addTo(Mapfinal.me().getMap());
-        
+//        //shp
+//        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
+//        layer.addTo(Mapfinal.me().getMap());
+//        
         //bundle
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
@@ -151,13 +152,18 @@ public class MapFinalPanel extends JPanel {
             startTime = nowTime;
             frames = 0;
         }
-        drawString(g, fpsString);
+        drawString(g, fpsString, 10, 20);
+        drawString(g, "zoom: " + Mapfinal.me().getMap().getZoom(), 10, 40);
+        
+        Map<Thread,StackTraceElement[]> map = Thread.getAllStackTraces();
+        drawString(g, "ThreadSize: " + map.size(), 10, 60);
+        g.dispose();
     }
     
     /**
      * 6. 文本
      */
-    private void drawString(Graphics g, String text) {
+    private void drawString(Graphics g, String text, int x, int y) {
         Graphics2D g2d = (Graphics2D) g;
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // 设置字体样式, null 表示使用默认字体, Font.PLAIN 为普通样式, 大小为 25px
@@ -165,7 +171,7 @@ public class MapFinalPanel extends JPanel {
         g2d.setColor(Color.red);
         // 绘制文本, 其中坐标参数指的是文本绘制后的 左下角 的位置
         // 首次绘制需要初始化字体, 可能需要较耗时
-        g2d.drawString(text, 10, 20);
-        g2d.dispose();
+        g2d.drawString(text, x, y);
+        
     }
 }

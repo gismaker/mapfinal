@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.mapfinal.converter.ConverterManager;
 import com.mapfinal.converter.scene.SphericalMercatorProjection;
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
@@ -13,6 +12,7 @@ import com.mapfinal.map.Tile;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 public class TileMercatorIndexer implements SpatialIndexer {
 
@@ -25,7 +25,7 @@ public class TileMercatorIndexer implements SpatialIndexer {
 	}
 
 	@Override
-	public void query(Event event, Envelope env, Dispatcher visitor) {
+	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
 		if(event==null || event.get("map")==null) {
 			return;
@@ -33,16 +33,16 @@ public class TileMercatorIndexer implements SpatialIndexer {
 		MapContext context = event.get("map");
 		int tmsType =  event.get("type", Tile.TMS_LT);
 		String name = event.get("name");
-		int decimalZoom = (int) context.getZoom();
+		int decimalZoom = event.get("zoom",(int) context.getZoom());
 		if(decimalZoom==0) {
 			Tile tile = new Tile(name);
 			SpatialIndexObject sio = new SpatialIndexObject(tile.getId(), "image", "tile", tile.getEnvelope());
 			sio.setOption("tile", tile);
 			visitor.visitItem(sio);
 		}
-		Envelope sceneEnvelope = context.getSceneEnvelope();
-		Coordinate latlng1 = new Coordinate(sceneEnvelope.getMinX(), sceneEnvelope.getMinY());
-		Coordinate latlng2 = new Coordinate(sceneEnvelope.getMaxX(), sceneEnvelope.getMaxY());
+		//Envelope sceneEnvelope = context.getSceneEnvelope();
+		Coordinate latlng1 = new Coordinate(env.getMinX(), env.getMinY());
+		Coordinate latlng2 = new Coordinate(env.getMaxX(), env.getMaxY());
 		//System.out.println("[TileDispatcher] latlng1: " + latlng1.toString());
 		//System.out.println("[TileDispatcher] latlng2: " + latlng2.toString());
 		int lngNum1 = (int) Math.ceil(latlng1.x / 180);

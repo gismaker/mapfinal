@@ -3,11 +3,11 @@ package com.mapfinal.dispatcher.indexer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 /**
  * 无索引
@@ -32,9 +32,9 @@ public class NoneIndexer implements SpatialIndexer {
 	}
 
 	@Override
-	public void query(Event event, Envelope env, Dispatcher visitor) {
+	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
-		visitor.resultAction(spatialIndexObject);
+		visitor.visitItem(spatialIndexObject);
 	}
 
 	public SpatialIndexObject getSpatialIndexObject() {

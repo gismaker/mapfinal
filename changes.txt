@@ -7,6 +7,7 @@ mapfinal-0.3.1:
 优化：优化网络图片下载线程
 优化：添加注释，更名operator为processor
 优化：优化场景绘制面板大小=屏幕大小
+优化：瓦片加入缓存层绘制一次，再绘制在线瓦片图层
 修复：修复Tile的CurrentTileNumberOnScreen设置错误
 
 

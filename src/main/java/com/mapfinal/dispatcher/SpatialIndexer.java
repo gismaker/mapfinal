@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mapfinal.event.Event;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 
 /**
  * 索引器
@@ -24,5 +25,5 @@ public interface SpatialIndexer {
 	 * @param env
 	 * @param visitor
 	 */
-	void query(Event event, Envelope env, Dispatcher visitor);
+	void query(Event event, Envelope env, ItemVisitor visitor);
 }

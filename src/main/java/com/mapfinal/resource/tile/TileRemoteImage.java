@@ -9,8 +9,8 @@ public class TileRemoteImage<M> extends RemoteImage<M> {
 	
 	private String tileResourceName;
 
-	public TileRemoteImage(String name, String url, String tileResourceName) {
-		super(name, url);
+	public TileRemoteImage(String name, String url, String tileResourceName, boolean renderOnCache) {
+		super(name, url, renderOnCache);
 		this.setTileResourceName(tileResourceName);
 		setImageType(ImageType.png);
 	}

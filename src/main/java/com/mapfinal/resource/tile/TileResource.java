@@ -51,18 +51,18 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 		data.writer();
 	}
 	
-	public TileFeature createFeature(String url, Tile tile) {
-		TileData resource = getResource(url, tile);
+	public TileFeature createFeature(String url, Tile tile, boolean renderOnCache) {
+		TileData resource = getResource(url, tile, renderOnCache);
 		TileFeature feature = new TileFeature(resource, tile);
 		return feature;
 	}
 	
-	public TileData getResource(String url, Tile tile) {
+	public TileData getResource(String url, Tile tile, boolean renderOnCache) {
 		TileData resource = get(tile.getImageId());
 		if(resource==null) {
-			resource = new TileData(url, tile, fileType);
+			resource = new TileData(url, tile, fileType, renderOnCache);
 			//resource.setCollection(this);
-			put(tile.getImageId(), resource);
+			if(!renderOnCache) put(tile.getImageId(), resource);
 		}
 		return resource;
 	}
@@ -149,8 +149,11 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 		String tileUrl = tile.getIntactUrl(this.url);
 		
 		//加入String[] subdomains
-		
-		TileFeature feature = createFeature(tileUrl, tile);
+		boolean renderOnCache = false;
+		if("renderOnCache".equals(sio.getOption("rendertype"))) {
+			renderOnCache = true;
+		}
+		TileFeature feature = createFeature(tileUrl, tile, renderOnCache);
 //		System.out.println("[TileCollection] dataCache: " + dataCache.size());
 		return feature;
 	}

@@ -2,11 +2,11 @@ package com.mapfinal.dispatcher.indexer.jts;
 
 import java.util.List;
 
-import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
 import com.mapfinal.event.Event;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.index.strtree.ItemDistance;
 import org.locationtech.jts.index.strtree.STRtree;
 
@@ -50,7 +50,7 @@ public class STRTreeSpatialIndexer implements SpatialIndexer {
 	}
 	
 	@Override
-	public void query(Event event, Envelope searchEnv, Dispatcher visitor) {
+	public void query(Event event, Envelope searchEnv, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
 		strTree.query(searchEnv, visitor);
 	}
