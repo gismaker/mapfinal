@@ -55,24 +55,17 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	@Override
 	public void writeFile(String fileName, BufferedImage image) {
 		// TODO Auto-generated method stub
-		ThreadPool.getInstance().submit(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					//add file write lock
-					String lockFileName = fileName + ".lock";
-					File lockFile = new File(lockFileName);
-					lockFile.createNewFile();
-					ImageIO.write(image, FileKit.getExtensionName(fileName), new File(fileName));
-					lockFile.delete();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});		
-		ThreadPool.getInstance().release();
+		try {
+			//add file write lock
+			String lockFileName = fileName + ".lock";
+			File lockFile = new File(lockFileName);
+			lockFile.createNewFile();
+			ImageIO.write(image, FileKit.getExtensionName(fileName), new File(fileName));
+			lockFile.delete();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -96,13 +89,17 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 					httpCon.setDoInput(true);
 			        // Don't use a cached copy.
 					httpCon.setUseCaches(false);
-					httpCon.setConnectTimeout(10000);
-					httpCon.setReadTimeout(240000);//180 sec
+					httpCon.setConnectTimeout(5000);//10000
+					httpCon.setReadTimeout(5000);//240000-180 sec
 					httpCon.setRequestProperty("Accept", "*/*");
-			        in = httpCon.getInputStream();
-			        BufferedImage image = ImageIO.read(in);
-			        if(callback!=null) callback.execute(new Event("imageCache:get").set("image", image));
-			        in.close();
+		            httpCon.setRequestMethod("GET");
+					int responseCode = httpCon.getResponseCode();
+		            if (responseCode == 200) {
+		            	in = httpCon.getInputStream();
+				        BufferedImage image = ImageIO.read(in);
+				        if(callback!=null) callback.execute(new Event("imageCache:get").set("image", image));
+				        in.close();
+		            }
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();

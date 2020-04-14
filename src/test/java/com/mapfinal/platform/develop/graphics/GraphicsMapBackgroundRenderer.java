@@ -25,8 +25,8 @@ public class GraphicsMapBackgroundRenderer extends SimpleRenderer {
 		GraphicsPolygonRender render = (GraphicsPolygonRender) getRenderable();
 		if(render.getPolygon()==null) {
 			MapContext context = event.get("map");
-			ScenePoint p1 = context.getSceneCRS().latLngToPoint(new Latlng(90, -180), 1);
-			ScenePoint p3 = context.getSceneCRS().latLngToPoint(new Latlng(-90, 180), 1);
+			ScenePoint p1 = context.latLngToPoint(new Latlng(90, -180), 1);
+			ScenePoint p3 = context.latLngToPoint(new Latlng(-90, 180), 1);
 			ScenePoint p2 = new ScenePoint(p1.x, p3.y);
 			ScenePoint p4 = new ScenePoint(p3.x, p1.y);
 			//System.out.println("[mapBG] p1: " + p1.toString());

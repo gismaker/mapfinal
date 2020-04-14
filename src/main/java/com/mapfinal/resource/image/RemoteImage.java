@@ -4,12 +4,13 @@ import java.io.File;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Callback;
+
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.kit.StringKit;
+import com.mapfinal.task.ThreadPool;
 
 public class RemoteImage<M> extends Image<M> {
-	private Thread downloadThread;
 	private boolean isDestroy = false;
 	
 	public RemoteImage(String name, String url) {
@@ -43,29 +44,10 @@ public class RemoteImage<M> extends Image<M> {
 	public M readFromLocal() {
 		// TODO Auto-generated method stub
 		String filename = getFileName();
+		//System.out.println("[RemoteImage] read: " + filename);
 		return (M) getHandle().readFile(filename);
 	}
-	
-	public void getAsync(Callback callback) {
-		boolean bDownload = false;
-		if(this.data==null) {
-			//本地缓存
-			this.data = readFromLocal();
-			if(data==null) {
-				bDownload = true;
-				if(downloadThread!=null) {
-					downloadThread.interrupt();
-					downloadThread = null;
-				}
-				downloadThread = new Thread(new DownloadRunnable(getUrl(), callback));
-				downloadThread.start();
-			}
-		}
-		if(!bDownload) {
-			callback.execute(new Event("imageCache:get").set("image", data));
-		}
-	}
-	
+
 	protected class DownloadRunnable implements Runnable {
 		private String url;
 		private Callback callback;
@@ -80,30 +62,32 @@ public class RemoteImage<M> extends Image<M> {
 		public void run() {
 			// TODO Auto-generated method stub
 			//网络缓存
-			getHandle().download(url, callback);
+			if(!isDestroy()) {
+				getHandle().download(url, callback);
+			}
 		}
+	}
+
+	public boolean isDestroy() {
+		return isDestroy;
 	}
 	
 	@Override
 	public RemoteImage<M> read() {
 		// TODO Auto-generated method stub
+		isDestroy = false;
 		if(this.data==null) {
 			//本地缓存
 			this.data = readFromLocal();
-			if(data==null) {
-				//网络缓存
-				if(downloadThread!=null && !downloadThread.isInterrupted()) {
-					return this;					
-				}
-				downloadThread = null;
-				downloadThread = new Thread(new DownloadRunnable(getUrl(), new Callback() {
+			if(this.data==null) {
+ 				ThreadPool.getInstance().submit(new DownloadRunnable(getUrl(), new Callback() {
 					@Override
 					public void execute(Event event) {
 						M img = event.get("image");
 						if(img!=null) {
 							//从网络获取图片后,保存至本地缓存
 							writeToLocal(img);
-							EventKit.sendEvent("redraw");
+							EventKit.sendEvent("redraw", "msg", "remote image download");
 							//保存至内存中
 							if(!isDestroy) setData(img);
 						}
@@ -112,66 +96,16 @@ public class RemoteImage<M> extends Image<M> {
 					public void error(Event event) {
 					}
 				}));
-				downloadThread.start();
-				/*
-				getHandle().download(getUrl(), new Callback() {
-					@Override
-					public void execute(Event event) {
-						if(releaseFlag) return;
-						M img = event.get("image");
-						if(img!=null) {
-							//从网络获取图片后,保存至本地缓存
-							writeToLocal(img);
-							//保存至内存中
-							setData(img);
-						}
-					}
-					@Override
-					public void error(Event event) {
-					}
-				});*/
 			}
 		}
 		return this;
 	}
-	
-	public void download(Callback callback) {
-		if(this.data!=null) {
-			writeToLocal(this.data);
-			callback.execute(new Event("imageCache:download").set("image", data));
-		} else {
-			//本地缓存
-			this.data = readFromLocal();
-			if(data==null) {
-				//网络缓存
-				getHandle().download(getUrl(), new Callback() {
-					@Override
-					public void execute(Event event) {
-						M img = event.get("image");
-						if(img!=null) {
-							//从网络获取图片后,保存至本地缓存
-							writeToLocal(img);
-						}
-						callback.execute(new Event("imageCache:download").set("image", data));
-					}
-					@Override
-					public void error(Event event) {
-						callback.error(event);
-					}
-				});
-			}
-		}
-	}
-	
+
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 		super.destroy();
 		isDestroy = true;
-		if(downloadThread!=null) {
-			//System.out.println("[RemoteImage] downloadThread stop");
-			downloadThread.interrupt();
-			downloadThread = null;
-		}
+		//System.out.println("[RemoteImage] downloadThread stop ： " +  getName());
 	}
 }

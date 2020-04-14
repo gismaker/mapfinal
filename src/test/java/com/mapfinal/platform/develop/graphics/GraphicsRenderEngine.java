@@ -44,6 +44,8 @@ public class GraphicsRenderEngine implements RenderEngine {
 	private Graphics imageGraphics = null;
 	private int tx = 0, ty = 0;
 	
+	private int cx =0, cy =0;
+	
 	public GraphicsRenderEngine(JPanel panel) {
 		this.panel = panel;
 	}
@@ -78,13 +80,17 @@ public class GraphicsRenderEngine implements RenderEngine {
 	@Override
 	public void translate(Coordinate coordinate) {
 		// TODO Auto-generated method stub
+		cx += (int)coordinate.x;
+		cy += (int)coordinate.y;
 		getGraphics().translate((int)coordinate.x, (int)coordinate.y);
 	}
 
 	@Override
 	public void renderEnd() {
 		// TODO Auto-generated method stub
-		getGraphics().dispose();
+//		getGraphics().dispose();
+		getGraphics().translate(-cx, -cy);
+		cx = cy = 0;
 	}
 	
 	
@@ -205,7 +211,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 			double[] wgs1 = ConverterKit.wgs2gcj(latlng.lat(), latlng.lng());
 			latlng.x  = wgs1[1];
 			latlng.y  = wgs1[0];
-			ScenePoint sp = context.getSceneCRS().latLngToPoint(latlng, zoom);
+			ScenePoint sp = context.latLngToPoint(latlng, zoom);
 			xPoints[j] = sp.getSx();
 			yPoints[j] = sp.getSy();
 			//points.add(sp);
@@ -242,7 +248,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 			//nPoints = gcs.toPolygon(context, xPoints, yPoints, nPoints);
 			int s = 0;
 			for(int j=0; j<nPoints; j+=t) {
-				ScenePoint sp = context.getSceneCRS().latLngToPoint(Latlng.create(gcs.getCoordinate(j)), zoom);
+				ScenePoint sp = context.latLngToPoint(Latlng.create(gcs.getCoordinate(j)), zoom);
 				xPoints[s] = sp.getSx();
 				yPoints[s] = sp.getSy();
 				s++;
@@ -266,8 +272,8 @@ public class GraphicsRenderEngine implements RenderEngine {
 		Coordinate c1 = feature.getTopLeft();
 		//右下角
 		Coordinate c2 = feature.getBottomRight();
-		ScenePoint p1 = context.getSceneCRS().coordinateToPoint(c1, mapZoom);
-		ScenePoint p2 = context.getSceneCRS().coordinateToPoint(c2, mapZoom);
+		ScenePoint p1 = context.coordinateToPoint(c1, mapZoom);
+		ScenePoint p2 = context.coordinateToPoint(c2, mapZoom);
 		int x = (int) Math.round(p1.getX());
 		int y = (int) Math.round(p1.getY());
 		int w = (int) Math.round(p2.x) - x;
@@ -276,11 +282,11 @@ public class GraphicsRenderEngine implements RenderEngine {
         // 绘制图片（如果宽高传的不是图片原本的宽高, 则图片将会适当缩放绘制）
         g2d.drawImage((Image) feature.getImage(), x, y, w, h, null);
         
-        g2d.setColor(Color.lightGray);
-        g2d.drawLine(x, y, p2.getSx(), y);
-        g2d.drawLine(p2.getSx(), y, p2.getSx(), p2.getSy());
-        g2d.drawLine(p2.getSx(), p2.getSy(), x, p2.getSy());
-        g2d.drawLine(x, p2.getSy(), x, y);
+//        g2d.setColor(Color.lightGray);
+//        g2d.drawLine(x, y, p2.getSx(), y);
+//        g2d.drawLine(p2.getSx(), y, p2.getSx(), p2.getSy());
+//        g2d.drawLine(p2.getSx(), p2.getSy(), x, p2.getSy());
+//        g2d.drawLine(x, p2.getSy(), x, y);
 	}
 
 	protected boolean IsEqual(double a,double b) {

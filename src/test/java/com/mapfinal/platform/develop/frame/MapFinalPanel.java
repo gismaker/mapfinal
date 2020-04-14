@@ -1,7 +1,9 @@
 package com.mapfinal.platform.develop.frame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -12,11 +14,8 @@ import javax.swing.JPanel;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Event;
-import com.mapfinal.geometry.Latlng;
-import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
-import com.mapfinal.platform.develop.graphics.GraphicsMapBackgroundRenderer;
 import com.mapfinal.platform.develop.graphics.GraphicsScene;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.shapefile.ShapefileLayer;
@@ -50,7 +49,7 @@ public class MapFinalPanel extends JPanel {
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
 //        bundleLayer.addTo(Mapfinal.me().getMap());
         
-        Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
+        //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
 //        Mapfinal.me().getMap().setCenter(new Latlng(35.43800418056032,102.98341606580078));
 //        Mapfinal.me().getMap().setZoom(13);
@@ -122,6 +121,11 @@ public class MapFinalPanel extends JPanel {
 		});
     }
 
+    String fpsString = "fps: 0";
+    int frames = 0;
+    long startTime;
+    float fps;
+    
     /**
      * 绘制面板的内容: 创建 JPanel 后会调用一次该方法绘制内容,
      * 之后如果数据改变需要重新绘制, 可调用 updateUI() 方法触发
@@ -130,8 +134,38 @@ public class MapFinalPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(Color.lightGray); //背景色
+        //setBackground(Color.lightGray); //背景色
         Mapfinal.me().getMap().resize(this.getWidth(), this.getHeight());
+        
         scene.draw(g, this.getWidth(), this.getHeight());
+        
+        // fps counter: count how many frames we draw and once a second calculate the
+        // frames per second
+        ++frames;
+        long nowTime = System.currentTimeMillis();
+        long deltaTime = nowTime - startTime;
+        if (deltaTime > 1000) {
+            float secs = (float) deltaTime / 1000f;
+            fps = (float) frames / secs;
+            fpsString = "fps: " + fps;
+            startTime = nowTime;
+            frames = 0;
+        }
+        drawString(g, fpsString);
+    }
+    
+    /**
+     * 6. 文本
+     */
+    private void drawString(Graphics g, String text) {
+        Graphics2D g2d = (Graphics2D) g;
+//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // 设置字体样式, null 表示使用默认字体, Font.PLAIN 为普通样式, 大小为 25px
+        g2d.setFont(new Font(null, Font.PLAIN, 18));
+        g2d.setColor(Color.red);
+        // 绘制文本, 其中坐标参数指的是文本绘制后的 左下角 的位置
+        // 首次绘制需要初始化字体, 可能需要较耗时
+        g2d.drawString(text, 10, 20);
+        g2d.dispose();
     }
 }

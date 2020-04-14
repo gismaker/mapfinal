@@ -108,7 +108,7 @@ public class TileData<M> implements Data {
 	public int referenceRelease() {
 		// TODO Auto-generated method stub
 		this.reference--;
-		if(this.reference==0) destroy();
+		//if(this.reference==0) destroy();
 		return this.reference;
 	}
 	

@@ -90,7 +90,7 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	}
 	
 	public void setCurrentTileNumberOnScreen(int numTile) {
-		if(numTile < 1) return;
+		if(numTile < 1 || this.screenTileNumber == numTile) return;
 		this.screenTileNumber = numTile;
 		int cacheSize = cacheScreenNum * screenTileNumber;
 		if(this.dataCache instanceof ScreenLruCacheImpl) {
@@ -100,6 +100,7 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	}
 
 	public void setCacheScreenNum(int cacheScreenNum) {
+		if(this.screenTileNumber == cacheScreenNum) return;
 		this.cacheScreenNum = cacheScreenNum;
 		//重设置缓存大小，待完善
 		int cacheSize = cacheScreenNum * screenTileNumber;

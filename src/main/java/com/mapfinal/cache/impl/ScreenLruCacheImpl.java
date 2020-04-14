@@ -29,12 +29,13 @@ public class ScreenLruCacheImpl<K, V extends MapfinalObject> implements Cache<K,
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest)
             {
-            	boolean flag = size() > maxSize;
-            	if(flag) {
-            		MapfinalObject obj = (MapfinalObject) eldest.getValue();
-            		obj.destroy();
-            	}
-                return flag;
+            	return size() > maxSize;
+//            	boolean flag = size() > maxSize;
+//            	if(flag) {
+//            		MapfinalObject obj = (MapfinalObject) eldest.getValue();
+//            		obj.destroy();
+//            	}
+//                return flag;
             }
         };
     }

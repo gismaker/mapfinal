@@ -38,13 +38,13 @@ public class Tile {
 	}
 	
 	public String getId() {
-		return name + "_" + z + "_" + x + "_" + y 
+		return name.replaceAll("_", "-") + "_" + z + "_" + x + "_" + y 
 				+ "_" + envelope.getMinX() + "_" + envelope.getMaxX() 
 				+ "_" + envelope.getMinY() + "_" + envelope.getMaxY();
 	}
 	
 	public String getImageId() {
-		return name + "_" + z + "_" + x + "_" + y ;
+		return name.replaceAll("_", "-") + "_" + z + "_" + x + "_" + y ;
 	}
 	
 	public String getImageName() {

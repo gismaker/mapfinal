@@ -81,18 +81,4 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@Override
-	public void setMinZoom(float minZoom) {
-		// TODO Auto-generated method stub
-		super.setMinZoom(minZoom);
-		this.dispatcher.setMinZoom(minZoom);
-	}
-	
-	@Override
-	public void setMaxZoom(float maxZoom) {
-		// TODO Auto-generated method stub
-		super.setMaxZoom(maxZoom);
-		this.dispatcher.setMaxZoom(maxZoom);
-	}
 }

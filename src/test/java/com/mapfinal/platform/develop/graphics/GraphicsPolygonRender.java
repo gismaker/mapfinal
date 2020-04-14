@@ -66,15 +66,16 @@ public class GraphicsPolygonRender implements Renderable {
 	    return Math.abs(a-b) < 0.000001;
 	}
 	
-	protected void update(double zoom) {
+	protected void update(MapContext context, double zoom) {
 		if(polygon==null || points==null) return;
 		//if(!IsEqual(zoom,currentZoom)) {
 			currentZoom = zoom;
 			double scale = Math.pow(2, zoom-1);
 			//System.out.println("[GraphicsPolygonRenderer] zoom: " + currentZoom + ", " + zoom + ", scale: "+scale);
 			for (int i = 0; i < points.size(); i++) {
-				polygon.xpoints[i] = (int) Math.round(points.get(i).x * scale);
-				polygon.ypoints[i] = (int) Math.round(points.get(i).y * scale);
+				ScenePoint pt = context.sceneToView(points.get(i));
+				polygon.xpoints[i] = (int) Math.round(pt.x * scale);
+				polygon.ypoints[i] = (int) Math.round(pt.y * scale);
 			}
 //			if(id.equals("19") || id.equals("20")) {
 //				System.out.println("x:" + polygon.xpoints[0] + ", y:" + polygon.xpoints[0] + ", x:" + points.get(0).x + ", y:" + points.get(0).y);
@@ -91,7 +92,7 @@ public class GraphicsPolygonRender implements Renderable {
 				GraphicsRenderEngine g = (GraphicsRenderEngine) engine;
 				MapContext context = event.get("map");
 				double zoom = context.getZoom();
-				update(zoom);
+				update(context, zoom);
 				
 				if(renderer!=null && renderer.getSymbol()!=null && renderer.getSymbol() instanceof FillSymbol) {
 					FillSymbol symbol = (FillSymbol) renderer.getSymbol();

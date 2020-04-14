@@ -5,6 +5,8 @@ import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.SceneEPSG3857CRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.geometry.Latlng;
+
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
 public class MapContext {
@@ -44,7 +46,7 @@ public class MapContext {
 	/**
 	 * 缩放粒度，缩放级别变化一次的大小，控制map的缩放水平
 	 */
-	private float zoomDelta = 0.1f;
+	private float zoomDelta = 0.25f;
 	/**
 	 * 最小缩放级别
 	 */
@@ -117,10 +119,77 @@ public class MapContext {
 		//System.out.println("envelope: " + sceneEnvelope.toString());
 	}
 	
-	public void resetCenter(int dx, int dy) {
+	public void resetCenter(float dx, float dy) {
+		if(dx == 0 && dy==0) return;
 		centerPoint.subtract(new ScenePoint(dx, dy));
 		center = getSceneCRS().pointToLatLng(centerPoint, zoom);
 		resetSceneEnvelope();
+	}
+	
+	public ScenePoint latLngToPoint(Latlng latlng, double zoom) {
+		ScenePoint p = getSceneCRS().latLngToPoint(latlng, zoom);
+		ScenePoint ct = getCenterPoint();
+		p.translate(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return p;
+	}
+	
+	public ScenePoint latLngToPoint(Latlng latlng) {
+		return latLngToPoint(latlng, zoom);
+	}
+	
+	public Latlng pointToLatLng(ScenePoint point, double zoom) {
+		ScenePoint ct = getCenterPoint();
+		point.subtract(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return getSceneCRS().pointToLatLng(point, zoom);
+	}
+	
+	public Latlng pointToLatLng(ScenePoint point) {
+		return pointToLatLng(point, zoom);
+	}
+	
+	/**
+	 * 投影坐标转屏幕坐标
+	 * @param latlng
+	 * @param zoom
+	 * @return
+	 */
+	public ScenePoint coordinateToPoint(Coordinate coordinate, double zoom) {
+		ScenePoint p = getSceneCRS().coordinateToPoint(coordinate, zoom);
+		ScenePoint ct = getCenterPoint();
+		p.translate(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return p;
+	}
+	
+	public ScenePoint coordinateToPoint(Coordinate coordinate) {
+		return coordinateToPoint(coordinate, zoom);
+	}
+	
+	/**
+	 * 投影坐标转屏幕坐标
+	 * @param latlng
+	 * @param zoom
+	 * @return
+	 */
+	public Coordinate pointToCoordinate(ScenePoint point, double zoom) {
+		ScenePoint ct = getCenterPoint();
+		point.subtract(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return getSceneCRS().pointToCoordinate(point, zoom);
+	}
+	
+	public Coordinate pointToCoordinate(ScenePoint point) {
+		return pointToCoordinate(point, zoom);
+	}
+	
+	public ScenePoint sceneToView(ScenePoint point) {
+		ScenePoint ct = getCenterPoint();
+		point.translate(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return point;
+	}
+	
+	public ScenePoint viewToScene(ScenePoint point) {
+		ScenePoint ct = getCenterPoint();
+		point.subtract(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
+		return point;
 	}
 
 	public SceneCRS getSceneCRS() {

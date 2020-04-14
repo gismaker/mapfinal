@@ -69,6 +69,12 @@ public class ScenePoint extends Coordinate {
 		this.y -= point.y;
 		return this;
 	}
+	
+	public ScenePoint subtract(double x, double y) {
+		this.x -= x;
+		this.y -= y;
+		return this;
+	}
 
 	// @method divideBy(num: Number): Point
 	// Returns the result of division of the current point by the given number.
@@ -151,6 +157,18 @@ public class ScenePoint extends Coordinate {
 	// corresponding current point coordinates (in absolute values).
 	public boolean contains(ScenePoint point) {
 		return Math.abs(point.x) <= Math.abs(this.x) && Math.abs(point.y) <= Math.abs(this.y);
+	}
+	
+	public ScenePoint translate(Coordinate dc) {
+		this.x += dc.x;
+		this.y += dc.y;
+		return this;
+	}
+	
+	public ScenePoint translate(double x, double y) {
+		this.x += x;
+		this.y += y;
+		return this;
 	}
 
 	public double getX() {

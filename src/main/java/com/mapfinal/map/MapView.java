@@ -8,7 +8,6 @@ import com.mapfinal.event.EventKit;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.render.Renderer;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
@@ -18,8 +17,9 @@ public class MapView extends LayerGroup {
 	private int x0 = 0, y0 = 0;
 	private int dx = 0, dy = 0;
 	private boolean bMove = false;
-	private Renderer backgroundRenderer;
-
+	//private Renderer backgroundRenderer;
+	boolean isZoomScale = false;
+	
 	public MapView() {
 		context = new MapContext();
 	}
@@ -28,16 +28,14 @@ public class MapView extends LayerGroup {
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		event.set("map", context);
-		// Latlng center = context.getCenter();
-		// ScenePoint ct = context.getSceneCRS().latLngToPoint(center,
-		// context.getZoom());
-		ScenePoint ct = context.getCenterPoint();
-		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
-				-ct.getY() + context.getHeight() / 2 + dy);
+//		ScenePoint ct = context.getCenterPoint();
+//		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
+//				-ct.getY() + context.getHeight() / 2 + dy);
+		Coordinate t = new Coordinate(dx, dy);
 		engine.renderInit(t);
-		if (backgroundRenderer != null) {
-			backgroundRenderer.draw(event, engine);
-		}
+//		if (backgroundRenderer != null) {
+//			backgroundRenderer.draw(event, engine);
+//		}
 		super.draw(event, engine);
 		engine.renderEnd();
 	}
@@ -49,6 +47,7 @@ public class MapView extends LayerGroup {
 			return false;
 		switch (event.getAction()) {
 		case "mouseWheel":
+			isZoomScale = true;
 			if(event.get("rotation")!=null) {
 				int rotation = event.get("rotation");
 				if (rotation == 1) {
@@ -67,6 +66,7 @@ public class MapView extends LayerGroup {
 			// System.out.println("[GeoMap.onEvent] current zoom: " +
 			// getZoom());
 			EventKit.sendEvent("redraw");
+			isZoomScale = false;
 			break;
 		case "mouseDown":
 			x0 = event.get("x");
@@ -76,7 +76,11 @@ public class MapView extends LayerGroup {
 		case "mouseUp":
 			if (bMove) {
 				bMove = false;
-				context.resetCenter(dx, dy);
+				if(!isZoomScale) {
+					context.resetCenter(dx, dy);
+					//System.out.println("[GeoMap.onEvent] mouseUp: " + dx + ", " + dy);
+				}
+				isZoomScale = false;
 				dx = 0;
 				dy = 0;
 				// System.out.println("[GeoMap.onEvent] mouseUp");
@@ -84,7 +88,7 @@ public class MapView extends LayerGroup {
 			}
 			break;
 		case "mouseMove":
-			if (bMove) {
+			if (bMove && !isZoomScale) {
 				int x = event.get("x");
 				int y = event.get("y");
 				dx = x - x0;
@@ -109,7 +113,7 @@ public class MapView extends LayerGroup {
 		return false;
 	}
 	
-	public Latlng mouseCoordinate(int x, int y) {
+	public Latlng mouseCoordinate(float x, float y) {
 		ScenePoint ct = context.getCenterPoint();
 		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
 				-ct.getY() + context.getHeight() / 2 + dy);
@@ -129,6 +133,7 @@ public class MapView extends LayerGroup {
 
 	public void resize(int width, int height) {
 		context.resize(width, height);
+		EventKit.sendEvent("redraw");
 	}
 
 	public SceneCRS getSceneCRS() {
@@ -163,6 +168,10 @@ public class MapView extends LayerGroup {
 
 	public Latlng getCenter() {
 		return context.getCenter();
+	}
+	
+	public String getCenterString() {
+		return context.getCenter().toString();
 	}
 
 	public void setCenter(Latlng center) {
@@ -272,13 +281,5 @@ public class MapView extends LayerGroup {
 	public void setSpatialReference(SpatialReference spatialReference) {
 		super.setSpatialReference(spatialReference);
 		context.setSpatialReference(spatialReference);
-	}
-	
-	public Renderer getBackgroundRenderer() {
-		return backgroundRenderer;
-	}
-
-	public void setBackgroundRenderer(Renderer backgroundRenderer) {
-		this.backgroundRenderer = backgroundRenderer;
 	}
 }
