@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mapfinal</groupId>
 	<artifactId>mapfinal</artifactId>
-	<version>0.3</version>
+	<version>0.3.1</version>
 	<name>mapfinal</name>
 	
 	<!-- 使用阿里 maven 库 -->
