@@ -5,9 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -38,11 +36,6 @@ public class GraphicsRenderEngine implements RenderEngine {
 	
 	private Graphics graphics;
 	private JPanel panel;
-	private Event event;
-	
-	private BufferedImage image;
-	private Graphics imageGraphics = null;
-	private int tx = 0, ty = 0;
 	
 	private int cx =0, cy =0;
 	
@@ -51,18 +44,10 @@ public class GraphicsRenderEngine implements RenderEngine {
 	}
 
 	public Graphics getGraphics() {
-		return imageGraphics !=null ? imageGraphics : graphics;
-	}
-	
-	public Graphics2D getGraphics2D() {
-		return (Graphics2D) (imageGraphics !=null ? imageGraphics : graphics);
-	}
-	
-	public Graphics getMainGraphics() {
 		return graphics;
 	}
 	
-	public Graphics2D getMainGraphics2D() {
+	public Graphics2D getGraphics2D() {
 		return (Graphics2D) graphics;
 	}
 	
@@ -93,51 +78,6 @@ public class GraphicsRenderEngine implements RenderEngine {
 		cx = cy = 0;
 	}
 	
-	
-	public Graphics getImageGraphics() {
-		return imageGraphics;
-	}
-	
-	public Graphics2D getImageGraphics2D() {
-		return (Graphics2D) imageGraphics;
-	}
-
-	public void setImageGraphics(Graphics imageGraphics) {
-		this.imageGraphics = imageGraphics;
-	}
-
-	@Override
-	public void renderImageModeInit(MapContext map, Coordinate translate) {
-		// TODO Auto-generated method stub
-		getMainGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		tx = (int)translate.x;
-		ty = (int)translate.y;
-		if(image!=null) {
-			getMainGraphics2D().drawImage(image, tx, ty, image.getWidth(), image.getHeight(), null);
-			getMainGraphics2D().dispose();
-			image=null;
-		}
-		ScenePoint sceneSize = map.getSceneSize();
-		this.image = new BufferedImage(sceneSize.getSx(), sceneSize.getSy(), BufferedImage.TYPE_INT_ARGB);
-		this.imageGraphics = image.getGraphics();
-	}
-	
-	@Override
-	public void translateImageMode(Coordinate coordinate) {
-		// TODO Auto-generated method stub
-		getImageGraphics().translate((int)coordinate.x, (int)coordinate.y);
-	}
-
-	@Override
-	public void renderImageModeEnd() {
-		// TODO Auto-generated method stub
-		getMainGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		getMainGraphics2D().drawImage(image, tx, ty, image.getWidth(), image.getHeight(), null);
-		getImageGraphics().dispose();
-		getMainGraphics2D().dispose();
-	}
-	
-	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -145,64 +85,27 @@ public class GraphicsRenderEngine implements RenderEngine {
 	}
 
 	@Override
-	public Event getEvent() {
-		// TODO Auto-generated method stub
-		return event;
-	}
-
-	@Override
-	public void setEvent(Event event) {
-		// TODO Auto-generated method stub
-		this.event = event;
-	}
-
-	@Override
-	public void setEventData(String name, Object data) {
-		// TODO Auto-generated method stub
-		if(event!=null) {
-			event.set(name, data);
-		}
-	}
-
-	@Override
-	public <M> M getEventData(String name) {
-		// TODO Auto-generated method stub
-		return event!=null ? event.get(name) : null;
-	}
-
-	@Override
-	public Map<String, Object> getEventData() {
-		// TODO Auto-generated method stub
-		return event!=null ? event.getData() : null;
-	}
-
-	@Override
-	public String getEventAction() {
-		// TODO Auto-generated method stub
-		return event!=null ? event.getAction() : null;
-	}
-
-	@Override
-	public void render(Renderer renderer, MapContext context, Geometry geometry) {
+	public void render(Event event, Renderer renderer, Geometry geometry) {
 		// TODO Auto-generated method stub
 		if("MultiPolygon".equals(geometry.getGeometryType()) || geometry instanceof MultiPolygon) {
-			renderMultiPolygon(renderer, context, (MultiPolygon)geometry);
+			renderMultiPolygon(event, renderer, (MultiPolygon)geometry);
 		} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
-			renderPolygon(renderer, context, (Polygon)geometry);
+			renderPolygon(event, renderer, (Polygon)geometry);
 		} 
 	}
 	
-	public void renderMultiPolygon(Renderer renderer, MapContext context, MultiPolygon geometry) {
+	public void renderMultiPolygon(Event event, Renderer renderer, MultiPolygon geometry) {
 		int numberPolygon = geometry.getNumGeometries();
 		for (int i=0; i<numberPolygon; i++) {
-			renderPolygon(renderer, context, (Polygon)geometry.getGeometryN(i));
+			renderPolygon(event, renderer, (Polygon)geometry.getGeometryN(i));
 		}
 	}
 	
-	public void renderPolygon(Renderer renderer, MapContext context, Polygon geometry) {
+	public void renderPolygon(Event event, Renderer renderer, Polygon geometry) {
 		int[] xPoints = new int[geometry.getNumPoints()];
 		int[] yPoints = new int[geometry.getNumPoints()];
 		int nPoints = geometry.getNumPoints();
+		MapContext context = event.get("map");
 		double zoom = context.getZoom();
 		//List<ScenePoint> points = new ArrayList<>();
 		for (int j = 0; j < geometry.getNumPoints(); j++) {
@@ -226,8 +129,9 @@ public class GraphicsRenderEngine implements RenderEngine {
 	int dnum = 1000;
 	int[] xPoints = new int[dnum];
 	int[] yPoints = new int[dnum];
-	public void renderFeature(Renderer renderer, MapContext context, Feature feature) {
+	public void renderFeature(Event event, Renderer renderer, Feature feature) {
 		// TODO Auto-generated method stub
+		MapContext context = event.get("map");
 		double zoom = context.getZoom();
 		int numberPolygon = feature.getGeometry().getNumGeometries();
 		for (int i=0; i<numberPolygon; i++) {
@@ -263,10 +167,11 @@ public class GraphicsRenderEngine implements RenderEngine {
 	}
 
 	@Override
-	public void renderImageFeature(Renderer renderer, MapContext context, GeoImage feature) {
+	public void renderImageFeature(Event event, Renderer renderer, GeoImage feature) {
 		// TODO Auto-generated method stub
 		if(feature==null || feature.getImage()==null) return;
 		Graphics2D g2d = getGraphics2D();
+		MapContext context = event.get("map");
 		double mapZoom = context.getZoom();
 		//左上角
 		Coordinate c1 = feature.getTopLeft();

@@ -1,4 +1,10 @@
 -----------------------------
+mapfinal-0.3.2:
+
+优化：RenderEngine精简
+优化：所有cancelDraw更改为handleEvent，以适应opengl的渲染需要
+
+-----------------------------
 mapfinal-0.3.1:
 
 新增：json持久化接口
@@ -9,7 +15,6 @@ mapfinal-0.3.1:
 优化：优化场景绘制面板大小=屏幕大小
 优化：瓦片加入缓存层绘制一次，再绘制在线瓦片图层
 修复：修复Tile的CurrentTileNumberOnScreen设置错误
-
 
 -----------------------------
 mapfinal-0.3:

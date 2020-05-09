@@ -9,6 +9,6 @@ import com.mapfinal.event.Event;
  */
 public interface Renderable {
 	void draw(Event event, RenderEngine engine, Renderer renderer);
-	void cancelDraw(Event event);
+	void handleEvent(Event event);
 }
  

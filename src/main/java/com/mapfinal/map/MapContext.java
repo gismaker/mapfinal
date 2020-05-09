@@ -101,7 +101,7 @@ public class MapContext {
 		}
 	}
 	
-	private void resetSceneEnvelope() {
+	public void resetSceneEnvelope() {
 		//System.out.println(centerPoint.toString());
 		int x1 = (int) (centerPoint.x - width/2), y1 = (int) (centerPoint.y - height/2);
 		int x2 = (int) (centerPoint.x + width/2), y2 = (int) (centerPoint.y + height/2);
@@ -236,6 +236,14 @@ public class MapContext {
 
 	public void setCenter(Latlng center) {
 		this.center = center;
+		ScenePoint ct = getSceneCRS().latLngToPoint(center, this.zoom);
+		setCenterPoint(ct);
+		resetSceneEnvelope();
+	}
+	
+	public void setCenter(double lat, double lng) {
+		this.center.setLat(lat);
+		this.center.setLng(lng);
 		ScenePoint ct = getSceneCRS().latLngToPoint(center, this.zoom);
 		setCenterPoint(ct);
 		resetSceneEnvelope();

@@ -4,6 +4,11 @@ import com.mapfinal.geometry.Latlng;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
+/**
+ * 场景坐标转换，不是屏幕坐标
+ * @author yangyong
+ *
+ */
 public abstract class SceneCRS {
 
 	private String code;
@@ -12,18 +17,24 @@ public abstract class SceneCRS {
 	
 	public abstract double distance(Latlng latlng1, Latlng latlng2);
 
-	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
-	// Projects geographical coordinates into pixel coordinates for a given
-	// zoom.
+	/**
+	 * 经纬度转屏幕坐标
+	 * @param latlng
+	 * @param zoom
+	 * @return
+	 */
 	public ScenePoint latLngToPoint(Latlng latlng, double zoom) {
 		ScenePoint projectedPoint = this.projection.project(latlng);
 		double scale = this.scale(zoom);
 		return this.transformation.transform(projectedPoint, scale);
 	}
 	
-	// @method pointToLatLng(point: Point, zoom: Number): LatLng
-	// The inverse of `latLngToPoint`. Projects pixel coordinates on a given
-	// zoom into geographical coordinates.
+	/**
+	 * 屏幕坐标转经纬度
+	 * @param point
+	 * @param zoom
+	 * @return
+	 */
 	public Latlng pointToLatLng(ScenePoint point, double zoom) {
 		double scale = this.scale(zoom);
 		//point.setX(xScaleIn(scale, point.x));
@@ -33,8 +44,8 @@ public abstract class SceneCRS {
 	}
 	
 	/**
-	 * 投影坐标转屏幕坐标
-	 * @param latlng
+	 * 当前Scene投影坐标转屏幕坐标
+	 * @param coordinate
 	 * @param zoom
 	 * @return
 	 */
@@ -44,8 +55,8 @@ public abstract class SceneCRS {
 	}
 	
 	/**
-	 * 投影坐标转屏幕坐标
-	 * @param latlng
+	 * 屏幕坐标转当前Scene投影坐标
+	 * @param point
 	 * @param zoom
 	 * @return
 	 */
@@ -69,6 +80,7 @@ public abstract class SceneCRS {
 		c = c > scale ? scale : c;
 		return c;
 	}
+	
 	// @method project(latlng: LatLng): Point
 	// Projects geographical coordinates into coordinates in units accepted for
 	// this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).

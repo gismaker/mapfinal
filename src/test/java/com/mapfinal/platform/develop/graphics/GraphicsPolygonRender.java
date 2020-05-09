@@ -119,7 +119,7 @@ public class GraphicsPolygonRender implements Renderable {
 	}
 
 	@Override
-	public void cancelDraw(Event event) {
+	public void handleEvent(Event event) {
 		// TODO Auto-generated method stub
 
 	}

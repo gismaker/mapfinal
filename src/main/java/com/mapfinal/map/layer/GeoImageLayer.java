@@ -26,7 +26,7 @@ public class GeoImageLayer extends AbstractLayer {
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		if(feature==null) return;
-		engine.renderImageFeature(getRenderer(), getMapContext(event), feature);
+		engine.renderImageFeature(event, getRenderer(), feature);
 	}
 
 	public GeoImage getFeatuer() {

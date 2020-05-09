@@ -41,7 +41,7 @@ public class RendererSceneNode implements SceneNode {
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		if(renderer!=null && Renderer.EVENT_CANCELDRAW.equals(event.getAction())) {
-			renderer.cancelDraw(event);
+			renderer.handleEvent(event);
 		}
 		return false;
 	}

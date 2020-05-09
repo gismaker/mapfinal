@@ -43,8 +43,8 @@ public class SimpleRenderer implements Renderer {
 	}
 
 	@Override
-	public void cancelDraw(Event event) {
+	public void handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if(renderable!=null) renderable.cancelDraw(event);
+		if(renderable!=null) renderable.handleEvent(event);
 	}
 }
