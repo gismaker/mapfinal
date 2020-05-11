@@ -29,7 +29,7 @@ public class TileDispatcher extends Dispatcher {
 		TileResourceDispatcher tro = (TileResourceDispatcher) getResource();
 		GeoImage feature = (GeoImage) tro.read(sio);
 		if(feature!=null) {
-			engine.renderImageFeature(null, event.get("map"), feature);
+			engine.renderImageFeature(event, null, feature);
 			feature.destroy();
 		}
 		feature = null;
@@ -56,7 +56,7 @@ public class TileDispatcher extends Dispatcher {
 						sio.setOption("rendertype", "renderOnCache");
 						GeoImage feature = (GeoImage) resource.read(sio);
 						if(feature!=null) {
-							engine.renderImageFeature(null, event.get("map"), feature);
+							engine.renderImageFeature(event, null, feature);
 							feature.destroy();
 						}
 						feature = null;
