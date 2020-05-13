@@ -7,7 +7,7 @@ public class LatlngBounds {
 	private Envelope envelope;
 
 	public LatlngBounds(Latlng latlng1, Latlng latlng2) {
-		envelope = new Envelope(latlng1, latlng2);
+		this.envelope = new Envelope(latlng1, latlng2);
 	}
 
 	public LatlngBounds(Envelope envelope) {

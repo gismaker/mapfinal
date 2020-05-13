@@ -58,9 +58,8 @@ public abstract class ImageHandle<M> {
      * 缩放图像（按比例缩放）
      * @param image 源图像文件地址
      * @param scale 缩放比例
-     * @param flag 缩放选择:true 放大; false 缩小;
      */
-    public abstract M scale(M image, float scale, boolean flag);
+    public abstract M scale(M image, float scale);
     
     /**
      * 缩放图像（按高度和宽度缩放）
@@ -69,7 +68,7 @@ public abstract class ImageHandle<M> {
      * @param width 缩放后的宽度
      * @param bb 比例不对时是否需要补白：true为补白; false为不补白;
      */
-    public abstract M scale2(M image, int height, int width, boolean bb);
+    public abstract M scale2(M image, int width, int height, boolean bb);
     
     /**
      * 图像切割(按指定起点坐标和宽高切割)
@@ -87,7 +86,7 @@ public abstract class ImageHandle<M> {
      * @param rows 目标切片行数。默认2，必须是范围 [1, 20] 之内
      * @param cols 目标切片列数。默认2，必须是范围 [1, 20] 之内
      */
-    public abstract M cut2(M image, int rows, int cols);
+    //public abstract M cut2(M image, int rows, int cols);
     
     /**
      * 图像切割（指定切片的宽度和高度）
@@ -95,7 +94,7 @@ public abstract class ImageHandle<M> {
      * @param destWidth 目标切片宽度。默认200
      * @param destHeight 目标切片高度。默认150
      */
-    public abstract M cut3(M image, int destWidth, int destHeight);
+    //public abstract M cut3(M image, int destWidth, int destHeight);
     
     /**
      * 彩色转为黑白 
@@ -149,7 +148,7 @@ public abstract class ImageHandle<M> {
      * @param degree 角度:以度数为单位
      * @return
      */
-    public abstract M rotateImage(final M inputImage, final int degree);
+    public abstract M rotateImage(final M inputImage, final float degree);
     
     /**
      * 水平翻转图像

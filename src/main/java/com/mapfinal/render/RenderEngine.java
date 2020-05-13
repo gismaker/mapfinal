@@ -3,8 +3,10 @@ package com.mapfinal.render;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.LatlngBounds;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
+import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.resource.image.Image;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -27,6 +29,10 @@ public interface RenderEngine {
 	void renderImageFeature(Event event, Renderer renderer, GeoImage feature);
 	
 	void renderImage(Event event, Latlng latlng, Image image, float opacity);
+	void renderImage(Event event, LatlngBounds latlngBounds, Image image, float opacity);
+	
+	
+	void renderLine(LineSymbol symbol, float sx, float sy, float ex, float ey);
 	/*
 	void renderTextOnPath();
 	void renderImage();

@@ -11,15 +11,19 @@ import java.util.Arrays;
 
 import javax.swing.JPanel;
 
+import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.ConverterKit;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.LatlngBounds;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
+import com.mapfinal.render.style.LineSymbol;
+import com.mapfinal.resource.image.ImageHandle;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -229,5 +233,44 @@ public class GraphicsRenderEngine implements RenderEngine {
 			g2d.drawImage(img, x, y, null);
 		}
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+	}
+
+	@Override
+	public void renderImage(Event event, LatlngBounds latlngBounds, com.mapfinal.resource.image.Image image,
+			float opacity) {
+		if(image==null || latlngBounds==null) return;
+		if(image.getData()==null) return;
+		if(!latlngBounds.isValid()) return;
+		Graphics2D g2d = getGraphics2D();
+		MapContext context = event.get("map");
+		double mapZoom = context.getZoom();
+		//左上角
+		Latlng c1 = latlngBounds.getNorthWest();
+		//右下角
+		Latlng c2 = latlngBounds.getSouthEast();
+		ScenePoint p1 = context.latLngToPoint(c1, mapZoom);
+		ScenePoint p2 = context.latLngToPoint(c2, mapZoom);
+		int x = (int) Math.round(p1.getX());
+		int y = (int) Math.round(p1.getY());
+		int w = (int) Math.round(p2.x) - x;
+		int h = (int) Math.round(p2.y) - y;
+		//System.out.println("[renderImage] draw: " + x + ", " + y + ", " + w + ", " + h);
+        // 绘制图片（如果宽高传的不是图片原本的宽高, 则图片将会适当缩放绘制）
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
+		//ImageHandle handle = Mapfinal.me().getFactory().getImageHandle();
+		//g2d.drawImage((Image)handle.scale2(image.getData(), w, h, false), x, y, w, h, null);
+		g2d.drawImage((Image)image.getData(), x, y, w, h, null);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+	}
+
+	@Override
+	public void renderLine(LineSymbol symbol, float sx, float sy, float ex, float ey) {
+		// TODO Auto-generated method stub
+		int color = symbol.getColor();
+		int alpha = symbol.getAlpha();
+		float width = symbol.getWidth();
+		Graphics2D g2d = getGraphics2D();
+		g2d.setColor(ColorUtil.intToColor(color));
+		g2d.drawLine((int)sx, (int)sy, (int)ex, (int)ey);
 	}
 }

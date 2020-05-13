@@ -175,21 +175,14 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 /////////////////
 
 	@Override
-	public BufferedImage scale(BufferedImage image, float scale, boolean flag) {
+	public BufferedImage scale(BufferedImage image, float scale) {
 		// TODO Auto-generated method stub
 		int width = image.getWidth(); // 得到源图宽
         int height = image.getHeight(); // 得到源图长
-        if (flag) {// 放大
-            width = (int) (width * scale);
-            height = (int) (height * scale);
-        } else {// 缩小
-            width = (int) (width / scale);
-            height = (int) (height / scale);
-        }
-        Image scaleImage = image.getScaledInstance(width, height,
-                Image.SCALE_DEFAULT);
-        BufferedImage tag = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_RGB);
+        width = (int) (width * scale);
+        height = (int) (height * scale);
+        Image scaleImage = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = tag.getGraphics();
         g.drawImage(scaleImage, 0, 0, null); // 绘制缩小后的图
         g.dispose();
@@ -197,7 +190,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	}
 
 	@Override
-	public BufferedImage scale2(BufferedImage bi, int height, int width, boolean bb) {
+	public BufferedImage scale2(BufferedImage bi, int width, int height, boolean bb) {
 		// TODO Auto-generated method stub
 		double ratio = 0.0; // 缩放比例
         Image itemp = bi.getScaledInstance(width, height, bi.SCALE_SMOOTH);
@@ -213,8 +206,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
             itemp = op.filter(bi, null);
         }
         if (bb) {//补白
-            BufferedImage image = new BufferedImage(width, height,
-                    BufferedImage.TYPE_INT_RGB);
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setColor(Color.white);
             g.fillRect(0, 0, width, height);
@@ -254,7 +246,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
         return null;
 	}
 
-	@Override
+	/*
 	public BufferedImage cut2(BufferedImage bi, int rows, int cols) {
 		// TODO Auto-generated method stub
 		if(rows<=0||rows>20) rows = 2; // 切片行数
@@ -348,7 +340,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
             }
         }
         return null;
-	}
+	}*/
 
 	@Override
 	public BufferedImage gray(BufferedImage image) {
@@ -443,7 +435,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
     ////////////////
 
 	@Override
-	public BufferedImage rotateImage(BufferedImage inputImage, int degree) {
+	public BufferedImage rotateImage(BufferedImage inputImage, float degree) {
 		// TODO Auto-generated method stub
 		int w = inputImage.getWidth();
         int h = inputImage.getHeight();

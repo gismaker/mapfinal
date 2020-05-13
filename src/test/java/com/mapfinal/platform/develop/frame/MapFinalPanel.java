@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.LatlngBounds;
+import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
@@ -45,7 +47,13 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
         Marker m = new Marker(new Latlng(39.9, 117), new LocalImage("test", "E:\\前端素材\\图标-ico\\地图图标\\loc.png"));
+        m.setScale(0.5f);
         m.addTo(Mapfinal.me().getMap());
+        
+        LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
+        ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", "E:\\前端素材\\素材-地图素材\\psds17397.jpg"));
+        imgo.setOpacity(0.8f);
+        imgo.addTo(Mapfinal.me().getMap());
         
 //        //shp
 //        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
