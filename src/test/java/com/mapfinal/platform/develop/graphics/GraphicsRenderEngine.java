@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 import javax.swing.JPanel;
@@ -196,5 +197,18 @@ public class GraphicsRenderEngine implements RenderEngine {
 
 	protected boolean IsEqual(double a,double b) {
 	    return Math.abs(a-b) < 0.000001;
+	}
+
+	@Override
+	public void renderImage(Event event, Latlng latlng, com.mapfinal.resource.image.Image image, float opacity) {
+		// TODO Auto-generated method stub
+		if(image==null || latlng==null) return;
+		Graphics2D g2d = getGraphics2D();
+		MapContext context = event.get("map");
+		ScenePoint p1 = context.latLngToPoint(latlng);
+		BufferedImage img = (BufferedImage) image.getData();
+		int x = (int) Math.round(p1.getX()-img.getWidth()/2);
+		int y = (int) Math.round(p1.getY()-img.getHeight()/2);
+        g2d.drawImage(img, x, y, null);
 	}
 }

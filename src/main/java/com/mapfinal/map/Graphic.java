@@ -6,9 +6,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mapfinal.converter.JsonConverter;
 import com.mapfinal.converter.JsonStore;
+import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.geometry.Latlng;
 import com.mapfinal.render.style.Symbol;
 import com.mapfinal.resource.Data;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
@@ -24,6 +27,7 @@ public class Graphic implements GeoElement, JsonStore, Data {
 	private Map<String, Object> attributes;
 	private int zIndex;
 	private boolean visible = true;
+	private boolean editMode = false;
 	
 	public Graphic(Geometry geometry, Symbol symbol){
 		this.geometry = geometry;
@@ -34,6 +38,16 @@ public class Graphic implements GeoElement, JsonStore, Data {
 		this.geometry = geometry;
 		this.symbol = symbol;
 		this.attributes = attributes;
+	}
+	
+	/**
+	 * 是否选中
+	 * @param latlng
+	 * @return
+	 */
+	public boolean contains(Coordinate coordinate) {
+		if(geometry==null) return false;
+		return geometry.contains(GeoKit.createPoint(coordinate));
 	}
 	
 	@Override
@@ -132,5 +146,13 @@ public class Graphic implements GeoElement, JsonStore, Data {
 	public JSONObject toJson() {
 		// TODO Auto-generated method stub
 		return (JSONObject) JSON.toJSON(this);
+	}
+
+	public boolean isEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
 	}
 }

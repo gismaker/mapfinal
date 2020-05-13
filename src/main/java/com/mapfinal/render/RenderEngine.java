@@ -2,8 +2,10 @@ package com.mapfinal.render;
 
 
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
+import com.mapfinal.resource.image.Image;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -23,6 +25,8 @@ public interface RenderEngine {
 
 	void renderFeature(Event event, Renderer renderer, Feature feature);
 	void renderImageFeature(Event event, Renderer renderer, GeoImage feature);
+	
+	void renderImage(Event event, Latlng latlng, Image image, float opacity);
 	/*
 	void renderTextOnPath();
 	void renderImage();

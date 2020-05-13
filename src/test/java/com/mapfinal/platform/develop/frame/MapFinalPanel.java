@@ -15,10 +15,13 @@ import javax.swing.JPanel;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.Latlng;
+import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
 import com.mapfinal.platform.develop.graphics.GraphicsScene;
 import com.mapfinal.resource.Resource;
+import com.mapfinal.resource.image.LocalImage;
 import com.mapfinal.resource.shapefile.ShapefileLayer;
 
 public class MapFinalPanel extends JPanel {
@@ -40,6 +43,9 @@ public class MapFinalPanel extends JPanel {
         String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
+        
+        Marker m = new Marker(new Latlng(39.9, 117), new LocalImage("test", "E:\\前端素材\\图标-ico\\地图图标\\loc.png"));
+        m.addTo(Mapfinal.me().getMap());
         
 //        //shp
 //        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
