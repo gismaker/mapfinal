@@ -1,5 +1,6 @@
 package com.mapfinal.platform.develop.graphics;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -209,6 +210,8 @@ public class GraphicsRenderEngine implements RenderEngine {
 		BufferedImage img = (BufferedImage) image.getData();
 		int x = (int) Math.round(p1.getX()-img.getWidth()/2);
 		int y = (int) Math.round(p1.getY()-img.getHeight()/2);
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));   
         g2d.drawImage(img, x, y, null);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 }
