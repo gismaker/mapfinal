@@ -60,7 +60,7 @@ public abstract class ImageHandle<M> {
      * @param scale 缩放比例
      * @param flag 缩放选择:true 放大; false 缩小;
      */
-    public abstract M scale(M image, int scale, boolean flag);
+    public abstract M scale(M image, float scale, boolean flag);
     
     /**
      * 缩放图像（按高度和宽度缩放）

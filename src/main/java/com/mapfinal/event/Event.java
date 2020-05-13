@@ -49,6 +49,10 @@ public class Event implements Serializable {
 	public void put(String name, Object data) {
 		this.data.put(name, data);
 	}
+	
+	public boolean hasData(String name) {
+		return data.containsKey(name);
+	}
 
 	@SuppressWarnings("unchecked")
 	public <M> M get(String name) {

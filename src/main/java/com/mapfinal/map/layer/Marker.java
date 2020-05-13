@@ -18,6 +18,7 @@ public class Marker extends AbstractLayer {
 
 	private Latlng center;
 	private Image image;
+	private float scale = 1;
 	
 	public Marker(Latlng latlng, Image image) {
 		this.setCenter(latlng);
@@ -38,6 +39,7 @@ public class Marker extends AbstractLayer {
 			image.read();
 		}
 		if(image.getData()==null) return;
+		event.set("image:scale", scale);
 		if(isVisible()) engine.renderImage(event, center, image, getOpacity());
 	}
 	
@@ -61,6 +63,14 @@ public class Marker extends AbstractLayer {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
 	}
 
 }

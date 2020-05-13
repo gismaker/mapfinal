@@ -175,16 +175,16 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 /////////////////
 
 	@Override
-	public BufferedImage scale(BufferedImage image, int scale, boolean flag) {
+	public BufferedImage scale(BufferedImage image, float scale, boolean flag) {
 		// TODO Auto-generated method stub
 		int width = image.getWidth(); // 得到源图宽
         int height = image.getHeight(); // 得到源图长
         if (flag) {// 放大
-            width = width * scale;
-            height = height * scale;
+            width = (int) (width * scale);
+            height = (int) (height * scale);
         } else {// 缩小
-            width = width / scale;
-            height = height / scale;
+            width = (int) (width / scale);
+            height = (int) (height / scale);
         }
         Image scaleImage = image.getScaledInstance(width, height,
                 Image.SCALE_DEFAULT);

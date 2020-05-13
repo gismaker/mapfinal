@@ -30,6 +30,10 @@ public class Latlng extends Coordinate {
 		}
 	}
 	
+	public static Latlng create(double lat, double lng) {
+		return new Latlng(lat, lng);
+	}
+	
 	public static Latlng toGcj(Coordinate coordinate) {
 		Latlng latlng;
 		if (coordinate instanceof Latlng) {
