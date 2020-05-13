@@ -5,5 +5,5 @@ import com.mapfinal.event.EventListener;
 
 public interface ZoomListener extends EventListener {
 
-	public void onEvent(Event event);
+	public boolean onEvent(Event event);
 }

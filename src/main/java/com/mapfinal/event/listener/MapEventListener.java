@@ -5,7 +5,7 @@ import com.mapfinal.event.EventListener;
 
 public interface MapEventListener extends EventListener  {
 
-	public void onEvent(Event event);
+	public boolean onEvent(Event event);
 	
 	boolean onDoubleTap(Event point);
 

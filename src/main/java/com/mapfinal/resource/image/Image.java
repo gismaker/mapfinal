@@ -78,11 +78,11 @@ public class Image<M> extends ResourceObject<Image<M>> implements Data {
 	}
 	
 	public int getWidth() {
-		return 0;
+		return data==null ? 0 : Mapfinal.imageHandle().getWidth(data);
 	}
 
 	public int getHeight() {
-		return 0;
+		return data==null ? 0 : Mapfinal.imageHandle().getHeight(data);
 	}
 	
 	public FileType getFileType() {

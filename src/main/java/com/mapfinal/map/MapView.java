@@ -45,6 +45,9 @@ public class MapView extends LayerGroup {
 		// TODO Auto-generated method stub
 		if (StringKit.isBlank(event.getAction()))
 			return false;
+		event.set("map", context);
+		boolean flag = super.handleEvent(event);
+		if(flag) return flag;
 		switch (event.getAction()) {
 		case "mouseWheel":
 			isZoomScale = true;
@@ -107,10 +110,9 @@ public class MapView extends LayerGroup {
 			System.out.println("mouse latlng: " + latlng.toString());
 			break;
 		default:
-			super.handleEvent(event);
 			break;
 		}
-		return false;
+		return true;
 	}
 	
 	public Latlng mouseCoordinate(float x, float y) {

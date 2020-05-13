@@ -9,11 +9,12 @@ import com.mapfinal.event.Listener;
 public class SceneRedrawListener implements EventListener {
 
 	@Override
-	public void onEvent(Event event) {
+	public boolean onEvent(Event event) {
 		// TODO Auto-generated method stub
 		if("redraw".equals(event.getAction())) {
 			Mapfinal.me().getScene().setRedraw(true);
 		}
+		return false;
 	}
 
 }

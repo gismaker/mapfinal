@@ -1,6 +1,7 @@
 -----------------------------
 mapfinal-0.3.2:
 
+新增：新增图层事件机制
 新增：新增ImageOverlay图层
 新增：新增Marker图层
 优化：RenderEngine精简

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mapfinal.event.Callback;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventListener;
 
 public class SceneGroupNode implements SceneNode {
 
@@ -92,6 +93,30 @@ public class SceneGroupNode implements SceneNode {
 	
 	@Override
 	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getEventAction(String eventName) {
+		// TODO Auto-generated method stub
+		return "SceneNode:" + getClass().getSimpleName() + ":" + eventName;
+	}
+
+	@Override
+	public boolean sendEvent(Event event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void removeListener(String eventAction, EventListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addListener(String eventAction, EventListener listener) {
 		// TODO Auto-generated method stub
 		
 	}

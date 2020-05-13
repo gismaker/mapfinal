@@ -17,6 +17,6 @@ package com.mapfinal.event;
 
 public interface EventListener {
 
-	public void onEvent(Event event);
+	public boolean onEvent(Event event);
 
 }

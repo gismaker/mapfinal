@@ -2,8 +2,9 @@ package com.mapfinal.render;
 
 import com.mapfinal.MapfinalObject;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventObject;
 
-public interface SceneNode extends MapfinalObject {
+public interface SceneNode extends MapfinalObject, EventObject {
 
 	String getName();
 	boolean isDrawable();

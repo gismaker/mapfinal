@@ -41,6 +41,14 @@ public class Event implements Serializable {
 		this.timestamp = System.currentTimeMillis();
 	}
 	
+	public static Event by(String action) {
+		return new Event(action);
+	}
+	
+	public static Event by(String action, String name, Object data) {
+		return new Event(action, name, data);
+	}
+	
 	public Event set(String name, Object data) {
 		this.data.put(name, data);
 		return this;
@@ -52,6 +60,10 @@ public class Event implements Serializable {
 	
 	public boolean hasData(String name) {
 		return data.containsKey(name);
+	}
+	
+	public boolean isAction(String actionName) {
+		return actionName.equals(action) ? true : false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,6 +106,6 @@ public class Event implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Message [timestamp=" + timestamp + ", action=" + action + ", data=" + data + "]";
+		return "Event [timestamp=" + timestamp + ", action=" + action + ", data=" + data + "]";
 	}
 }

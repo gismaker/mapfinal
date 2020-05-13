@@ -7,6 +7,7 @@ import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.MapView;
 import com.mapfinal.render.SceneGraph;
 import com.mapfinal.render.SceneRedrawListener;
+import com.mapfinal.resource.image.ImageHandle;
 
 /**
  * 参考：
@@ -68,5 +69,21 @@ public class Mapfinal {
 	}
 	public void setCacheFolder(String cacheFolder) {
 		this.cacheFolder = cacheFolder;
+	}
+	
+	public static MapView map() {
+		return me.map;
+	}
+	
+	public static MapfinalFactory factory() {
+		return me.factory;
+	}
+	
+	public static SceneGraph scene() {
+		return me.scene;
+	}
+	
+	public static ImageHandle imageHandle() {
+		return factory().getImageHandle();
 	}
 }

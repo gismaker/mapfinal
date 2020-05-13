@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
 import com.mapfinal.map.layer.ImageOverlay;
@@ -46,14 +47,24 @@ public class MapFinalPanel extends JPanel {
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
         
-        Marker m = new Marker(new Latlng(39.9, 117), new LocalImage("test", "E:\\前端素材\\图标-ico\\地图图标\\loc.png"));
-        m.setScale(0.5f);
-        m.addTo(Mapfinal.me().getMap());
+        Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", "E:\\前端素材\\图标-ico\\地图图标\\loc.png"));
+        marker.setScale(0.5f);
+        marker.addTo(Mapfinal.me().getMap());
+        System.out.println("[layer event name] " + marker.getEventAction("Click"));
+        marker.markerClick(new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				System.out.println(event.toString() );
+				return false;
+			}
+		});
         
         LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
         ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", "E:\\前端素材\\素材-地图素材\\psds17397.jpg"));
         imgo.setOpacity(0.8f);
         imgo.addTo(Mapfinal.me().getMap());
+        
+        
         
 //        //shp
 //        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
@@ -101,7 +112,9 @@ public class MapFinalPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent paramMouseEvent) {
 				// TODO Auto-generated method stub
-				
+				Event event = new Event("mouseClick", "event", paramMouseEvent);
+		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
+		    	scene.handleEvent(event);
 			}
 		});
         

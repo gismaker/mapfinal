@@ -208,12 +208,13 @@ public class GraphicsRenderEngine implements RenderEngine {
 	public void renderImage(Event event, Latlng latlng, com.mapfinal.resource.image.Image image, float opacity) {
 		// TODO Auto-generated method stub
 		if(image==null || latlng==null) return;
+		if(image.getData()==null) return;
 		Graphics2D g2d = getGraphics2D();
 		MapContext context = event.get("map");
 		ScenePoint p1 = context.latLngToPoint(latlng);
 		BufferedImage img = (BufferedImage) image.getData();
-		int x = (int) Math.round(p1.getX()-img.getWidth()/2);
-		int y = (int) Math.round(p1.getY()-img.getHeight()/2);
+		int x = (int) Math.round(p1.getX()-img.getWidth()*0.5);
+		int y = (int) Math.round(p1.getY()-img.getHeight()*0.5);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
 		if(event.hasData("image:scale")) {
 			float scale = event.get("image:scale");
@@ -224,8 +225,8 @@ public class GraphicsRenderEngine implements RenderEngine {
 		        int height = img.getHeight(); // 得到源图长
 		        width = (int) (width * scale);
 	            height = (int) (height * scale);
-	            x = (int) Math.round(p1.getX()-width/2);
-	    		y = (int) Math.round(p1.getY()-height/2);
+	            x = (int) Math.round(p1.getX()-width*0.5);
+	    		y = (int) Math.round(p1.getY()-height*0.5);
 		        Image scaleImage = img.getScaledInstance(width, height, Image.SCALE_DEFAULT);
 		        g2d.drawImage(scaleImage, x, y, null);
 			}

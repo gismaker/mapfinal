@@ -1,10 +1,13 @@
 package com.mapfinal.map;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.event.Event;
-import com.mapfinal.event.EventKit;
 import com.mapfinal.event.EventListener;
-import com.mapfinal.event.EventObject;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.Renderer;
 
@@ -13,7 +16,7 @@ import com.mapfinal.render.Renderer;
  * @author yangyong
  *
  */
-public abstract class AbstractLayer implements Layer, EventObject {
+public abstract class AbstractLayer implements Layer {
 
 	private String name;
 	private String title;
@@ -33,6 +36,10 @@ public abstract class AbstractLayer implements Layer, EventObject {
 	 * 父类
 	 */
 	private Layer parent;
+	/**
+	 * 事件列表
+	 */
+	private Map<String, List<EventListener>> listenerMap;
 	
 	public MapContext getMapContext(Event event) {
 		if(event!=null) {
@@ -87,22 +94,69 @@ public abstract class AbstractLayer implements Layer, EventObject {
 	
 	@Override
 	public String getEventAction(String eventName) {
-		return "Layer:" + getName() + ":" + eventName;
+		return "Layer:" + getClass().getSimpleName() + ":" + eventName;
 	}
 
 	@Override
-	public void removeListener(String eventAction, Class<? extends EventListener> listenerClass) {
-		EventKit.removeListener(eventAction, listenerClass);
+	public void removeListener(String eventAction, EventListener listener) {
+		if(listenerMap!=null) {
+			deleteListner(listenerMap.get(eventAction), listener);
+		}
+	}
+	
+	private void deleteListner(List<EventListener> listenerList, EventListener listener) {
+		if(listenerList==null) return;
+		EventListener deleteListener = null;
+		for (EventListener eventlistener : listenerList) {
+			if (eventlistener == listener) {
+				deleteListener = listener;
+			}
+		}
+		if (deleteListener != null) {
+			listenerList.remove(deleteListener);
+		}
 	}
 
 	@Override
-	public void addListener(String eventAction, Class<? extends EventListener> listenerClass) {
-		EventKit.addListener(eventAction, listenerClass);
+	public void addListener(String eventAction, EventListener listener) {
+		if (listener == null) {
+			return;
+		}
+		if(listenerMap==null) {
+			listenerMap = new HashMap<String, List<EventListener>>();
+		}
+		List<EventListener> list = listenerMap.get(eventAction);
+		if (null == list) {
+			list = new ArrayList<EventListener>();
+		}
+		if (list.isEmpty() || !list.contains(listener)) {
+			list.add(listener);
+		}
+		listenerMap.put(eventAction, list);
 	}
 
 	@Override
-	public void sendEvent(final Event event) {
-		EventKit.sendEvent(event);
+	public boolean sendEvent(final Event event) {
+		if(listenerMap!=null) {
+			List<EventListener> syncListeners = listenerMap.get(event.getAction());
+			if (syncListeners != null && !syncListeners.isEmpty()) {
+				return invokeListeners(event, syncListeners);
+			}
+		}
+		return false;
+	}
+	
+	private boolean invokeListeners(final Event message, List<EventListener> syncListeners) {
+		for (final EventListener listener : syncListeners) {
+			try {
+				boolean flag = listener.onEvent(message);
+				if(flag) return true;
+			} catch (Throwable e) {
+				System.err.println(String.format("listener[%s] onMessage is erro! ", listener.getClass()));
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 	@Override

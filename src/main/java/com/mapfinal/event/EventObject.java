@@ -9,10 +9,7 @@ public interface EventObject {
 	 * @return
 	 */
 	String getEventAction(String eventName);
-
-	void removeListener(String eventAction, Class<? extends EventListener> listenerClass);
-
-	void addListener(String eventAction, Class<? extends EventListener> listenerClass);
-
-	void sendEvent(final Event event);
+	void removeListener(String eventAction, EventListener listener);
+	void addListener(String eventAction, EventListener listener);
+	boolean sendEvent(final Event event);
 }

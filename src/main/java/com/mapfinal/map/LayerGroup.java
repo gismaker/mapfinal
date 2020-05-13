@@ -73,8 +73,9 @@ public class LayerGroup extends AbstractLayer implements SceneNode {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < layers.size(); i++) {
-			boolean flag = layers.get(i).handleEvent(event);
+		//倒序
+		for (int i = layers.size(); i > 0; i--) {
+			boolean flag = layers.get(i-1).handleEvent(event);
 			if(flag) return flag;
 		}
 		return false;

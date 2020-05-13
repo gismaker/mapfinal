@@ -36,6 +36,18 @@ import com.mapfinal.task.ThreadPool;
 public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	
 	@Override
+	public int getWidth(BufferedImage Image) {
+		// TODO Auto-generated method stub
+		return Image.getWidth();
+	}
+
+	@Override
+	public int getHeight(BufferedImage image) {
+		// TODO Auto-generated method stub
+		return image.getHeight();
+	}
+
+	@Override
 	public BufferedImage readFile(String fileName) {
 		// TODO Auto-generated method stub
 		try {

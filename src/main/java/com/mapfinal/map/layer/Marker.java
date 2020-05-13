@@ -2,9 +2,13 @@ package com.mapfinal.map.layer;
 
 import org.locationtech.jts.geom.Envelope;
 
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
+import com.mapfinal.event.EventKit;
+import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.map.AbstractLayer;
+import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.resource.image.Image;
 
@@ -46,7 +50,33 @@ public class Marker extends AbstractLayer {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
+		if(event.isAction("mouseClick")) {
+			MapContext context = event.get("map");
+			ScenePoint p1 = context.latLngToPoint(center);
+			int w = image.getWidth();
+			int h = image.getHeight();
+			int sw = (int) (w*scale);
+			int sh = (int) (h*scale);
+			//左上角像素值
+			int x = (int) Math.round(p1.getX()-sw*0.5);
+			int y = (int) Math.round(p1.getY()-sh*0.5);
+			//右下角像素值
+			int ex = x + sw;
+			int ey = y + sh;
+			
+			//用户点击的像素坐标
+			int x0 = event.get("x");
+			int y0 = event.get("y");
+			
+			if(x0 >= x && x0<=ex && y0 >= y && y0<=ey) {
+				return sendEvent(Event.by(getEventAction("Click"), "center", center));
+			}
+		}
 		return false;
+	}
+	
+	public void markerClick(EventListener listener) {
+		addListener(getEventAction("Click"), listener);
 	}
 
 	public Latlng getCenter() {
