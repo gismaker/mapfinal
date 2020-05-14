@@ -7,6 +7,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
@@ -65,8 +66,9 @@ public class Marker extends AbstractLayer {
 			int ey = y + sh;
 			
 			//用户点击的像素坐标
-			int x0 = event.get("x");
-			int y0 = event.get("y");
+			ScreenPoint sp = event.get("screenPoint");
+			float x0 = sp.getX();
+			float y0 = sp.getY();
 			
 			if(x0 >= x && x0<=ex && y0 >= y && y0<=ey) {
 				return sendEvent(Event.by(getEventAction("Click"), "center", center));
@@ -77,6 +79,14 @@ public class Marker extends AbstractLayer {
 	
 	public void markerClick(EventListener listener) {
 		addListener(getEventAction("Click"), listener);
+	}
+	
+	public void removeClick(EventListener listener) {
+		removeListener(getEventAction("Click"), listener);
+	}
+	
+	public void clearClick() {
+		clearListener(getEventAction("Click"));
 	}
 
 	public Latlng getCenter() {

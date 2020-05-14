@@ -18,6 +18,7 @@ import com.mapfinal.render.Renderer;
  */
 public abstract class AbstractLayer implements Layer {
 
+	private int id;
 	private String name;
 	private String title;
 	private float opacity = 1.0f;
@@ -50,7 +51,7 @@ public abstract class AbstractLayer implements Layer {
 
 	@Override
 	public void addTo(LayerGroup layerGroup) {
-		int id = layerGroup.add(this);
+		this.id = layerGroup.add(this);
 		this.setParent(layerGroup);
 		if(id > -1 && StringKit.isBlank(name)) {
 			this.name = String.valueOf(id);
@@ -101,6 +102,15 @@ public abstract class AbstractLayer implements Layer {
 	public void removeListener(String eventAction, EventListener listener) {
 		if(listenerMap!=null) {
 			deleteListner(listenerMap.get(eventAction), listener);
+		}
+	}
+	
+	public void clearListener(String eventAction) {
+		if(listenerMap!=null) {
+			List<EventListener> list = listenerMap.get(eventAction);
+			if (null != list) {
+				list.clear();
+			}
 		}
 	}
 	
@@ -242,5 +252,13 @@ public abstract class AbstractLayer implements Layer {
 	public void destroy() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

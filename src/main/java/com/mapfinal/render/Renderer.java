@@ -9,7 +9,7 @@ import com.mapfinal.render.style.Symbol;
  */
 public interface Renderer {
 	
-	public static final String EVENT_CANCELDRAW = "render:handleEvent";
+	public static final String EVENT_CANCELDRAW = "render:cancelDraw";
 
 	public Symbol getSymbol();
 	public void setSymbol(Symbol symbol);

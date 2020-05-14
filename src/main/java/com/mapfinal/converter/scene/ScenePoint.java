@@ -34,6 +34,10 @@ public class ScenePoint extends Coordinate {
 		this.z = c.z;
 	}
 	
+	public static ScenePoint by(double x, double y) {
+		return new ScenePoint(x, y);
+	}
+	
 	public static ScenePoint create(double x, double y) {
 		return new ScenePoint(x, y);
 	}

@@ -14,10 +14,12 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import com.mapfinal.Mapfinal;
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.TileLayer;
@@ -82,69 +84,58 @@ public class MapFinalPanel extends JPanel {
         
         addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent paramMouseEvent) {
+			public void mouseReleased(MouseEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseUp", "event", paramMouseEvent);
-		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.handleEvent(event);
+		    	scene.handleEvent(Event.by("mouseUp", "event", event).setScreenPoint(event.getX(), event.getY()));
 			}
 			
 			@Override
-			public void mousePressed(MouseEvent paramMouseEvent) {
+			public void mousePressed(MouseEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseDown", "event", paramMouseEvent);
-		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.handleEvent(event);
+		    	scene.handleEvent(Event.by("mouseDown", "event", event).setScreenPoint(event.getX(), event.getY()));
 			}
 			
 			@Override
-			public void mouseExited(MouseEvent paramMouseEvent) {
+			public void mouseExited(MouseEvent event) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void mouseEntered(MouseEvent paramMouseEvent) {
+			public void mouseEntered(MouseEvent event) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void mouseClicked(MouseEvent paramMouseEvent) {
+			public void mouseClicked(MouseEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseClick", "event", paramMouseEvent);
-		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.handleEvent(event);
+		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
 			}
 		});
         
         addMouseMotionListener(new MouseMotionListener() {
 			
 			@Override
-			public void mouseMoved(MouseEvent paramMouseEvent) {
+			public void mouseMoved(MouseEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseCoordinate", "event", paramMouseEvent);
-		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	//scene.onEvent(event);
+				center = Mapfinal.context().pointToLatLng(ScenePoint.by(event.getX(), event.getY()));
+				Mapfinal.redraw();
 			}
 			
 			@Override
-			public void mouseDragged(MouseEvent paramMouseEvent) {
+			public void mouseDragged(MouseEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseMove", "event", paramMouseEvent);
-		    	event.set("x", paramMouseEvent.getX()).set("y", paramMouseEvent.getY());
-		    	scene.handleEvent(event);
+		    	scene.handleEvent(Event.by("mouseMove", "event", event).setScreenPoint(event.getX(), event.getY()));
 			}
 		});
         
         addMouseWheelListener(new MouseWheelListener() {
 			
 			@Override
-			public void mouseWheelMoved(MouseWheelEvent paramMouseWheelEvent) {
+			public void mouseWheelMoved(MouseWheelEvent event) {
 				// TODO Auto-generated method stub
-				Event event = new Event("mouseWheel", "event", paramMouseWheelEvent);
-		    	event.set("rotation", paramMouseWheelEvent.getWheelRotation());
-		    	scene.handleEvent(event);
+		    	scene.handleEvent(Event.by("mouseWheel", "event", event).set("rotation", event.getWheelRotation()));
 			}
 		});
     }
@@ -153,6 +144,7 @@ public class MapFinalPanel extends JPanel {
     int frames = 0;
     long startTime;
     float fps;
+    Latlng center = null;
     
     /**
      * 绘制面板的内容: 创建 JPanel 后会调用一次该方法绘制内容,
@@ -180,10 +172,11 @@ public class MapFinalPanel extends JPanel {
             frames = 0;
         }
         drawString(g, fpsString, 10, 20);
-        drawString(g, "zoom: " + Mapfinal.me().getMap().getZoom(), 10, 40);
-        
         Map<Thread,StackTraceElement[]> map = Thread.getAllStackTraces();
-        drawString(g, "ThreadSize: " + map.size(), 10, 60);
+        drawString(g, "ThreadSize: " + map.size(), 10, 40);
+        drawString(g, "zoom: " + Mapfinal.me().getMap().getZoom(), 10, 60);
+        String centerStr = center==null ? "NaN" : String.format("(lat:%f,lng:%f)", center.lat(), center.lng());
+        drawString(g, "center: " + centerStr, 10, 80);
         g.dispose();
     }
     

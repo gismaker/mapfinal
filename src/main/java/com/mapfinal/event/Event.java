@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mapfinal.geometry.ScreenPoint;
+
 public class Event implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -51,6 +53,11 @@ public class Event implements Serializable {
 	
 	public Event set(String name, Object data) {
 		this.data.put(name, data);
+		return this;
+	}
+	
+	public Event setScreenPoint(float x, float y) {
+		this.put("screenPoint", ScreenPoint.by(x, y));
 		return this;
 	}
 	

@@ -4,7 +4,7 @@ import com.mapfinal.event.Callback;
 
 public abstract class ImageHandle<M> {
 
-	public abstract int getWidth(M Image);
+	public abstract int getWidth(M image);
 	
 	public abstract int getHeight(M image);
 	/**

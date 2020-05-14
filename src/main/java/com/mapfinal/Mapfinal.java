@@ -2,8 +2,10 @@ package com.mapfinal;
 
 import java.io.File;
 
+import com.mapfinal.event.EventKit;
 import com.mapfinal.event.EventManager;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.map.MapContext;
 import com.mapfinal.map.MapView;
 import com.mapfinal.render.SceneGraph;
 import com.mapfinal.render.SceneRedrawListener;
@@ -75,6 +77,10 @@ public class Mapfinal {
 		return me.map;
 	}
 	
+	public static MapContext context() {
+		return me.map.getContext();
+	}
+	
 	public static MapfinalFactory factory() {
 		return me.factory;
 	}
@@ -86,4 +92,9 @@ public class Mapfinal {
 	public static ImageHandle imageHandle() {
 		return factory().getImageHandle();
 	}
+	
+	public static void redraw() {
+		EventKit.sendEvent("redraw");
+	}
+	
 }

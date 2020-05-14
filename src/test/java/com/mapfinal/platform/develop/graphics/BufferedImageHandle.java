@@ -36,9 +36,9 @@ import com.mapfinal.task.ThreadPool;
 public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	
 	@Override
-	public int getWidth(BufferedImage Image) {
+	public int getWidth(BufferedImage image) {
 		// TODO Auto-generated method stub
-		return Image.getWidth();
+		return image.getWidth();
 	}
 
 	@Override

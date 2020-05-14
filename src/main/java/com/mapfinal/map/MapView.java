@@ -6,6 +6,7 @@ import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
 import org.locationtech.jts.geom.Coordinate;
@@ -14,8 +15,8 @@ import org.locationtech.jts.geom.Envelope;
 public class MapView extends LayerGroup {
 
 	private MapContext context;
-	private int x0 = 0, y0 = 0;
-	private int dx = 0, dy = 0;
+	private float x0 = 0, y0 = 0;
+	private float dx = 0, dy = 0;
 	private boolean bMove = false;
 	//private Renderer backgroundRenderer;
 	boolean isZoomScale = false;
@@ -72,8 +73,9 @@ public class MapView extends LayerGroup {
 			isZoomScale = false;
 			break;
 		case "mouseDown":
-			x0 = event.get("x");
-			y0 = event.get("y");
+			ScreenPoint sp = event.get("screenPoint");
+			x0 = sp.getX();
+			y0 = sp.getY();
 			bMove = true;
 			break;
 		case "mouseUp":
@@ -92,22 +94,15 @@ public class MapView extends LayerGroup {
 			break;
 		case "mouseMove":
 			if (bMove && !isZoomScale) {
-				int x = event.get("x");
-				int y = event.get("y");
-				dx = x - x0;
-				dy = y - y0;
+				ScreenPoint spm = event.get("screenPoint");
+				dx = spm.getX() - x0;
+				dy = spm.getY() - y0;
 				// System.out.println("[GeoMap.onEvent] move x: " + x + ", y: "
 				// + y + ", x0: " + x0 + ", y0: " + y0);
 				// System.out.println("[GeoMap.onEvent] move dx: " + dx + ", dy:
 				// " + dy);
 				EventKit.sendEvent("redraw");
 			}
-			break;
-		case "mouseCoordinate":
-			int x = event.get("x");
-			int y = event.get("y");
-			Latlng latlng = mouseCoordinate(x, y);
-			System.out.println("mouse latlng: " + latlng.toString());
 			break;
 		default:
 			break;

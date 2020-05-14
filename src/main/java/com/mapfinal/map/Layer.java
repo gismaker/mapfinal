@@ -17,8 +17,10 @@ public interface Layer extends SceneNode {
 	 * 名称，主键
 	 */
 	public String getName();
-	
 	public void setName(String name);
+	
+	public int getId();
+	public void setId(int id);
 	
 	/**
 	 * Envelope

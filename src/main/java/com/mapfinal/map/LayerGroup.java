@@ -19,18 +19,28 @@ public class LayerGroup extends AbstractLayer implements SceneNode {
 	
 	public int add(Layer node) {
 		boolean flag = layers.add(node);
-		return flag ? layers.size()-1 : -1;
+		int id = flag ? layers.size()-1 : -1;
+		node.setId(id);
+		return id;
 	}
 	
 	public void add(int index, Layer node) {
+		node.setId(index);
 		layers.add(index, node);
+	}
+	
+	public Layer get(int index) {
+		if(index >=0 && index < layers.size()) {
+			return layers.get(index);
+		}
+		return null;
 	}
 	
 	public void remove(Layer node) {
 		layers.remove(node);
 	}
 	
-	public void remove(int index) {
+	public void remove(int index) {              
 		layers.remove(index);
 	}
 	
