@@ -3,6 +3,8 @@ package com.mapfinal.map;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.converter.JsonStore;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 
 import org.locationtech.jts.geom.Envelope;
@@ -14,7 +16,7 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @param <K>
  */
-public class Feature<K> implements GeoElement {
+public class Feature<K> implements GeoElement, JsonStore {
 
 	private K id;
 	/**
@@ -165,5 +167,17 @@ public class Feature<K> implements GeoElement {
 	@Override
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
+	}
+
+	@Override
+	public void fromJson(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

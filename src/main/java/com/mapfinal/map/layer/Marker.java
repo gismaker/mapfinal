@@ -77,7 +77,7 @@ public class Marker extends AbstractLayer {
 		return false;
 	}
 	
-	public void markerClick(EventListener listener) {
+	public void addClick(EventListener listener) {
 		addListener(getEventAction("Click"), listener);
 	}
 	

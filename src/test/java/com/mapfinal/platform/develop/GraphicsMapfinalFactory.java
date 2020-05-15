@@ -1,5 +1,7 @@
 package com.mapfinal.platform.develop;
 
+import java.io.File;
+
 import com.mapfinal.MapfinalFactory;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.platform.develop.graphics.BufferedImageHandle;
@@ -41,6 +43,11 @@ public class GraphicsMapfinalFactory extends MapfinalFactory {
 			imageHandle = new BufferedImageHandle();
 		}
 		return imageHandle;
+	}
+
+	@Override
+	public String getCacheFolder() {
+		return System.getProperty("user.dir") + File.separator + "cache";
 	}
 
 }

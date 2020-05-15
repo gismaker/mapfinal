@@ -39,7 +39,7 @@ public class Mapfinal {
 		this.scene = scene;
 		scene.addNode(map);
 		
-		this.cacheFolder = System.getProperty("user.dir") + File.separator + "cache";
+		this.cacheFolder = this.factory.getCacheFolder();
 		System.out.println("cacheFolder: " + cacheFolder);
 		EventManager.me().registerListener(SceneRedrawListener.class);
 	}

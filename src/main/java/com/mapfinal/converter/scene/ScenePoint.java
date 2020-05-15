@@ -2,6 +2,8 @@ package com.mapfinal.converter.scene;
 
 import org.locationtech.jts.geom.Coordinate;
 
+import com.mapfinal.geometry.ScreenPoint;
+
 public class ScenePoint extends Coordinate {
 
 	// 屏幕坐标x=lng,y=lat
@@ -38,10 +40,14 @@ public class ScenePoint extends Coordinate {
 		return new ScenePoint(x, y);
 	}
 	
+	public static ScenePoint by(ScreenPoint point) {
+		return new ScenePoint(point.getX(), point.getY());
+	}
+	
 	public static ScenePoint create(double x, double y) {
 		return new ScenePoint(x, y);
 	}
-
+	
 	public int getSx() {
 		return (int) Math.round(x);
 	}
@@ -56,9 +62,9 @@ public class ScenePoint extends Coordinate {
 		return new ScenePoint(this.x, this.y);
 	}
 
-	// @method add(otherPoint: Point): Point
+	// @method plus(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
-	public ScenePoint add(ScenePoint point) {
+	public ScenePoint plus(ScenePoint point) {
 		// destructive, used directly for performance in situations where it's
 		// safe to modify existing point
 		this.x += point.x;

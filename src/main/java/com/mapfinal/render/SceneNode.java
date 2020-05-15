@@ -1,10 +1,11 @@
 package com.mapfinal.render;
 
 import com.mapfinal.MapfinalObject;
+import com.mapfinal.converter.JsonStore;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventObject;
 
-public interface SceneNode extends MapfinalObject, EventObject {
+public interface SceneNode extends MapfinalObject, EventObject/*, JsonStore*/ {
 
 	String getName();
 	boolean isDrawable();

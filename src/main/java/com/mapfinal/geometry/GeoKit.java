@@ -213,6 +213,8 @@ public class GeoKit {
 	 * @throws ParseException
 	 */
 	public static Point createPointByWKT(String wkt) throws ParseException {
+		if (StringKit.isBlank(wkt) || !wkt.startsWith("POINT"))
+			return null;
 		WKTReader reader = new WKTReader(geometryFactory);
 		Point point = (Point) reader.read(wkt);
 		return point;

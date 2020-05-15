@@ -10,6 +10,8 @@ public abstract class MapfinalFactory {
 		initGeometryFactory();
 	}
 
+	public abstract String getCacheFolder();
+	
 	/**
 	 * 初始化GeometryFactory, 仅系统启动时调用一次
 	 */

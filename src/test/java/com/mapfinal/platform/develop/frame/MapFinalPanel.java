@@ -53,7 +53,7 @@ public class MapFinalPanel extends JPanel {
         marker.setScale(0.5f);
         marker.addTo(Mapfinal.me().getMap());
         System.out.println("[layer event name] " + marker.getEventAction("Click"));
-        marker.markerClick(new EventListener() {
+        marker.addClick(new EventListener() {
 			@Override
 			public boolean onEvent(Event event) {
 				System.out.println(event.toString() );
