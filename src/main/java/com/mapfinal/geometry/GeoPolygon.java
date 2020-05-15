@@ -3,6 +3,10 @@ package com.mapfinal.geometry;
 import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
 
 public class GeoPolygon implements Geom {
 
@@ -86,6 +90,20 @@ public class GeoPolygon implements Geom {
 	}
 
 	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+		      return new Envelope();
+		}
+		Envelope envelope = new Envelope();
+		envelope.expandToInclude(shell.getEnvelope());
+		for (GeoLineRing geoLineRing : holes) {
+			envelope.expandToInclude(geoLineRing.getEnvelope());
+		}
+		return envelope;
+	}
+
+	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return 1;
@@ -133,6 +151,20 @@ public class GeoPolygon implements Geom {
 
 	public void setHoles(List<GeoLineRing> holes) {
 		this.holes = holes;
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		LinearRing[] lineArray = new LinearRing[holes.size()];
+		for (int i = 0; i < holes.size(); i++) {
+			GeoLineString gls = holes.get(i);
+			Coordinate[] coords = (Coordinate[]) gls.getCoordinates().toArray();
+			lineArray[i] = GeoKit.getGeometryFactory().createLinearRing(coords);
+		}
+		Coordinate[] coords = (Coordinate[]) shell.getCoordinates().toArray();
+		LinearRing linering = GeoKit.getGeometryFactory().createLinearRing(coords);
+		return GeoKit.getGeometryFactory().createPolygon(linering, lineArray);
 	}
 
 }

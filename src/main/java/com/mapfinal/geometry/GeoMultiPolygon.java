@@ -3,6 +3,10 @@ package com.mapfinal.geometry;
 import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Polygon;
 
 public class GeoMultiPolygon implements Geom {
 
@@ -110,6 +114,15 @@ public class GeoMultiPolygon implements Geom {
 	}
 
 	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+			return new Envelope();
+		}
+		return polygons.getEnvelope();
+	}
+
+	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return polygons.getSize();
@@ -137,5 +150,16 @@ public class GeoMultiPolygon implements Geom {
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return polygons.isEmpty();
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		Polygon[] polygonArray = new Polygon[polygons.geoms.size()];
+		for (int i = 0; i < polygons.geoms.size(); i++) {
+			GeoPolygon gls = polygons.geoms.get(i);
+			polygonArray[i] = (Polygon) gls.toGeometry();
+		}
+		return GeoKit.getGeometryFactory().createMultiPolygon(polygonArray);
 	}
 }

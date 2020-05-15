@@ -1,5 +1,9 @@
 package com.mapfinal.geometry;
 
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+
 public interface Geom {
 
 	/**
@@ -36,4 +40,19 @@ public interface Geom {
 	 * @return
 	 */
 	boolean	isEmpty();
+	
+	/**
+	 * 包围盒
+	 * @return
+	 */
+	Envelope getEnvelope();
+	
+	/**
+	 * 转换到Geometry
+	 * @return
+	 */
+	Geometry toGeometry();
+	
+	//boolean contains(Point createPoint);
+	
 }

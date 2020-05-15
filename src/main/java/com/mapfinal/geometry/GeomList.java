@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+
 public class GeomList<M extends Geom> implements Geom {
 
 	protected List<M> geoms;
@@ -73,6 +77,19 @@ public class GeomList<M extends Geom> implements Geom {
 	}
 
 	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+		      return new Envelope();
+		}
+		Envelope envelope = new Envelope();
+		for (M m : geoms) {
+			envelope.expandToInclude(m.getEnvelope());
+		}
+		return envelope;
+	}
+
+	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return geoms.size();
@@ -106,5 +123,9 @@ public class GeomList<M extends Geom> implements Geom {
 		return geoms.isEmpty();
 	}
 
-	
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

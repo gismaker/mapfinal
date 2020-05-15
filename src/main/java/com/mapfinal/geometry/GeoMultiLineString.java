@@ -3,6 +3,9 @@ package com.mapfinal.geometry;
 import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 
 public class GeoMultiLineString implements Geom {
 
@@ -17,9 +20,9 @@ public class GeoMultiLineString implements Geom {
 		lines = new GeomList<GeoLineString>(gls);
 	}
 	
-	public GeoMultiLineString(GeoLineString gls) {
+	public GeoMultiLineString(GeoLineString line) {
 		lines = new GeomList<GeoLineString>();
-		lines.add(gls);
+		lines.add(line);
 	}
 	
 	public void addPoint(int line_index, Coordinate coordinate) {
@@ -70,6 +73,15 @@ public class GeoMultiLineString implements Geom {
 	}
 
 	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+			return new Envelope();
+		}
+		return lines.getEnvelope();
+	}
+
+	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return lines.getSize();
@@ -97,5 +109,16 @@ public class GeoMultiLineString implements Geom {
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return lines.isEmpty();
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		LineString[] lineArray = new LineString[lines.geoms.size()];
+		for (int i = 0; i < lines.geoms.size(); i++) {
+			GeoLineString gls = lines.geoms.get(i);
+			lineArray[i] = GeoKit.createLine(gls.getCoordinates());
+		}
+		return GeoKit.createMultiLine(lineArray);
 	}
 }

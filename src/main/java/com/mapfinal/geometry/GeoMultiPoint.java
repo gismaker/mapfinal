@@ -3,6 +3,10 @@ package com.mapfinal.geometry;
 import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 
 public class GeoMultiPoint implements Geom {
 
@@ -71,6 +75,15 @@ public class GeoMultiPoint implements Geom {
 	}
 
 	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+			return new Envelope();
+		}
+		return points.getEnvelope();
+	}
+
+	@Override
 	public int getSize() {
 		// TODO Auto-generated method stub
 		return points.getSize();
@@ -98,5 +111,16 @@ public class GeoMultiPoint implements Geom {
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return points.isEmpty();
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		Point[] pointArray = new Point[points.geoms.size()];
+		for (int i = 0; i < points.geoms.size(); i++) {
+			GeoPoint gls = points.geoms.get(i);
+			pointArray[i] = GeoKit.createPoint(gls.coordinate);
+		}
+		return GeoKit.getGeometryFactory().createMultiPoint(pointArray);
 	}	
 }

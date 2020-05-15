@@ -1,21 +1,17 @@
 package com.mapfinal.map.layer;
 
 
+import java.util.HashMap;
 import java.util.Map;
-
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
-import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
-import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.style.Appearance;
 
 /**
@@ -29,49 +25,38 @@ public abstract class Path extends AbstractLayer {
 	/**
 	 * 样式
 	 */
-	private Appearance style;
+	protected Appearance style;
 	/**
 	 * 图形
 	 */
-	private Geometry geometry;
+	//protected Geom geometry;
 	/**
 	 * 图形类型
 	 */
-	private GeomType geoType;
+	protected GeomType geomType;
 	/**
 	 * 属性信息
 	 */
-	private Map<String, Object> attributes;
-	
-	@Override
-	public Envelope getEnvelope() {
-		// TODO Auto-generated method stub
-		return geometry.getEnvelopeInternal();
-	}
-
-	@Override
-	public void draw(Event event, RenderEngine engine) {
-		// TODO Auto-generated method stub
-		if(geometry!=null) {
-			engine.render(event, getRenderer(), geometry);
-		}
-	}
+	protected Map<String, Object> attributes;
 	
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if(geometry==null) return false;
+		if(isEmpyt()) return false;
 		if(event.isAction("mouseClick")) {
 			MapContext context = event.get("map");
 			//用户点击的像素坐标
 			ScreenPoint sp = event.get("screenPoint");
 			Latlng p1 = context.pointToLatLng(ScenePoint.by(sp));
-			if(geometry.contains(GeoKit.createPoint(p1))) {
+			if(contains(p1)) {
 				return sendEvent(Event.by(getEventAction("Click"), "layer", this));
 			}
 		}
 		return false;
 	}
+	
+	public abstract boolean isEmpyt();
+	public abstract boolean contains(Latlng point);
 	
 	public void addClick(EventListener listener) {
 		addListener(getEventAction("Click"), listener);
@@ -93,23 +78,60 @@ public abstract class Path extends AbstractLayer {
 		this.style = style;
 	}
 
-	public Geometry getGeometry() {
-		return geometry;
+	public GeomType getGeomType() {
+		return geomType;
 	}
 
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
-		if(geometry!=null) {
-			this.geoType = GeomType.valueOf(geometry.getGeometryType());
+	public void setGeomType(GeomType geomType) {
+		this.geomType = geomType;
+	}
+	
+	
+	public void addAttr(String key, Object value) {
+		if(attributes==null) {
+			attributes = new HashMap<String, Object>();
+		}
+		attributes.put(key, value);
+	}
+	
+	public void setAttr(String key, Object value) {
+		if(attributes!=null) {
+			attributes.put(key, value);
 		}
 	}
-
-	public GeomType getGeoType() {
-		return geoType;
+	
+	public void removeAttr(String key) {
+		if(attributes!=null) {
+			attributes.remove(key);
+		}
+	}
+	
+	public void clearAttr(String key) {
+		if(attributes!=null) {
+			attributes.clear();
+		}
+	}
+	
+	public <M>M getAttr(String key) {
+		if(attributes!=null) {
+			return (M) attributes.get(key);
+		}
+		return null;
 	}
 
-	public void setGeoType(GeomType geoType) {
-		this.geoType = geoType;
+	public Object getAttrObject(String key) {
+		if(attributes!=null) {
+			return attributes.get(key);
+		}
+		return null;
+	}
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
 	}
 
 }

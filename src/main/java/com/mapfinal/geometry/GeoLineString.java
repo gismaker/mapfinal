@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeoLineString implements Geom {
 
@@ -23,6 +25,19 @@ public class GeoLineString implements Geom {
 	public GeomType getGeomType() {
 		// TODO Auto-generated method stub
 		return GeomType.LINESTRING;
+	}
+
+	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		if (isEmpty()) {
+		      return new Envelope();
+		}
+		Envelope envelope = new Envelope();
+		for (Coordinate coordinate : coordinates) {
+			envelope.expandToInclude(coordinate);
+		}
+		return envelope;
 	}
 
 	public void add(Coordinate coordinate) {
@@ -131,5 +146,11 @@ public class GeoLineString implements Geom {
 
 	public boolean isRing() {
 		return isClosed();
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		return GeoKit.createLine(coordinates);
 	}
 }

@@ -1,6 +1,8 @@
 package com.mapfinal.geometry;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeoPoint implements Geom {
 
@@ -54,6 +56,12 @@ public class GeoPoint implements Geom {
 	public GeomType getGeomType() {
 		// TODO Auto-generated method stub
 		return GeomType.POINT;
+	}
+
+	@Override
+	public Envelope getEnvelope() {
+		// TODO Auto-generated method stub
+		return new Envelope(coordinate);
 	}
 
 	@Override
@@ -244,5 +252,11 @@ public class GeoPoint implements Geom {
 	@Override
 	public String toString() {
 		return "Point"+coordinate.toString();
+	}
+
+	@Override
+	public Geometry toGeometry() {
+		// TODO Auto-generated method stub
+		return GeoKit.createPoint(coordinate);
 	}
 }
