@@ -3,7 +3,12 @@ package com.mapfinal.platform.develop;
 import java.io.File;
 
 import com.mapfinal.MapfinalFactory;
+import com.mapfinal.geometry.ArrayMapCS;
+import com.mapfinal.geometry.DoublePackedCS;
+import com.mapfinal.geometry.FloatPackedCS;
 import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.geometry.ListMapCS;
+import com.mapfinal.geometry.MapCSFactory;
 import com.mapfinal.platform.develop.graphics.BufferedImageHandle;
 import com.mapfinal.processor.GeoCompress;
 import com.mapfinal.render.RenderCompress;
@@ -24,7 +29,8 @@ public class GraphicsMapfinalFactory extends MapfinalFactory {
 	@Override
 	public void initGeometryFactory() {
 		// TODO Auto-generated method stub
-		GeoKit.initGeometryFactory();
+		//GeoKit.initGeometryFactory(new MapCSFactory(ListMapCS.class));
+		GeoKit.initGeometryFactory(new MapCSFactory(FloatPackedCS.class));
 	}
 	
 	@Override

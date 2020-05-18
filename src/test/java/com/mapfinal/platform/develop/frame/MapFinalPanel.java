@@ -49,6 +49,10 @@ public class MapFinalPanel extends JPanel {
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
         
+      //shp
+        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
+        layer.addTo(Mapfinal.me().getMap());
+        
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", "E:\\前端素材\\图标-ico\\地图图标\\loc.png"));
         marker.setScale(0.5f);
         marker.addTo(Mapfinal.me().getMap());
@@ -66,12 +70,7 @@ public class MapFinalPanel extends JPanel {
         imgo.setOpacity(0.8f);
         imgo.addTo(Mapfinal.me().getMap());
         
-        
-        
-//        //shp
-//        ShapefileLayer layer = new ShapefileLayer("D:\\GISDATA\\map_province_region.shp");
-//        layer.addTo(Mapfinal.me().getMap());
-//        
+
         //bundle
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);

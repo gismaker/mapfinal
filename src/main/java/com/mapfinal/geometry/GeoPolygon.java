@@ -159,10 +159,10 @@ public class GeoPolygon implements Geom {
 		LinearRing[] lineArray = new LinearRing[holes.size()];
 		for (int i = 0; i < holes.size(); i++) {
 			GeoLineString gls = holes.get(i);
-			Coordinate[] coords = (Coordinate[]) gls.getCoordinates().toArray();
+			Coordinate[] coords = gls.getCoordinates().toArray(new Coordinate[gls.getCoordinates().size()]);
 			lineArray[i] = GeoKit.getGeometryFactory().createLinearRing(coords);
 		}
-		Coordinate[] coords = (Coordinate[]) shell.getCoordinates().toArray();
+		Coordinate[] coords = shell.getCoordinates().toArray(new Coordinate[shell.getCoordinates().size()]);
 		LinearRing linering = GeoKit.getGeometryFactory().createLinearRing(coords);
 		return GeoKit.getGeometryFactory().createPolygon(linering, lineArray);
 	}

@@ -1,17 +1,17 @@
 package com.mapfinal.geometry;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateArrays;
+import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Coordinates;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
-public class ArrayCS implements CoordinateSequence, Serializable {
-	private static final long serialVersionUID = 8671521396671195084L;
+public class ListMapCS implements MapCS, Serializable {
+	private static final long serialVersionUID = -6358594794982505111L;
 	/**
 	 * The actual dimension of the coordinates in the sequence. Allowable values are
 	 * 2, 3 or 4.
@@ -23,7 +23,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 */
 	private int measures = 0;
 
-	private Coordinate[] coordinates;
+	private CoordinateList coordinates;
 
 	/**
 	 * Constructs a sequence based on the given array of {@link Coordinate}s (the
@@ -31,7 +31,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 *
 	 * @param coordinates the coordinate array that will be referenced.
 	 */
-	public ArrayCS(Coordinate[] coordinates) {
+	public ListMapCS(Coordinate[] coordinates) {
 		this(coordinates, CoordinateArrays.dimension(coordinates), CoordinateArrays.measures(coordinates));
 	}
 
@@ -42,7 +42,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @param coordinates the coordinate array that will be referenced.
 	 * @param dimension   the dimension of the coordinates
 	 */
-	public ArrayCS(Coordinate[] coordinates, int dimension) {
+	public ListMapCS(Coordinate[] coordinates, int dimension) {
 		this(coordinates, dimension, CoordinateArrays.measures(coordinates));
 	}
 
@@ -53,11 +53,11 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @param coordinates the coordinate array that will be referenced.
 	 * @param dimension   the dimension of the coordinates
 	 */
-	public ArrayCS(Coordinate[] coordinates, int dimension, int measures) {
+	public ListMapCS(Coordinate[] coordinates, int dimension, int measures) {
 		this.dimension = dimension;
 		this.measures = measures;
 		if (coordinates == null) {
-			this.coordinates = new Coordinate[0];
+			this.coordinates = new CoordinateList();
 		} else {
 			this.coordinates = enforceArrayConsistency(coordinates);
 		}
@@ -69,10 +69,10 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 *
 	 * @param size the size of the sequence to create
 	 */
-	public ArrayCS(int size) {
-		coordinates = new Coordinate[size];
+	public ListMapCS(int size) {
+		coordinates = new CoordinateList();
 		for (int i = 0; i < size; i++) {
-			coordinates[i] = new Coordinate();
+			coordinates.add(new Coordinate());
 		}
 	}
 
@@ -83,11 +83,11 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @param size      the size of the sequence to create
 	 * @param dimension the dimension of the coordinates
 	 */
-	public ArrayCS(int size, int dimension) {
-		coordinates = new Coordinate[size];
+	public ListMapCS(int size, int dimension) {
+		coordinates = new CoordinateList();
 		this.dimension = dimension;
 		for (int i = 0; i < size; i++) {
-			coordinates[i] = Coordinates.create(dimension);
+			coordinates.add(Coordinates.create(dimension));
 		}
 	}
 
@@ -98,12 +98,12 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @param size      the size of the sequence to create
 	 * @param dimension the dimension of the coordinates
 	 */
-	public ArrayCS(int size, int dimension, int measures) {
-		coordinates = new Coordinate[size];
+	public ListMapCS(int size, int dimension, int measures) {
+		coordinates = new CoordinateList();
 		this.dimension = dimension;
 		this.measures = measures;
 		for (int i = 0; i < size; i++) {
-			coordinates[i] = createCoordinate();
+			coordinates.add(createCoordinate());
 		}
 	}
 
@@ -114,18 +114,16 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 *
 	 * @param coordSeq the coordinate sequence that will be copied.
 	 */
-	public ArrayCS(CoordinateSequence coordSeq) {
+	public ListMapCS(CoordinateSequence coordSeq) {
 		// NOTE: this will make a sequence of the default dimension
+		coordinates = new CoordinateList();
 		if (coordSeq == null) {
-			coordinates = new Coordinate[0];
 			return;
 		}
 		dimension = coordSeq.getDimension();
 		measures = coordSeq.getMeasures();
-		coordinates = new Coordinate[coordSeq.size()];
-
-		for (int i = 0; i < coordinates.length; i++) {
-			coordinates[i] = coordSeq.getCoordinateCopy(i);
+		for (int i = 0; i < coordSeq.size(); i++) {
+			coordinates.add(coordSeq.getCoordinateCopy(i));
 		}
 	}
 
@@ -138,7 +136,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * 
 	 * @param array array containing consistent coordinate instances
 	 */
-	protected Coordinate[] enforceArrayConsistency(Coordinate[] array) {
+	protected CoordinateList enforceArrayConsistency(Coordinate[] array) {
 		Coordinate sample = createCoordinate();
 		Class<?> type = sample.getClass();
 		boolean isConsistent = true;
@@ -150,21 +148,24 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 			}
 		}
 		if (isConsistent) {
-			return array;
+			return new CoordinateList(array);
 		} else {
-			Class<? extends Coordinate> coordinateType = sample.getClass();
-			Coordinate copy[] = (Coordinate[]) Array.newInstance(coordinateType, array.length);
-			for (int i = 0; i < copy.length; i++) {
+			//Class<? extends Coordinate> coordinateType = sample.getClass();
+			CoordinateList clist = new CoordinateList();
+			//Coordinate copy[] = (Coordinate[]) Array.newInstance(coordinateType, array.length);
+			for (int i = 0; i < array.length; i++) {
 				Coordinate coordinate = array[i];
 				if (coordinate != null && !coordinate.getClass().equals(type)) {
 					Coordinate duplicate = createCoordinate();
 					duplicate.setCoordinate(coordinate);
-					copy[i] = duplicate;
+					//copy[i] = duplicate;
+					clist.add(duplicate);
 				} else {
-					copy[i] = coordinate;
+					clist.add(coordinate);
+					//copy[i] = coordinate;
 				}
 			}
-			return copy;
+			return clist;
 		}
 	}
 
@@ -187,7 +188,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @return the requested Coordinate instance
 	 */
 	public Coordinate getCoordinate(int i) {
-		return coordinates[i];
+		return coordinates.get(i);
 	}
 
 	/**
@@ -198,7 +199,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 */
 	public Coordinate getCoordinateCopy(int i) {
 		Coordinate copy = createCoordinate();
-		copy.setCoordinate(coordinates[i]);
+		copy.setCoordinate(coordinates.get(i));
 		return copy;
 	}
 
@@ -206,21 +207,21 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
 	 */
 	public void getCoordinate(int index, Coordinate coord) {
-		coord.setCoordinate(coordinates[index]);
+		coord.setCoordinate(coordinates.get(index));
 	}
 
 	/**
 	 * @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
 	 */
 	public double getX(int index) {
-		return coordinates[index].x;
+		return coordinates.get(index).x;
 	}
 
 	/**
 	 * @see org.locationtech.jts.geom.CoordinateSequence#getY(int)
 	 */
 	public double getY(int index) {
-		return coordinates[index].y;
+		return coordinates.get(index).y;
 	}
 
 	/**
@@ -228,7 +229,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 */
 	public double getZ(int index) {
 		if (hasZ()) {
-			return coordinates[index].getZ();
+			return coordinates.get(index).getZ();
 		} else {
 			return Double.NaN;
 		}
@@ -240,7 +241,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 */
 	public double getM(int index) {
 		if (hasM()) {
-			return coordinates[index].getM();
+			return coordinates.get(index).getM();
 		} else {
 			return Double.NaN;
 		}
@@ -252,11 +253,11 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	public double getOrdinate(int index, int ordinateIndex) {
 		switch (ordinateIndex) {
 		case CoordinateSequence.X:
-			return coordinates[index].x;
+			return coordinates.get(index).x;
 		case CoordinateSequence.Y:
-			return coordinates[index].y;
+			return coordinates.get(index).y;
 		default:
-			return coordinates[index].getOrdinate(ordinateIndex);
+			return coordinates.get(index).getOrdinate(ordinateIndex);
 		}
 	}
 
@@ -277,9 +278,9 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 */
 	public CoordinateArraySequence copy() {
 		Coordinate[] cloneCoordinates = new Coordinate[size()];
-		for (int i = 0; i < coordinates.length; i++) {
+		for (int i = 0; i < coordinates.size(); i++) {
 			Coordinate duplicate = createCoordinate();
-			duplicate.setCoordinate(coordinates[i]);
+			duplicate.setCoordinate(coordinates.get(i));
 			cloneCoordinates[i] = duplicate;
 		}
 		return new CoordinateArraySequence(cloneCoordinates, dimension, measures);
@@ -291,7 +292,7 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @return the number of coordinates
 	 */
 	public int size() {
-		return coordinates.length;
+		return coordinates.size();
 	}
 
 	/**
@@ -301,13 +302,13 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	public void setOrdinate(int index, int ordinateIndex, double value) {
 		switch (ordinateIndex) {
 		case CoordinateSequence.X:
-			coordinates[index].x = value;
+			coordinates.get(index).x = value;
 			break;
 		case CoordinateSequence.Y:
-			coordinates[index].y = value;
+			coordinates.get(index).y = value;
 			break;
 		default:
-			coordinates[index].setOrdinate(ordinateIndex, value);
+			coordinates.get(index).setOrdinate(ordinateIndex, value);
 		}
 	}
 
@@ -317,12 +318,12 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @return the Coordinate[] array.
 	 */
 	public Coordinate[] toCoordinateArray() {
-		return coordinates;
+		return coordinates.toArray(new Coordinate[coordinates.size()]);
 	}
 
 	public Envelope expandEnvelope(Envelope env) {
-		for (int i = 0; i < coordinates.length; i++) {
-			env.expandToInclude(coordinates[i]);
+		for (int i = 0; i < coordinates.size(); i++) {
+			env.expandToInclude(coordinates.get(i));
 		}
 		return env;
 	}
@@ -333,18 +334,45 @@ public class ArrayCS implements CoordinateSequence, Serializable {
 	 * @return The string
 	 */
 	public String toString() {
-		if (coordinates.length > 0) {
-			StringBuilder strBuilder = new StringBuilder(17 * coordinates.length);
+		if (coordinates.size() > 0) {
+			StringBuilder strBuilder = new StringBuilder(17 * coordinates.size());
 			strBuilder.append('(');
-			strBuilder.append(coordinates[0]);
-			for (int i = 1; i < coordinates.length; i++) {
+			strBuilder.append(coordinates.get(0));
+			for (int i = 1; i < coordinates.size(); i++) {
 				strBuilder.append(", ");
-				strBuilder.append(coordinates[i]);
+				strBuilder.append(coordinates.get(i));
 			}
 			strBuilder.append(')');
 			return strBuilder.toString();
 		} else {
 			return "()";
 		}
+	}
+
+	@Override
+	public void addCoordinate(int index, Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		Coordinate sample = enforceConsistency(coordinate);
+		this.coordinates.add(index, sample);
+	}
+
+	@Override
+	public void addCoordinate(Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		Coordinate sample = enforceConsistency(coordinate);
+		this.coordinates.add(sample);
+	}
+
+	@Override
+	public void setCoordinate(int index, Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		Coordinate sample = enforceConsistency(coordinate);
+		this.coordinates.set(index, sample);
+	}
+
+	@Override
+	public void removeCoordinate(int index) {
+		// TODO Auto-generated method stub
+		this.coordinates.remove(index);
 	}
 }

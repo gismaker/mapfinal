@@ -7,10 +7,8 @@ import org.locationtech.jts.geom.CoordinateXY;
 import org.locationtech.jts.geom.CoordinateXYM;
 import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 
-public class FloatPackedCS extends PackedCoordinateSequence {
-	private static final long serialVersionUID = 6905827910028528279L;
+public class FloatPackedCS extends PackedMapCS {
 	/**
 	 * The packed coordinate array
 	 */
@@ -53,6 +51,10 @@ public class FloatPackedCS extends PackedCoordinateSequence {
 	 */
 	public FloatPackedCS(Coordinate[] coordinates, int dimension) {
 		this(coordinates, dimension, 0);
+	}
+	
+	public FloatPackedCS(Coordinate[] coordinates) {
+		this(coordinates, 3, 0);
 	}
 
 	/**
@@ -129,9 +131,9 @@ public class FloatPackedCS extends PackedCoordinateSequence {
 		return copy();
 	}
 
-	public Float copy() {
+	public FloatPackedCS copy() {
 		float[] clone = Arrays.copyOf(coords, coords.length);
-		return new Float(clone, dimension, measures);
+		return new FloatPackedCS(clone, dimension, measures);
 	}
 
 	/**
@@ -157,5 +159,67 @@ public class FloatPackedCS extends PackedCoordinateSequence {
 			env.expandToInclude(coords[i], coords[i + 1]);
 		}
 		return env;
+	}
+
+	@Override
+	public void addCoordinate(int index, Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		float[] newCoord = new float[coords.length + dimension];
+		int len = index * dimension;
+		for (int i = 0; i < len; i++) {
+			newCoord[i] = coords[i];
+		}
+		newCoord[len] = (float) coordinate.x;
+		if (this.dimension >= 2)
+			newCoord[len + 1] = (float) coordinate.y;
+		if (this.dimension >= 3)
+			newCoord[len + 2] = (float) coordinate.getOrdinate(2); // Z or M
+		if (this.dimension >= 4)
+			newCoord[len + 3] = (float) coordinate.getOrdinate(3); // M
+		for (int i = len + dimension; i < coords.length + dimension; i++) {
+			newCoord[i] = coords[i];
+		}
+		coords = newCoord;
+	}
+
+	@Override
+	public void addCoordinate(Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		int len = coords.length;
+		float[] newCoord = Arrays.copyOf(coords, coords.length + dimension);
+		newCoord[len] = (float) coordinate.x;
+		if (this.dimension >= 2)
+			newCoord[len + 1] = (float) coordinate.y;
+		if (this.dimension >= 3)
+			newCoord[len + 2] = (float) coordinate.getOrdinate(2); // Z or M
+		if (this.dimension >= 4)
+			newCoord[len + 3] = (float) coordinate.getOrdinate(3); // M
+		this.coords = newCoord;
+	}
+
+	@Override
+	public void setCoordinate(int index, Coordinate coordinate) {
+		// TODO Auto-generated method stub
+		setOrdinate(index, 0, coordinate.x);
+		if (this.dimension >= 2)
+			setOrdinate(index, 1, coordinate.y);
+		if (this.dimension >= 3)
+			setOrdinate(index, 2, coordinate.getOrdinate(2));// Z or M
+		if (this.dimension >= 4)
+			setOrdinate(index, 3, coordinate.getOrdinate(3));// M
+	}
+
+	@Override
+	public void removeCoordinate(int index) {
+		// TODO Auto-generated method stub
+		float[] newCoord = new float[coords.length - dimension];
+		int len = index * dimension;
+		for (int i = 0; i < len; i++) {
+			newCoord[i] = coords[i];
+		}
+		for (int i = len + dimension; i < coords.length; i++) {
+			newCoord[i-dimension] = coords[i];
+		}
+		coords = newCoord;
 	}
 }
