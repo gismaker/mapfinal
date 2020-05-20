@@ -1,6 +1,7 @@
 -----------------------------
 mapfinal-0.3.2:
 
+新增：RenderEngine新增点线面渲染方法
 新增：新增MapCS对象,支持坐标的增删改查
 新增：新增多种CoordinateSequence对象
 新增：新增geom(point,line,polygon)对象定义

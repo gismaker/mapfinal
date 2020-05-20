@@ -86,6 +86,10 @@ public class ColorKit {
     public static int argb(int alpha, int red, int green, int blue) {
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
+    
+    public static int argb(int alpha, int color) {
+        return (alpha << 24) | color;
+    }
 
     /**
      * Returns the hue component of a color int.

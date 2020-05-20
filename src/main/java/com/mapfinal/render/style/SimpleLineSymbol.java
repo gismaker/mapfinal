@@ -36,8 +36,12 @@ public class SimpleLineSymbol extends LineSymbol {
 	private int color = 0;
 	private SimpleLineSymbol.STYLE style = STYLE.SOLID;
 	private SimpleLineSymbol outline;
-	private float width;
+	private float width = 1.0f;
 
+	public SimpleLineSymbol(int color) {
+		this.color = color;
+	}
+	
 	public SimpleLineSymbol(int color, float width) {
 		this.color = color;
 		this.width = width;
@@ -57,10 +61,6 @@ public class SimpleLineSymbol extends LineSymbol {
 		this.alpha = symbol.alpha;
 	}
 	
-	public SimpleLineSymbol() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public int getAlpha() {
 		// TODO Auto-generated method stub

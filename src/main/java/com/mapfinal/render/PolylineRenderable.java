@@ -1,6 +1,7 @@
 package com.mapfinal.render;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.kit.ColorKit;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.SimpleLineSymbol;
 
@@ -13,11 +14,11 @@ public class PolylineRenderable implements Renderable {
 		// TODO Auto-generated method stub
 		LineSymbol symbol = null;
 		if(renderer==null || !(renderer.getSymbol() instanceof LineSymbol)) {
-			symbol = new SimpleLineSymbol();
+			symbol = new SimpleLineSymbol(ColorKit.RED, 1);
 		} else {
 			symbol = (LineSymbol) renderer.getSymbol();
 		}
-		
+		engine.renderPolyline(event, symbol, event.get("geometry"));
 	}
 
 	@Override

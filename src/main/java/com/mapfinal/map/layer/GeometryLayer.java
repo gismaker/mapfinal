@@ -14,6 +14,7 @@ import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
+import com.mapfinal.render.style.Symbol;
 
 public class GeometryLayer extends AbstractLayer {
 
@@ -37,7 +38,8 @@ public class GeometryLayer extends AbstractLayer {
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		if(geometry!=null) {
-			engine.render(event, getRenderer(), geometry);
+			Symbol symbol = getRenderer()==null ? null : getRenderer().getSymbol();
+			engine.render(event, symbol, geometry);
 		}
 	}
 	

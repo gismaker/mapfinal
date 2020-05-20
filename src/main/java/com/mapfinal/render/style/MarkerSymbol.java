@@ -3,8 +3,32 @@ package com.mapfinal.render.style;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-public class MarkerSymbol implements Symbol {
-
+public abstract class MarkerSymbol implements Symbol {
+	/**
+	 * 绘制方式
+	 */
+	public enum STYLE {
+		/**
+		 * 圆形
+		 */
+		CIRCLE,
+		/**
+		 * 矩形
+		 */
+		RECT,
+		/**
+		 * 椭圆
+		 */
+		OVAL,
+		/**
+		 * 图标
+		 */
+		ICON,
+		/**
+		 * 未知
+		 */
+		NULL
+	}
 	/**
 	 * 标注样式角度
 	 */
@@ -12,7 +36,7 @@ public class MarkerSymbol implements Symbol {
 	/**
 	 * 标注样式宽度
 	 */
-	private int width;
+	private float width;
 	/**
 	 * 标注样式高度
 	 */
@@ -41,6 +65,14 @@ public class MarkerSymbol implements Symbol {
 		this.offsetY = symbol.getOffsetY();
 		this.isBillboard = symbol.isBillboard();
 	}
+	
+	public float getX(float x) {
+		return x - width / 2 + offsetX;
+	}
+	
+	public float getY(float y) {
+		return y - height / 2 + offsetY;
+	}
 
 	/**
 	 * 获取标注样式角度
@@ -58,11 +90,11 @@ public class MarkerSymbol implements Symbol {
 	 * 获取标注样式宽度
 	 * @return
 	 */
-	public int getWidth() {
+	public float getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 

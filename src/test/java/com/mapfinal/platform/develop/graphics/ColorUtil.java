@@ -2,6 +2,8 @@ package com.mapfinal.platform.develop.graphics;
 
 import java.awt.Color;
 
+import com.mapfinal.kit.ColorKit;
+
 public class ColorUtil {
 
 	/**
@@ -46,6 +48,11 @@ public class ColorUtil {
 	 * @return
 	 */
 	public static Color intToColor(int color) {
+		return new Color(color);
+	}
+	
+	public static Color intToColor(int color, int alpha) {
+		color = ColorKit.argb(alpha, color);
 		return new Color(color);
 	}
 
