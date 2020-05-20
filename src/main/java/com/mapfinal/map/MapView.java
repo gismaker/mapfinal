@@ -70,9 +70,10 @@ public class MapView extends LayerGroup {
 			// System.out.println("[GeoMap.onEvent] current zoom: " +
 			// getZoom());
 			EventKit.sendEvent("redraw");
-			isZoomScale = false;
+			//isZoomScale = false;
 			break;
 		case "mouseDown":
+			isZoomScale = false;
 			ScreenPoint sp = event.get("screenPoint");
 			x0 = sp.getX();
 			y0 = sp.getY();

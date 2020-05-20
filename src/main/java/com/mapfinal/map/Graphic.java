@@ -6,9 +6,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mapfinal.converter.JsonConverter;
 import com.mapfinal.converter.JsonStore;
-import com.mapfinal.geometry.GeoKit;
-import com.mapfinal.geometry.Geom;
-import com.mapfinal.geometry.Latlng;
 import com.mapfinal.render.style.Symbol;
 import com.mapfinal.resource.Data;
 
@@ -23,19 +20,19 @@ import org.locationtech.jts.geom.Geometry;
 public class Graphic implements GeoElement, JsonStore, Data {
 
 	private Long id;
-	private Geom geometry;
+	private Geometry geometry;
 	private Symbol symbol;
 	private Map<String, Object> attributes;
 	private int zIndex;
 	private boolean visible = true;
 	private boolean editMode = false;
 	
-	public Graphic(Geom geometry, Symbol symbol){
+	public Graphic(Geometry geometry, Symbol symbol){
 		this.geometry = geometry;
 		this.symbol = symbol;
 	}
 	
-	public Graphic(Geom geometry, Symbol symbol, Map<String, Object> attributes) {
+	public Graphic(Geometry geometry, Symbol symbol, Map<String, Object> attributes) {
 		this.geometry = geometry;
 		this.symbol = symbol;
 		this.attributes = attributes;
@@ -77,7 +74,7 @@ public class Graphic implements GeoElement, JsonStore, Data {
 	@Override
 	public Geometry getGeometry() {
 		// TODO Auto-generated method stub
-		return geometry.toGeometry();
+		return geometry;
 	}
 	
 	@Override
@@ -88,7 +85,7 @@ public class Graphic implements GeoElement, JsonStore, Data {
 
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
-		return geometry!=null ? geometry.getEnvelope() : null;
+		return geometry!=null ? geometry.getEnvelopeInternal() : null;
 	}
 
 	public boolean envelopeIntersects(Envelope outEnvelope) {
@@ -135,13 +132,13 @@ public class Graphic implements GeoElement, JsonStore, Data {
 	@Override
 	public void fromJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-//		JsonConverter jsonConverter = new JsonConverter();
-//		Map<String, Object> properties = (Map) jsonObject.get("properties");
-//		Geom geometry = jsonConverter.parseGeometry(jsonObject.getJSONObject("geometry"));
-//		id = jsonObject.getLong("id");
-//		symbol.fromJson(jsonObject.getJSONObject("symbol"));
-//		zIndex = jsonObject.getIntValue("zIndex");
-//		visible = jsonObject.getBooleanValue("visible");
+		JsonConverter jsonConverter = new JsonConverter();
+		Map<String, Object> properties = (Map) jsonObject.get("properties");
+		Geometry geometry = jsonConverter.parseGeometry(jsonObject.getJSONObject("geometry"));
+		id = jsonObject.getLong("id");
+		symbol.fromJson(jsonObject.getJSONObject("symbol"));
+		zIndex = jsonObject.getIntValue("zIndex");
+		visible = jsonObject.getBooleanValue("visible");
 	}
 
 	@Override

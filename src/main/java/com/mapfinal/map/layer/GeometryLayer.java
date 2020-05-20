@@ -17,11 +17,11 @@ import com.mapfinal.render.RenderEngine;
 
 public class GeometryLayer extends AbstractLayer {
 
-	private Geometry geometry;
+	protected Geometry geometry;
 	/**
 	 * 属性信息
 	 */
-	private Map<String, Object> attributes;
+	protected Map<String, Object> attributes;
 	
 	public GeometryLayer(Geometry geometry) {
 		this.geometry = geometry;
