@@ -65,7 +65,7 @@ public class TileDispatcher extends Dispatcher {
 			});
 		}
 		query(event.set("zoom", izoom), context.getSceneEnvelope(), this);
-		TileResource tileResource = (TileResource) resource;
+		TileResourceDispatcher tileResource = (TileResourceDispatcher) resource;
 		tileResource.setCurrentTileNumberOnScreen(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 		lastZoom = (int) context.getZoom();

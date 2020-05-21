@@ -19,6 +19,7 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	private String name;
 	private Cache<String, BundleFeature> cache;
 	private int cacheScreenNum = 2;
+	private int screenTileNumber = 15;
 	private String url;
 	private int tmsType = Tile.TMS_LT;
 	private SpatialReference spatialReference = SpatialReference.mercator();
@@ -26,7 +27,8 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	public BundleResource(String name, String url) {
 		this.name = name;
 		this.url = url;
-		int cacheSize = 30;
+		this.screenTileNumber = 15;
+		int cacheSize = cacheScreenNum * screenTileNumber;
 		cache = new ScreenLruCacheImpl<>(cacheSize);
 	}
 	
@@ -109,10 +111,26 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 		put(tileHash, tileFeature);
 	}
 	
+	
+	public void setCurrentTileNumberOnScreen(int numTile) {
+		if(numTile < 1 || this.screenTileNumber == numTile) return;
+		this.screenTileNumber = numTile;
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		if(this.cache instanceof ScreenLruCacheImpl) {
+			ScreenLruCacheImpl slc = (ScreenLruCacheImpl) this.cache;
+			slc.resize(cacheSize);
+		}
+	}
+	
 	public void setCacheScreenNum(int cacheScreenNum) {
+		if(this.screenTileNumber == cacheScreenNum) return;
 		this.cacheScreenNum = cacheScreenNum;
-		
 		//重设置缓存大小，待完善
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		if(this.cache instanceof ScreenLruCacheImpl) {
+			ScreenLruCacheImpl slc = (ScreenLruCacheImpl) this.cache;
+			slc.resize(cacheSize);
+		}
 	}
 
 	public String getUrl() {

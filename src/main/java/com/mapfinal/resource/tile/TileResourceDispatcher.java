@@ -7,4 +7,5 @@ public abstract class TileResourceDispatcher<G extends GeoElement> implements Re
 
 	public abstract int getTmsType();
 	
+	public abstract void setCurrentTileNumberOnScreen(int numTile);
 }
