@@ -23,9 +23,9 @@ import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.render.style.FillMarkerSymbol;
+import com.mapfinal.render.style.SimpleMarkerSymbol;
 import com.mapfinal.render.style.FillSymbol;
-import com.mapfinal.render.style.ImageMarkerSymbol;
+import com.mapfinal.render.style.PictureMarkerSymbol;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.MarkerSymbol;
 import com.mapfinal.render.style.SimpleFillSymbol;
@@ -286,17 +286,17 @@ public class GraphicsRenderEngine implements RenderEngine {
 	public void renderPoint(MarkerSymbol symbol, Coordinate coordinate) {
 		// TODO Auto-generated method stub
 		if (symbol == null || !(symbol instanceof MarkerSymbol)) {
-			renderPointFill(new FillMarkerSymbol(ColorKit.RED), coordinate);
-		} else if (symbol instanceof FillMarkerSymbol) {
-			renderPointFill((FillMarkerSymbol) symbol, coordinate);
-		} else if (symbol instanceof ImageMarkerSymbol) {
-			renderPointImage((ImageMarkerSymbol) symbol, coordinate);
+			renderPointFill(new SimpleMarkerSymbol(ColorKit.RED), coordinate);
+		} else if (symbol instanceof SimpleMarkerSymbol) {
+			renderPointFill((SimpleMarkerSymbol) symbol, coordinate);
+		} else if (symbol instanceof PictureMarkerSymbol) {
+			renderPointImage((PictureMarkerSymbol) symbol, coordinate);
 		}
 	}
 
-	private void renderPointFill(FillMarkerSymbol symbol, Coordinate coordinate) {
+	private void renderPointFill(SimpleMarkerSymbol symbol, Coordinate coordinate) {
 		if (symbol == null) {
-			symbol = new FillMarkerSymbol(ColorKit.RED);
+			symbol = new SimpleMarkerSymbol(ColorKit.RED);
 		}
 		int width = (int) symbol.getWidth();
 		int height = (int) symbol.getHeight();
@@ -355,7 +355,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 		}
     }
 
-	private void renderPointImage(ImageMarkerSymbol symbol, Coordinate coordinate) {
+	private void renderPointImage(PictureMarkerSymbol symbol, Coordinate coordinate) {
 		if (symbol == null || symbol.getImage()==null) return;
 		int w = (int) symbol.getWidth();
 		int h = (int) symbol.getHeight();

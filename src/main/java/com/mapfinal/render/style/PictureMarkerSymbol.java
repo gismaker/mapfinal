@@ -2,12 +2,12 @@ package com.mapfinal.render.style;
 
 import com.mapfinal.resource.image.Image;
 
-public class ImageMarkerSymbol extends MarkerSymbol {
+public class PictureMarkerSymbol extends MarkerSymbol {
 
 	private Image image;
 	private MarkerSymbol.STYLE style = STYLE.ICON;
 	
-	public ImageMarkerSymbol(Image image) {
+	public PictureMarkerSymbol(Image image) {
 		// TODO Auto-generated constructor stub
 		this.image = image;
 	}

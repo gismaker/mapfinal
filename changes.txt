@@ -13,6 +13,7 @@ mapfinal-0.3.2:
 优化：优化鼠标坐标的传递，统一jwt和android
 优化：优化layer获取
 优化：优化listener移除
+优化：优化Symbol，增加SimpleMarkerSymbol
 
 -----------------------------
 mapfinal-0.3.1:

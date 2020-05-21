@@ -3,22 +3,22 @@ package com.mapfinal.render.style;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-public class FillMarkerSymbol extends MarkerSymbol {
+public class SimpleMarkerSymbol extends MarkerSymbol {
 
 	private FillSymbol fill;
 	private MarkerSymbol.STYLE style = STYLE.CIRCLE;
 
-	public FillMarkerSymbol(int color) {
+	public SimpleMarkerSymbol(int color) {
 		// TODO Auto-generated constructor stub
 		this.fill = new SimpleFillSymbol(color);
 	}
 	
-	public FillMarkerSymbol(FillSymbol fill) {
+	public SimpleMarkerSymbol(FillSymbol fill) {
 		// TODO Auto-generated constructor stub
 		this.fill = fill;
 	}
 	
-	public FillMarkerSymbol(FillSymbol fill, float width, float height) {
+	public SimpleMarkerSymbol(FillSymbol fill, float width, float height) {
 		// TODO Auto-generated constructor stub
 		this.fill = fill;
 		setWidth(width);
