@@ -21,8 +21,7 @@ import java.util.Map;
 
 import com.mapfinal.geometry.ScreenPoint;
 
-public class Event implements Serializable {
-
+public class Event implements Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final long timestamp;
@@ -50,6 +49,16 @@ public class Event implements Serializable {
 	public static Event by(String action, String name, Object data) {
 		return new Event(action, name, data);
 	}
+	
+	public Event clone() {
+		Event o = null;
+        try {
+            o = (Event) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return o;
+    } 
 	
 	public Event set(String name, Object data) {
 		this.data.put(name, data);

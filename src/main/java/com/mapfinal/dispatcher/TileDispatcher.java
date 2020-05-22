@@ -45,7 +45,6 @@ public class TileDispatcher extends Dispatcher {
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
 		int izoom = (int) context.getZoom();
 		event.set("type", resource.getTmsType()).set("name", resource.getName());
-		System.out.println("TileDispatcher: " + resource.getName() + ", renderCacheLayer="+renderCacheLayer);
 //		if(izoom > 0 && renderCacheLayer){
 //			//这里有问题，不应该这么处理
 //			query(event.set("zoom", lastZoom), context.getSceneEnvelope(), new ItemVisitor() {

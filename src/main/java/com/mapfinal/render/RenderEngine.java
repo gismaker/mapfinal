@@ -42,6 +42,7 @@ public interface RenderEngine {
 	 * @param feature
 	 */
 	void renderFeature(Event event, Renderer renderer, Feature feature);
+	
 	/**
 	 * 渲染图片要素
 	 * @param event

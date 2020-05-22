@@ -1,6 +1,7 @@
 -----------------------------
 mapfinal-0.3.2:
 
+新增：新增RenderObject渲染对象
 新增：RenderEngine新增点线面渲染方法
 新增：新增MapCS对象,支持坐标的增删改查
 新增：新增多种CoordinateSequence对象
@@ -17,6 +18,8 @@ mapfinal-0.3.2:
 优化：完善BundleSource的缓存
 优化：优化LRU缓存
 优化：优化Bundle的界面缓存
+优化：Event可拷贝
+优化：去掉原Graphic，GeoElement改为Graphic
 
 -----------------------------
 mapfinal-0.3.1:

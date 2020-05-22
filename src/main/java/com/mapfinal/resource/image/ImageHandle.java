@@ -14,6 +14,8 @@ public abstract class ImageHandle<M> {
 	 */
 	public abstract M readFile(String fileName);
 	
+	public abstract byte[] read(String fileName);
+	
 	/**
 	 * 写图像到文件
 	 * @param fileName
@@ -21,6 +23,7 @@ public abstract class ImageHandle<M> {
 	 */
 	public abstract void writeFile(String fileName, M image);
 	
+	public abstract void write(String fileName, byte[] image);
 	/**
 	 * 下载图像
 	 * @param url

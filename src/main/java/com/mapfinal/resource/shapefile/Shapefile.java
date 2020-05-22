@@ -266,7 +266,7 @@ public class Shapefile extends VectorResource<Long> {
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;		
 	}
@@ -281,7 +281,7 @@ public class Shapefile extends VectorResource<Long> {
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;		
 	}
@@ -301,7 +301,7 @@ public class Shapefile extends VectorResource<Long> {
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 			//System.out.println("[Shp-Random-Reader] Feature " + mField.getName() + ": " + str);
 		}
 		//System.out.println("[readRecordPolygon] id: " + feature.getId());

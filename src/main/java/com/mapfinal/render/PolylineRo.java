@@ -2,13 +2,12 @@ package com.mapfinal.render;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.kit.ColorKit;
+import com.mapfinal.map.Feature;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.SimpleLineSymbol;
 
-public class PolylineRenderable implements Renderable {
+public class PolylineRo extends FeatureRo {
 
-	protected boolean isEditMode = false;
-	
 	@Override
 	public void draw(Event event, RenderEngine engine, Renderer renderer) {
 		// TODO Auto-generated method stub
@@ -31,11 +30,4 @@ public class PolylineRenderable implements Renderable {
 		} 
 	}
 
-	public boolean isEditMode() {
-		return isEditMode;
-	}
-
-	public void setEditMode(boolean isEditMode) {
-		this.isEditMode = isEditMode;
-	}
 }

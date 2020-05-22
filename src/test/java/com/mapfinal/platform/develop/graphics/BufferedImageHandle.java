@@ -19,11 +19,13 @@ import java.awt.image.ImageFilter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
 
@@ -65,6 +67,23 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 	}
 
 	@Override
+	public byte[] read(String fileName) {
+		// TODO Auto-generated method stub
+		try {
+			String lockFileName = fileName + ".lock";
+			File lockFile = new File(lockFileName);
+			File file = new File(fileName);
+			if(file.exists() && !lockFile.exists()) {
+				return Files.readAllBytes(file.toPath());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
 	public void writeFile(String fileName, BufferedImage image) {
 		// TODO Auto-generated method stub
 		try {
@@ -73,6 +92,25 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 			File lockFile = new File(lockFileName);
 			lockFile.createNewFile();
 			ImageIO.write(image, FileKit.getExtensionName(fileName), new File(fileName));
+			lockFile.delete();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void write(String fileName, byte[] image) {
+		// TODO Auto-generated method stub
+		FileOutputStream fs = null;
+		try {
+			//add file write lock
+			String lockFileName = fileName + ".lock";
+			File lockFile = new File(lockFileName);
+			lockFile.createNewFile();
+			fs=new FileOutputStream(fileName, false);
+			fs.write(image);
+			fs.close();
 			lockFile.delete();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

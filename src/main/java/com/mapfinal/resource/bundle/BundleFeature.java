@@ -32,10 +32,6 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 	 * 切片信息
 	 */
 	protected Tile tile;
-	/**
-	 * 最后一次渲染时间
-	 */
-	private long activeTime;
 	
 	public BundleFeature(String url, Tile tile) {
 		this.name = tile.getId();
@@ -160,14 +156,6 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 		return new Coordinate(getEnvelope().getMaxX(), getEnvelope().getMinY());
 	}
 
-	public long getActiveTime() {
-		return activeTime;
-	}
-
-	public void setActiveTime(long activeTime) {
-		this.activeTime = activeTime;
-	}
-	
 	public String getName() {
 		return name;
 	}

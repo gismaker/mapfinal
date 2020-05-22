@@ -3,7 +3,7 @@ package com.mapfinal.map;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
-public interface GeoImage<M> extends GeoElement {
+public interface GeoImage<M> extends Graphic {
 	
 	public M getImage(); 
 
@@ -36,7 +36,4 @@ public interface GeoImage<M> extends GeoElement {
 	 */
 	public Coordinate getBottomRight();
 
-	public long getActiveTime();
-
-	public void setActiveTime(long activeTime);
 }

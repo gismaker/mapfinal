@@ -2,7 +2,7 @@ package com.mapfinal.resource;
 
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
-import com.mapfinal.map.GeoElement;
+import com.mapfinal.map.Graphic;
 
 /**
  * 资源调度器
@@ -10,7 +10,7 @@ import com.mapfinal.map.GeoElement;
  *
  * @param <G>
  */
-public interface ResourceDispatcher<G extends GeoElement> {
+public interface ResourceDispatcher<G extends Graphic> {
 	
 	/**
 	 * 资源名称

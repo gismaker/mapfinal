@@ -4,56 +4,122 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.converter.JsonConverter;
 import com.mapfinal.converter.JsonStore;
-import com.mapfinal.dispatcher.SpatialIndexObject;
+import com.mapfinal.geometry.GeoKit;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.IntersectionMatrix;
+import org.locationtech.jts.geom.Point;
 
 /**
  * 要素：管理几何及属性的对象
+ * 
  * @author yangyong
  *
  * @param <K>
  */
-public class Feature<K> implements GeoElement, JsonStore {
+public class Feature<K> implements Graphic, JsonStore {
 
-	private K id;
+	protected K id;
 	/**
 	 * 图形对象
 	 */
-	private Geometry geometry;
-	/**
-	 * 索引对象
-	 */
-	private SpatialIndexObject spatialIndexObject;
+	protected Geometry geometry;
 	/**
 	 * 属性信息
 	 */
-	private Map<String, Object> attributes;
+	protected Map<String, Object> attributes;
 	/**
 	 * 包围盒
 	 */
-	private Envelope envelope;
-	/**
-	 * 最后一次渲染时间
-	 */
-	private long activeTime;
-	
+	protected Envelope envelope;
+
 	public Feature() {
 	}
 
-	public Feature(K id, SpatialIndexObject spatialIndexObject, Geometry geometry) {
+	public Feature(K id, Geometry geometry) {
 		this.id = id;
-		this.spatialIndexObject = spatialIndexObject;
 		this.geometry = geometry;
-		this.envelope = geometry!=null ? geometry.getEnvelopeInternal() : envelope;
+		this.envelope = geometry != null ? geometry.getEnvelopeInternal() : envelope;
 	}
-	
+
 	public Feature(Geometry geometry, Map<String, Object> attributes) {
 		this.geometry = geometry;
 		this.attributes = attributes;
-		this.envelope = geometry!=null ? geometry.getEnvelopeInternal() : envelope;
+		this.envelope = geometry != null ? geometry.getEnvelopeInternal() : envelope;
+	}
+
+	public boolean isEmpty() {
+		return geometry == null ? true : geometry.isEmpty();
+	}
+
+	public double getArea() {
+		return geometry == null ? 0.0 : geometry.getArea();
+	}
+
+	public double getLength() {
+		return geometry == null ? 0.0 : geometry.getLength();
+	}
+
+	public Point getCentroid() {
+		return geometry == null ? null : geometry.getCentroid();
+	}
+
+	public Point getInteriorPoint() {
+		return geometry == null ? null : geometry.getInteriorPoint();
+	}
+
+	public boolean contains(Coordinate coordinate) {
+		if (geometry == null)
+			return false;
+		return geometry.contains(GeoKit.createPoint(coordinate));
+	}
+
+	public boolean intersects(Geometry g) {
+		return geometry == null ? false : geometry.intersects(g);
+	}
+
+	public boolean touches(Geometry g) {
+		return geometry == null ? false : geometry.touches(g);
+	}
+
+	public boolean disjoint(Geometry g) {
+		return geometry == null ? false : geometry.disjoint(g);
+	}
+
+	public double distance(Geometry g) {
+		return geometry == null ? 0.0 : geometry.distance(g);
+	}
+
+	public boolean within(Geometry geom, double distance) {
+		return geometry == null ? false : geometry.isWithinDistance(geom, distance);
+	}
+
+	public boolean crosses(Geometry g) {
+		return geometry == null ? false : geometry.crosses(g);
+	}
+
+	public boolean overlaps(Geometry g) {
+		return geometry == null ? false : geometry.overlaps(g);
+	}
+
+	public boolean covers(Geometry g) {
+		return geometry == null ? false : geometry.covers(g);
+	}
+
+	public boolean coveredBy(Geometry g) {
+		return geometry == null ? false : geometry.coveredBy(g);
+	}
+
+	public boolean relate(Geometry g, String intersectionPattern) {
+		return geometry == null ? false : geometry.relate(g, intersectionPattern);
+	}
+
+	public IntersectionMatrix relate(Geometry g) {
+		return geometry == null ? null : geometry.relate(g);
 	}
 
 	/**
@@ -61,14 +127,15 @@ public class Feature<K> implements GeoElement, JsonStore {
 	 */
 	public void destroy() {
 		envelope = null;
-		if(attributes!=null) attributes.clear();
+		if (attributes != null)
+			attributes.clear();
 		attributes = null;
-		spatialIndexObject = null;
 		id = null;
 	}
 
 	/**
 	 * 获取要素的所有属性信息，以Map键值对的方式返回
+	 * 
 	 * @param fieldName
 	 * @return
 	 */
@@ -82,21 +149,32 @@ public class Feature<K> implements GeoElement, JsonStore {
 		// TODO Auto-generated method stub
 		return attributes;
 	}
-	
+
 	public void initAttributes() {
-		if(attributes==null) {
+		if (attributes == null) {
 			attributes = new ConcurrentHashMap<String, Object>();
 		}
 	}
-	
-	public void putAttribute(String name, Object value) {
+
+	public void putAttr(String name, Object value) {
 		initAttributes();
 		attributes.put(name, value);
 	}
-	
+
+	public <M> M getAttr(String name) {
+		return (M) attributes.get(name);
+	}
+
+	public <M> M getAttr(String name, M defaultValue) {
+		if (attributes == null || attributes.get(name) == null) {
+			return defaultValue;
+		}
+		return (M) attributes.get(name);
+	}
 
 	/**
 	 * 外接矩形是否相交或包含
+	 * 
 	 * @param outEnvelope
 	 * @return
 	 */
@@ -106,9 +184,10 @@ public class Feature<K> implements GeoElement, JsonStore {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 获取要素的唯一id编号
+	 * 
 	 * @return
 	 */
 	public K getId() {
@@ -120,22 +199,14 @@ public class Feature<K> implements GeoElement, JsonStore {
 	}
 
 	/**
-	 * 空间索引对象
-	 * @return
-	 */
-	public SpatialIndexObject getSpatialIndexObject() {
-		return spatialIndexObject;
-	}
-
-	public void setSpatialIndexObject(SpatialIndexObject spatialIndexObject) {
-		this.spatialIndexObject = spatialIndexObject;
-	}
-
-	/**
 	 * 外接矩形，包围盒
+	 * 
 	 * @return
 	 */
 	public Envelope getEnvelope() {
+		if (envelope == null && geometry != null) {
+			envelope = geometry.getEnvelopeInternal();
+		}
 		return envelope;
 	}
 
@@ -144,19 +215,8 @@ public class Feature<K> implements GeoElement, JsonStore {
 	}
 
 	/**
-	 * 活跃时间，上一次调用时间
-	 * @return
-	 */
-	public long getActiveTime() {
-		return activeTime;
-	}
-
-	public void setActiveTime(long activeTime) {
-		this.activeTime = activeTime;
-	}
-	
-	/**
 	 * 根据输入的字段名称获取属性值
+	 * 
 	 * @return
 	 */
 	@Override
@@ -172,7 +232,10 @@ public class Feature<K> implements GeoElement, JsonStore {
 	@Override
 	public void fromJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-		
+		JsonConverter jsonConverter = new JsonConverter();
+		Map<String, Object> properties = (Map) jsonObject.get("properties");
+		Geometry geometry = jsonConverter.parseGeometry(jsonObject.getJSONObject("geometry"));
+		id = (K) jsonObject.get("id");
 	}
 
 	@Override

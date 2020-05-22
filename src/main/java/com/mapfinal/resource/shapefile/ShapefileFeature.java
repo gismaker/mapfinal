@@ -1,11 +1,11 @@
 package com.mapfinal.resource.shapefile;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
-import com.mapfinal.map.Feature;
+import com.mapfinal.map.FeatureSio;
 
 import org.locationtech.jts.geom.Geometry;
 
-public class ShapefileFeature extends Feature<Long> {
+public class ShapefileFeature extends FeatureSio<Long> {
 	
 	private int shpType;
 	

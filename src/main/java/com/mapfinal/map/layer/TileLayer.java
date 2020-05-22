@@ -53,9 +53,8 @@ public class TileLayer extends AbstractLayer {
 		if(zoom < getMinZoom() || zoom > getMaxZoom()) return;
 		//System.out.println("feature layer render.");
 		if(dispatcher!=null) {
-			event.set("tile_renderCacheLayer", true);
-			dispatcher.draw(event, engine, getRenderer());
-			event.set("tile_renderCacheLayer", false);
+			Event e = event.clone().set("tile_renderCacheLayer", true);
+			dispatcher.draw(e, engine, getRenderer());
 		}
 	}
 

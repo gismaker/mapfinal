@@ -20,7 +20,6 @@ public class TileFeature<M> implements GeoImage<M> {
 
 	private Tile tile;
 	private TileData<M> data;
-	private long activeTime;
 
 	public TileFeature(TileData<M> data, Tile tile) {
 		this.data = data.reference();
@@ -38,14 +37,6 @@ public class TileFeature<M> implements GeoImage<M> {
 		return data!=null ? data.getImageData() : null;
 	}
 
-	public long getActiveTime() {
-		return activeTime;
-	}
-
-	public void setActiveTime(long activeTime) {
-		this.activeTime = activeTime;
-	}
-	
 	public SpatialReference getSpatialReference() {
 		return tile!=null ? tile.getSpatialReference() : null;
 	}

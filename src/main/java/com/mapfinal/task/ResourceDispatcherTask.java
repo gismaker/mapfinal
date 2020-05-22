@@ -3,7 +3,7 @@ package com.mapfinal.task;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.event.Callback;
 import com.mapfinal.event.Event;
-import com.mapfinal.map.GeoElement;
+import com.mapfinal.map.Graphic;
 import com.mapfinal.resource.ResourceDispatcher;
 
 public class ResourceDispatcherTask implements Runnable {
@@ -22,7 +22,7 @@ public class ResourceDispatcherTask implements Runnable {
 	@Override
 	public void run() {
 		if(reader!=null) {
-			GeoElement e = reader.read(sio);
+			Graphic e = reader.read(sio);
 			if(callback!=null) {
 				Event event = new Event("resourceReader", "feature", e);
 				callback.execute(event);

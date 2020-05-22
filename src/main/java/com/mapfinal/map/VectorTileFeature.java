@@ -7,15 +7,11 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
-public class VectorTileFeature implements GeoElement {
+public class VectorTileFeature implements Graphic {
 
 	private VectorTile vectorTile;
 	private Envelope envelope;
 	private List<Feature> features;
-	/**
-	 * 最后一次渲染时间
-	 */
-	private long activeTime;
 
 	public VectorTileFeature(VectorTile vectorTile, Envelope envelope) {
 		this.envelope = envelope;
@@ -93,14 +89,6 @@ public class VectorTileFeature implements GeoElement {
 
 	public void setVectorTile(VectorTile vectorTile) {
 		this.vectorTile = vectorTile;
-	}
-
-	public long getActiveTime() {
-		return activeTime;
-	}
-
-	public void setActiveTime(long activeTime) {
-		this.activeTime = activeTime;
 	}
 
 	@Override

@@ -162,7 +162,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 		MapFields mFields = recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;	
 	}
@@ -179,7 +179,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 		MapFields mFields = recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;	
 	}
@@ -300,7 +300,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 		MapFields mFields = recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;	
 	}
@@ -435,7 +435,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 		MapFields mFields = recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;	
 	}

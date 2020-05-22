@@ -18,7 +18,7 @@ import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.FileKit;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.FieldType;
-import com.mapfinal.map.GeoElement;
+import com.mapfinal.map.Graphic;
 import com.mapfinal.resource.ResourceDispatcher;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
@@ -129,12 +129,12 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		return null;
 	}
 	
-	public Map<String, GeoElement> read(List<SpatialIndexObject> objs) {
+	public Map<String, Graphic> read(List<SpatialIndexObject> objs) {
 		// TODO Auto-generated method stub
 		if(objs==null || objs.size()<1) return null;
-		Map<String, GeoElement> features = new HashMap<String, GeoElement>(objs.size());
+		Map<String, Graphic> features = new HashMap<String, Graphic>(objs.size());
 		for (SpatialIndexObject spatialIndexObject : objs) {
-			GeoElement f = read(spatialIndexObject);
+			Graphic f = read(spatialIndexObject);
 			features.put(spatialIndexObject.getId(), f);
 		}
 		return features;
@@ -214,7 +214,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;		
 	}
@@ -229,7 +229,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 		}
 		return feature;		
 	}
@@ -249,7 +249,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		MapFields mFields = this.recordSet.getFields(0);
 		for (short k = 0; k < mFields.getCount(); k++) {
 			MapField mField = mFields.getField(k);
-			feature.putAttribute(mField.getName(), mField.getValue());
+			feature.putAttr(mField.getName(), mField.getValue());
 			//System.out.println("[Shp-Random-Reader] Feature " + mField.getName() + ": " + str);
 		}
 		//System.out.println("[readRecordPolygon] id: " + feature.getId());

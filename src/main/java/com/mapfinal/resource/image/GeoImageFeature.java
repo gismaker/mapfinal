@@ -25,10 +25,6 @@ public class GeoImageFeature<M> extends Image<M> implements GeoImage<M> {
 	 * 包围盒
 	 */
 	private Envelope envelope;
-	/**
-	 * 最后一次渲染时间
-	 */
-	private long activeTime;
 
 	public GeoImageFeature(String name, String url) {
 		super(name, url);
@@ -138,11 +134,4 @@ public class GeoImageFeature<M> extends Image<M> implements GeoImage<M> {
 		this.attributes = attributes;
 	}
 
-	public long getActiveTime() {
-		return activeTime;
-	}
-
-	public void setActiveTime(long activeTime) {
-		this.activeTime = activeTime;
-	}
 }
