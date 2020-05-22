@@ -7,7 +7,6 @@ import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.tile.TileResource;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
 public class TileDispatcher extends Dispatcher {
@@ -15,7 +14,7 @@ public class TileDispatcher extends Dispatcher {
 	private Event event;
 	private RenderEngine engine;
 	private int lastZoom = -1;
-	private boolean randerCacheLayer = true;
+	private boolean renderCacheLayer = false;
 	
 	@SuppressWarnings("rawtypes")
 	public TileDispatcher(SpatialIndexer indexer, TileResourceDispatcher resource) {
@@ -30,9 +29,9 @@ public class TileDispatcher extends Dispatcher {
 		GeoImage feature = (GeoImage) tro.read(sio);
 		if(feature!=null) {
 			engine.renderImageFeature(event, null, feature);
-			feature.destroy();
+			//feature.destroy();
 		}
-		feature = null;
+		//feature = null;
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -40,31 +39,33 @@ public class TileDispatcher extends Dispatcher {
 		if(!event.isRender()) return;
 		this.event = event;
 		this.engine = engine;
-		randerCacheLayer = event.get("tile_randerCacheLayer", randerCacheLayer);
+		renderCacheLayer = event.get("tile_renderCacheLayer", renderCacheLayer);
 		MapContext context = event.get("map");
 		if(lastZoom==-1) lastZoom = (int) context.getZoom();
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
 		int izoom = (int) context.getZoom();
 		event.set("type", resource.getTmsType()).set("name", resource.getName());
-		if(izoom > 0 && randerCacheLayer){
-			query(event.set("zoom", izoom-1), context.getSceneEnvelope(), new ItemVisitor() {
-				@Override
-				public void visitItem(Object item) {
-					// TODO Auto-generated method stub
-					if (item instanceof SpatialIndexObject) {
-						SpatialIndexObject sio = (SpatialIndexObject) item;
-						sio.setOption("rendertype", "renderOnCache");
-						GeoImage feature = (GeoImage) resource.read(sio);
-						if(feature!=null) {
-							engine.renderImageFeature(event, null, feature);
-							feature.destroy();
-						}
-						feature = null;
-					}
-				}
-			});
-		}
-		query(event.set("zoom", izoom), context.getSceneEnvelope(), this);
+		System.out.println("TileDispatcher: " + resource.getName() + ", renderCacheLayer="+renderCacheLayer);
+//		if(izoom > 0 && renderCacheLayer){
+//			//这里有问题，不应该这么处理
+//			query(event.set("zoom", lastZoom), context.getSceneEnvelope(), new ItemVisitor() {
+//				@Override
+//				public void visitItem(Object item) {
+//					// TODO Auto-generated method stub
+//					if (item instanceof SpatialIndexObject) {
+//						SpatialIndexObject sio = (SpatialIndexObject) item;
+//						sio.setOption("rendertype", "renderOnCache");
+//						GeoImage feature = (GeoImage) resource.read(sio);
+//						if(feature!=null) {
+//							engine.renderImageFeature(event, null, feature);
+//							feature.destroy();
+//						}
+//						feature = null;
+//					}
+//				}
+//			});
+//		} 
+		query(event, context.getSceneEnvelope(), this);
 		TileResourceDispatcher tileResource = (TileResourceDispatcher) resource;
 		tileResource.setCurrentTileNumberOnScreen(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
@@ -75,12 +76,12 @@ public class TileDispatcher extends Dispatcher {
 		return false;
 	}
 
-	public boolean isRanderCacheLayer() {
-		return randerCacheLayer;
+	public boolean isRenderCacheLayer() {
+		return renderCacheLayer;
 	}
 
-	public void setRanderCacheLayer(boolean randerCacheLayer) {
-		this.randerCacheLayer = randerCacheLayer;
+	public void setRenderCacheLayer(boolean renderCacheLayer) {
+		this.renderCacheLayer = renderCacheLayer;
 	}
 	
 }

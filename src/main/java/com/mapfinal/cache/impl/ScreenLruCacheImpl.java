@@ -7,43 +7,26 @@ import java.util.Map;
 
 import com.mapfinal.MapfinalObject;
 import com.mapfinal.cache.Cache;
+import com.mapfinal.cache.LRU;
 
 public class ScreenLruCacheImpl<K, V extends MapfinalObject> implements Cache<K, V> {
 
-	private Map<K, V> mBitmapCache;
+	private LRU<K, V> mBitmapCache;
     protected int mCacheSize = 0;
     protected final Object lock = new Object();
 	
 	public ScreenLruCacheImpl(int size) {
 		if(size==0) return;
 		synchronized (lock) {
-			mBitmapCache = lruCache(size);
+			mBitmapCache = new LRU(size);
         }
 		mCacheSize = size;
 	}
 	
-	protected static <K, V> Map<K, V> lruCache(final int maxSize)
-    {
-        return new LinkedHashMap<K, V>(maxSize * 4 / 3, 0.75f, true)
-        {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<K, V> eldest)
-            {
-            	return size() > maxSize;
-//            	boolean flag = size() > maxSize;
-//            	if(flag) {
-//            		MapfinalObject obj = (MapfinalObject) eldest.getValue();
-//            		obj.destroy();
-//            	}
-//                return flag;
-            }
-        };
-    }
-	
 	public void resize(int size) {
 		if(size==0) return;
 		synchronized (lock) {
-			mBitmapCache = lruCache(size);
+			mBitmapCache.resize(size);
         }
 		mCacheSize = size;
 	}

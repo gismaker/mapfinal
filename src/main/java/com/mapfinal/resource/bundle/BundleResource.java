@@ -60,6 +60,8 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 		if(feature==null) {
 			Tile tile = (Tile) sio.getOption("tile");
 			String tileUrl = tile.getIntactUrl(this.url);
+			//System.out.println("[BundleSource] tile: " + tile.getId() + ", url: " + tileUrl);
+			//System.out.println("[BundleCollection] dataCache: " + cache.size());
 			feature = new BundleFeature(tileUrl, tile);
 			if(feature!=null) {
 				feature.setCollectionKey(this.name);
@@ -116,6 +118,7 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 		if(numTile < 1 || this.screenTileNumber == numTile) return;
 		this.screenTileNumber = numTile;
 		int cacheSize = cacheScreenNum * screenTileNumber;
+		//System.out.println("[Bundle] currentTileNumberOnScreen: " + numTile + ", cacheScreenNum: " + cacheScreenNum);
 		if(this.cache instanceof ScreenLruCacheImpl) {
 			ScreenLruCacheImpl slc = (ScreenLruCacheImpl) this.cache;
 			slc.resize(cacheSize);

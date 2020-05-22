@@ -117,4 +117,11 @@ public class LruCache<K, V> {
 	public synchronized void setCacheSize(int cacheSize) {
 		this.cacheSize = cacheSize;
 	}
+	
+	/**
+	 * try it
+	 */
+	public synchronized void resize(int cacheSize) {
+		this.cacheSize = cacheSize;
+	}
 } // end class LRUCache

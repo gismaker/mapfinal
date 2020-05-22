@@ -21,6 +21,7 @@ import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
 import com.mapfinal.geometry.ScreenPoint;
+import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.TileLayer;
@@ -51,8 +52,8 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp
-        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
-        layer.addTo(Mapfinal.me().getMap());
+//        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
+//        layer.addTo(Mapfinal.me().getMap());
         
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "loc.png"));
         marker.setScale(0.5f);
@@ -73,14 +74,14 @@ public class MapFinalPanel extends JPanel {
         
 
         //bundle
-//        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
-//        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("default", bundle);
-//        bundleLayer.addTo(Mapfinal.me().getMap());
+        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
+        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+        bundleLayer.addTo(Mapfinal.me().getMap());
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
-//        Mapfinal.me().getMap().setCenter(new Latlng(35.43800418056032,102.98341606580078));
-//        Mapfinal.me().getMap().setZoom(13);
+        Mapfinal.map().setCenter(new Latlng(35.43800418056032,102.98341606580078));
+        Mapfinal.map().setZoom(13);
         
         addMouseListener(new MouseListener() {
 			@Override

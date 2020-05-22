@@ -49,7 +49,6 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		if(zoom < getMinZoom() || zoom > getMaxZoom()) return;
 		//System.out.println("feature layer render.");
 		if(dispatcher!=null) {
-			event.set("layer", this);
 			dispatcher.draw(event, engine, getRenderer());
 		}
 	}
