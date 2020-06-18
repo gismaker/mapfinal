@@ -20,6 +20,7 @@ mapfinal-0.3.2:
 优化：优化Bundle的界面缓存
 优化：Event可拷贝
 优化：去掉原Graphic，GeoElement改为Graphic
+优化：优化Feature的点、线绘制
 
 -----------------------------
 mapfinal-0.3.1:

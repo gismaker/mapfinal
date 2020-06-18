@@ -8,7 +8,8 @@ import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.map.AbstractLayer;
-import com.mapfinal.render.FeatureRo;
+import com.mapfinal.map.Feature;
+import com.mapfinal.map.FeatureList;
 import com.mapfinal.render.RenderEngine;
 
 /**
@@ -18,24 +19,31 @@ import com.mapfinal.render.RenderEngine;
  */
 public class GraphicsLayer extends AbstractLayer {
 
-	private List<FeatureRo> graphics;
-	private String geoType;//图形类型，点，线，面
+	private FeatureList<Long> graphics;
+	/**
+	 * 被选中的编辑对象
+	 */
+	private Feature<Long> editor;
+	private int editIndex = -1;
+	private int editMode = 0;
+	
 	
 	public GraphicsLayer() {
-		graphics = new ArrayList<FeatureRo>();
+		graphics = new FeatureList<Long>();
 	}
 	
 	@Override
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
-		return null;
+		return graphics.getEnvelope();
 	}
 
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < graphics.size(); i++) {
-			FeatureRo g = graphics.get(i);
+			if(i==editIndex) continue;
+			Feature<Long> g = graphics.getFeature(i);
 			
 		}
 	}
@@ -43,18 +51,20 @@ public class GraphicsLayer extends AbstractLayer {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if("graphics:selected".equals(event.getAction())) {
+		int count = graphics.size();
+		if(count < 1) return false;
+		if("graphics:selected".equals(event.getAction()) && editMode==1) {
 			//选择事件
 			Coordinate coordinate = event.get("point");
-			for (int i = 0; i < graphics.size(); i++) {
-				FeatureRo g = graphics.get(i);
-				boolean flag = g.getFeature().contains(coordinate);
+			for (int i = count-1; i > 0; i--) {
+				Feature<Long> g = graphics.getFeature(i);
+				boolean flag = g.contains(coordinate);
 				if(flag) {
-					g.setEditMode(true);
-					break;
+					editIndex = i;
+					editor = g;
+					return true;
 				}
 			}
-			
 		}
 		return false;
 	}
@@ -63,32 +73,34 @@ public class GraphicsLayer extends AbstractLayer {
 	 * 增加一个graphic
 	 * @param graphic
 	 */
-	public void add(FeatureRo graphic) {
-		graphics.add(graphic);
+	public void add(Feature<Long> graphic) {
+		if(graphic.getId() < graphics.featureCount()) {
+			graphic.setId(graphics.featureCount());
+		}
+		graphics.addFeature(graphic);
 	}
 		
 	/**
 	 * 清除所有graphics
 	 */
 	public void clear() {
-		graphics.clear();
-	}
-	
-	/**
-	 * 将一个特定的graphic移到顶部
-	 * @param graphic
-	 */
-	public void moveToTop(FeatureRo graphic) {
-		graphics.remove(graphic);
-		graphics.add(0, graphic);
+		graphics.clearFeature();
 	}
 	
 	/**
 	 * 删除指定的graphic
 	 * @param graphic
 	 */
-	public void remove(FeatureRo graphic) {
-		graphics.remove(graphic);
+	public void remove(Feature<Long> graphic) {
+		graphics.removeFeature(graphic);
+	}
+
+	public Feature<Long> getEditor() {
+		return editor;
+	}
+
+	public void setEditor(Feature<Long> editor) {
+		this.editor = editor;
 	}
 
 }

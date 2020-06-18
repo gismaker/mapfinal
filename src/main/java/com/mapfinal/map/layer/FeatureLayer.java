@@ -5,6 +5,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
+import com.mapfinal.render.Renderer;
 import com.mapfinal.resource.VectorResource;
 
 import org.locationtech.jts.geom.Envelope;
@@ -32,6 +33,11 @@ public class FeatureLayer extends AbstractLayer {
 		dispatcher = (FeatureDispatcher) resource.connection();
 		System.out.println("FeatureDispatcher: " + resource.getName());
 		setSpatialReference(resource.getSpatialReference());
+	}
+	
+	public FeatureLayer(VectorResource resource, Renderer renderer) {
+		this(resource);
+		setRenderer(renderer);
 	}
 	/*
 	public void addFeature(Feature feature) {

@@ -57,6 +57,16 @@ public class LayerGroup extends AbstractLayer implements SceneNode {
 		layers.add(to, layer);
 	}
 	
+	public void moveTop(Layer layer) {
+		layers.remove(layer);
+		layers.add(0, layer);
+	}
+	
+	public void moveEnd(Layer layer) {
+		layers.remove(layer);
+		layers.add(layer);
+	}
+	
 	public List<Layer> getLayers() {
 		return layers;
 	}

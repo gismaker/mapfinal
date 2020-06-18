@@ -232,6 +232,16 @@ public class GeoKit {
 		MultiPoint mpoint = (MultiPoint) reader.read(wkt);
 		return mpoint;
 	}
+	
+	public static MultiPoint createMultiPoint(Point[] points) {
+		MultiPoint ms = geometryFactory.createMultiPoint(points);
+		return ms;
+	}
+	
+	public static MultiPoint createMultiPoint(Coordinate[] coords) {
+		MultiPoint ms = geometryFactory.createMultiPointFromCoords(coords);
+		return ms;
+	}
 
 	/**
 	 *
@@ -310,6 +320,12 @@ public class GeoKit {
 			return null;
 		WKTReader reader = new WKTReader(geometryFactory);
 		Polygon polygon = (Polygon) reader.read(wkt);
+		return polygon;
+	}
+	
+	
+	public static Polygon createPolygon(Coordinate[] coords) {
+		Polygon polygon = geometryFactory.createPolygon(coords);
 		return polygon;
 	}
 

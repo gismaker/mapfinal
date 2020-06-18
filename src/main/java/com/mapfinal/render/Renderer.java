@@ -27,11 +27,11 @@ public interface Renderer {
 	
 	public static final String EVENT_CANCELDRAW = "render:cancelDraw";
 
-	public Symbol getSymbol();
-	public void setSymbol(Symbol symbol);
-	
-	public Renderable getRenderable();
-	public void setRenderable(Renderable renderable);
+//	public Symbol getSymbol();
+//	public void setSymbol(Symbol symbol);
+//	
+//	public Renderable getRenderable();
+//	public void setRenderable(Renderable renderable);
 	
 	public void draw(Event event, RenderEngine engine);
 	public void handleEvent(Event event);

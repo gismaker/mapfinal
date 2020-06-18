@@ -256,4 +256,10 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 	public void setCollectionKey(String collectionKey) {
 		this.collectionKey = collectionKey;
 	}
+
+	@Override
+	public boolean isRectImage() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

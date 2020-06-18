@@ -113,4 +113,10 @@ public class TileFeature<M> implements GeoImage<M> {
 			data.referenceRelease();
 		}
 	}
+
+	@Override
+	public boolean isRectImage() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

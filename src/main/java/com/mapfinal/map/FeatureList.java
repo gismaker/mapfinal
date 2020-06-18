@@ -1,12 +1,11 @@
 package com.mapfinal.map;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.locationtech.jts.geom.Envelope;
 
-import com.mapfinal.cache.Cache;
-import com.mapfinal.cache.impl.MapCacheImpl;
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.resource.Data;
@@ -18,7 +17,7 @@ import com.mapfinal.resource.Data;
  *
  * @param <K>
  */
-public class FeatureClass<K> implements Data, Cloneable {
+public class FeatureList<K> implements Data, Cloneable {
 
 	private String name;
 	/**
@@ -28,7 +27,7 @@ public class FeatureClass<K> implements Data, Cloneable {
 	/**
 	 * 要素集合
 	 */
-	private Cache<K, Feature<K>> features;
+	private List<Feature<K>> features;
 	/**
 	 * 坐标系统
 	 */
@@ -42,18 +41,18 @@ public class FeatureClass<K> implements Data, Cloneable {
 	 */
 	private String geometryType;
 
-	public FeatureClass() {
+	public FeatureList() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FeatureClass(List<Field> fields) {
+	public FeatureList(List<Field> fields) {
 		this.fields = fields;
-		features = new MapCacheImpl<K, Feature<K>>();
+		features = new ArrayList<Feature<K>>();
 	}
 	
 	
 	@Override
-	public FeatureClass<K> clone() {
+	public FeatureList<K> clone() {
 //		FeatureClass<K> result = new FeatureClass<>();
 //		result.setEnvelope(getEnvelope());
 //		result.setGeometryType(getGeometryType());
@@ -62,9 +61,9 @@ public class FeatureClass<K> implements Data, Cloneable {
 //		result.setName(getName());
 //		result.setSpatialReference(getSpatialReference());
 //		return result;
-		FeatureClass<K> o = null;
+		FeatureList<K> o = null;
         try {
-            o = (FeatureClass<K>) super.clone();
+            o = (FeatureList<K>) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -83,23 +82,7 @@ public class FeatureClass<K> implements Data, Cloneable {
 				this.envelope.intersection(feature.getEnvelope());
 			}
 		}
-		features.put(feature.getId(), feature);
-	}
-
-	/**
-	 * 增加要素
-	 * @param id
-	 * @param feature
-	 */
-	public void putFeature(K id, Feature<K> feature) {
-		if(feature.getEnvelope()!=null) {
-			if(this.envelope==null) {
-				this.envelope = new Envelope(feature.getEnvelope());
-			} else {
-				this.envelope.intersection(feature.getEnvelope());
-			}
-		}
-		features.put(id, feature);
+		features.add(feature);
 	}
 
 	/**
@@ -107,8 +90,8 @@ public class FeatureClass<K> implements Data, Cloneable {
 	 * @param id
 	 * @return
 	 */
-	public Feature<K> getFeature(K id) {
-		return features.get(id);
+	public Feature<K> getFeature(int index) {
+		return features.get(index);
 	}
 	
 	/**
@@ -116,45 +99,33 @@ public class FeatureClass<K> implements Data, Cloneable {
 	 * @param ids
 	 * @return
 	 */
-	public FeatureClass<K> getFeatures(K[] ids) {
+	public FeatureList<K> getFeatures(int[] ids) {
 		// TODO Auto-generated method stub
 		if(ids.length < 1) return null;
-		FeatureClass<K> featureResult = new FeatureClass<K>(fields);
+		FeatureList<K> featureResult = new FeatureList<K>(fields);
 		featureResult.setGeometryType(geometryType);
 		featureResult.setSpatialReference(spatialReference);
-		for (K id : ids) {
+		for (int id : ids) {
 			Feature<K> feature = getFeature(id);
 			featureResult.addFeature(feature);
 		}
 		return featureResult;
 	}
 	
-	public void updateFeature(Feature<K> feature) {
-		// TODO Auto-generated method stub
-		putFeature(feature.getId(), feature);
+	public void updateFeature(int index, Feature<K> feature) {
+		features.set(index, feature);
 	}
 
-	public void updateFeatures(List<Feature<K>> features) {
-		// TODO Auto-generated method stub
-		for (Feature<K> feature : features) {
-			putFeature(feature.getId(), feature);
-		}
-	}
-	
 	public boolean removeFeature(Feature<K> feature) {
-		return features.remove(feature.getId());
+		return features.remove(feature);
 	}
 
-	public boolean removeFeature(K key) {
-		return features.remove(key);
+	public Feature<K> removeFeature(int index) {
+		return features.remove(index);
 	}
 	
 	public void clearFeature() {
 		features.clear();
-	}
-	
-	public long size() {
-		return features.size();
 	}
 
 	/**
@@ -166,14 +137,14 @@ public class FeatureClass<K> implements Data, Cloneable {
 		return features.size();
 	}
 	
-	public Cache<K, Feature<K>> getFeatures() {
+	public int size() {
+		return features.size();
+	}
+
+	public List<Feature<K>> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Cache<K, Feature<K>> features) {
-		this.features = features;
-	}
-	
 	public Field getField(String fieldName) {
 		// TODO Auto-generated method stub
 		if(fields==null || StringKit.isBlank(fieldName)) {

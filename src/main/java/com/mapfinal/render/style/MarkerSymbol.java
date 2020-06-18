@@ -32,27 +32,27 @@ public abstract class MarkerSymbol implements Symbol {
 	/**
 	 * 标注样式角度
 	 */
-	private float angle;
+	private float angle = 0;
 	/**
 	 * 标注样式宽度
 	 */
-	private float width;
+	private float width = 5;
 	/**
 	 * 标注样式高度
 	 */
-	private float height;
+	private float height = 5;
 	/**
 	 * 标注样式X方向偏移量
 	 */
-	private float offsetX;
+	private float offsetX = 0;
 	/**
 	 * 标注样式Y方向偏移量
 	 */
-	private float offsetY;
+	private float offsetY = 0;
 	/**
 	 * 广告板
 	 */
-	private boolean isBillboard;
+	private boolean isBillboard = false;
 	
 	public MarkerSymbol() {
 	}

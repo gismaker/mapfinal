@@ -43,6 +43,7 @@ public class MapFinalPanel extends JPanel {
         //GeoMap map = new GeoMap();
         //scene.addNode(map);
         Mapfinal.me().init(scene, new GraphicsMapfinalFactory());
+        Mapfinal.me().setCacheFolder("D:\\lambkit-gis-earth\\data\\cache");
        
         //tile
         //String url = "D:\\web\\gwzw\\tomcat\\webapps\\tile\\grey\\{z}\\{y}_{x}.png";
@@ -52,8 +53,14 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp
-//        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
-//        layer.addTo(Mapfinal.me().getMap());
+        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Capitals.shp");
+        layer.addTo(Mapfinal.me().getMap());
+        
+        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
+        layerPl.addTo(Mapfinal.me().getMap());
+        
+        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
+        layerLine.addTo(Mapfinal.me().getMap());
         
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "loc.png"));
         marker.setScale(0.5f);
@@ -67,21 +74,21 @@ public class MapFinalPanel extends JPanel {
 			}
 		});
         
-        LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
-        ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "psds17397.jpg"));
-        imgo.setOpacity(0.8f);
-        imgo.addTo(Mapfinal.me().getMap());
+//        LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
+//        ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "psds17397.jpg"));
+//        imgo.setOpacity(0.8f);
+//        imgo.addTo(Mapfinal.me().getMap());
         
 
-        //bundle
-        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
-        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
-        bundleLayer.addTo(Mapfinal.me().getMap());
+//        //bundle
+//        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
+//        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+//        bundleLayer.addTo(Mapfinal.me().getMap());
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
-        Mapfinal.map().setCenter(new Latlng(35.43800418056032,102.98341606580078));
-        Mapfinal.map().setZoom(13);
+//        Mapfinal.map().setCenter(new Latlng(35.43800418056032,102.98341606580078));
+//        Mapfinal.map().setZoom(13);
         
         addMouseListener(new MouseListener() {
 			@Override

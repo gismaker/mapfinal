@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mapfinal.converter.JsonConverter;
 import com.mapfinal.converter.JsonStore;
 import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.render.style.Symbol;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -36,6 +37,14 @@ public class Feature<K> implements Graphic, JsonStore {
 	 * 包围盒
 	 */
 	protected Envelope envelope;
+	/**
+	 * 索引对象
+	 */
+	//protected SpatialIndexObject spatialIndexObject;
+	/**
+	 * 符号化
+	 */
+	//protected Symbol symbol;
 
 	public Feature() {
 	}
@@ -131,6 +140,8 @@ public class Feature<K> implements Graphic, JsonStore {
 			attributes.clear();
 		attributes = null;
 		id = null;
+		//spatialIndexObject = null;
+		geometry = null;
 	}
 
 	/**
@@ -162,7 +173,7 @@ public class Feature<K> implements Graphic, JsonStore {
 	}
 
 	public <M> M getAttr(String name) {
-		return (M) attributes.get(name);
+		return attributes != null ? (M) attributes.get(name) : null;
 	}
 
 	public <M> M getAttr(String name, M defaultValue) {
@@ -170,6 +181,13 @@ public class Feature<K> implements Graphic, JsonStore {
 			return defaultValue;
 		}
 		return (M) attributes.get(name);
+	}
+	
+	public Object removeAttr(String name) {
+		if (attributes != null) {
+			return attributes.remove(name);
+		}
+		return null;	
 	}
 
 	/**
@@ -228,6 +246,19 @@ public class Feature<K> implements Graphic, JsonStore {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+	
+	/**
+	 * 空间索引对象
+	 * 
+	 * @return
+	 */
+//	public SpatialIndexObject getSpatialIndexObject() {
+//		return spatialIndexObject;
+//	}
+//
+//	public void setSpatialIndexObject(SpatialIndexObject spatialIndexObject) {
+//		this.spatialIndexObject = spatialIndexObject;
+//	}
 
 	@Override
 	public void fromJson(JSONObject jsonObject) {
@@ -243,4 +274,12 @@ public class Feature<K> implements Graphic, JsonStore {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+//	public Symbol getSymbol() {
+//		return symbol;
+//	}
+//
+//	public void setSymbol(Symbol symbol) {
+//		this.symbol = symbol;
+//	}
 }

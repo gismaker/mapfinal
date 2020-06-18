@@ -2,7 +2,6 @@ package com.mapfinal.platform.develop.graphics;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,6 +23,7 @@ import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
 import com.mapfinal.render.style.SimpleMarkerSymbol;
+import com.mapfinal.render.style.Symbol;
 import com.mapfinal.render.style.FillSymbol;
 import com.mapfinal.render.style.PictureMarkerSymbol;
 import com.mapfinal.render.style.LineSymbol;
@@ -35,6 +35,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
@@ -101,17 +103,18 @@ public class GraphicsRenderEngine implements RenderEngine {
 	int[] xPoints = new int[dnum];
 	int[] yPoints = new int[dnum];
 
-	public void renderFeature(Event event, Renderer renderer, Feature feature) {
+	public void renderFeature(Event event, Symbol symbol, Feature feature) {
 		// TODO Auto-generated method stub
+		/*
 		MapContext context = event.get("map");
 		double zoom = context.getZoom();
 		FillSymbol symbol = null;
-		if (renderer == null || renderer.getSymbol() == null || !(renderer.getSymbol() instanceof FillSymbol)) {
+//		if (renderer == null || renderer.getSymbol() == null || !(renderer.getSymbol() instanceof FillSymbol)) {
 			symbol = new SimpleFillSymbol(ColorKit.GREEN);
 			symbol.setAlpha(125);
 			symbol.setOutline(new SimpleLineSymbol(ColorKit.RED, 1));
 			symbol.getOutline().setAlpha(125);
-		}
+//		}
 		int numberPolygon = feature.getGeometry().getNumGeometries();
 		for (int i = 0; i < numberPolygon; i++) {
 			Polygon geometry = (Polygon) feature.getGeometry().getGeometryN(i);
@@ -147,10 +150,51 @@ public class GraphicsRenderEngine implements RenderEngine {
 		}
 		// xPoints=null;
 		// yPoints=null;
+		 * */
+		
+		if(feature==null || feature.getGeometry()==null) return;
+		Geometry geometry = feature.getGeometry();
+		if("MultiLineString".equals(geometry.getGeometryType()) || geometry instanceof MultiLineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("LineString".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("LineRing".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("MultiPolygon".equals(geometry.getGeometryType()) || geometry instanceof MultiPolygon) {
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
+		    if(symbol==null) {
+		    	SimpleFillSymbol fs = new SimpleFillSymbol(ColorKit.RED);
+		    	fs.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
+		    	renderPolygon(event, fs, geometry);
+		    } else {
+		    	renderPolygon(event, (FillSymbol) symbol, geometry);
+		    }
+		} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
+		    if(symbol==null) {
+		    	SimpleFillSymbol fs = new SimpleFillSymbol(ColorKit.RED);
+		    	fs.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
+		    	renderPolygon(event, fs, geometry);
+		    } else {
+		    	renderPolygon(event, (FillSymbol) symbol, geometry);
+		    }
+		} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof org.locationtech.jts.geom.Point) {
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? null : symbol;
+		    renderPoint(event, (MarkerSymbol) symbol, geometry);
+		} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof MultiPoint) {
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? null : symbol;
+		    renderPoint(event, (MarkerSymbol) symbol, geometry);
+		}
 	}
 
+	/**
+	 * TexturePaint画多边形纹理图
+	 */
 	@Override
-	public void renderImageFeature(Event event, Renderer renderer, GeoImage feature) {
+	public void renderImageFeature(Event event, Symbol symbol, GeoImage feature) {
 		// TODO Auto-generated method stub
 		if (feature == null || feature.getImage() == null)
 			return;
@@ -273,7 +317,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 
 	private Graphics2D getGraphics2D(FillSymbol symbol) {
 		if (symbol == null || !(symbol instanceof FillSymbol)) {
-			symbol = new SimpleFillSymbol(ColorKit.RED);
+			symbol = new SimpleFillSymbol(ColorKit.BLUE);
 		}
 		Graphics2D g2d = getGraphics2D();
 		// 设置画笔颜色
@@ -286,7 +330,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 	public void renderPoint(MarkerSymbol symbol, Coordinate coordinate) {
 		// TODO Auto-generated method stub
 		if (symbol == null || !(symbol instanceof MarkerSymbol)) {
-			renderPointFill(new SimpleMarkerSymbol(ColorKit.RED), coordinate);
+			renderPointFill(new SimpleMarkerSymbol(ColorKit.GREEN), coordinate);
 		} else if (symbol instanceof SimpleMarkerSymbol) {
 			renderPointFill((SimpleMarkerSymbol) symbol, coordinate);
 		} else if (symbol instanceof PictureMarkerSymbol) {
@@ -368,14 +412,44 @@ public class GraphicsRenderEngine implements RenderEngine {
 	@Override
 	public void renderPolygon(Event event, FillSymbol symbol, Polygon geometry) {
 		// TODO Auto-generated method stub
-		int[] xPoints = new int[geometry.getNumPoints()];
-		int[] yPoints = new int[geometry.getNumPoints()];
 		int nPoints = geometry.getNumPoints();
 		MapContext context = event.get("map");
 		double zoom = context.getZoom();
 		if (symbol == null || !(symbol instanceof FillSymbol)) {
 			symbol = new SimpleFillSymbol(ColorKit.RED);
 		}
+		LineString line = geometry.getExteriorRing();
+		CoordinateSequence gcs = line.getCoordinateSequence();
+		int t = (int) zoom;
+		t = t < 10 ? 10 - t : 1;
+		int lens = nPoints / t + 1;
+		if (lens > dnum) {
+			// 动态长度配置
+			dnum = lens;
+			xPoints = Arrays.copyOf(xPoints, dnum);
+			yPoints = Arrays.copyOf(yPoints, dnum);
+		}
+		// 按照级别较小t个点的绘制，zoom越小，跳过的点越多，多边形越粗糙（t = t < 10 ? 10-t : 1;）
+		// nPoints = gcs.toPolygon(context, xPoints, yPoints, nPoints);
+		int s = 0;
+		for (int j = 0; j < nPoints; j += t) {
+			ScenePoint sp = context.latLngToPoint(Latlng.create(gcs.getCoordinate(j)), zoom);
+			xPoints[s] = sp.getSx();
+			yPoints[s] = sp.getSy();
+			s++;
+		}
+		
+		if (symbol.getAlpha() > 0) {
+			Graphics2D g2d = getGraphics2D(symbol);
+			g2d.fillPolygon(xPoints, yPoints, s);
+		}
+		if (symbol.getOutline() != null) {
+			Graphics2D g2d = getGraphics2D(symbol.getOutline());
+			g2d.drawPolygon(xPoints, yPoints, s);
+		}
+		/*
+		int[] xPoints = new int[geometry.getNumPoints()];
+		int[] yPoints = new int[geometry.getNumPoints()];
 		for (int j = 0; j < geometry.getNumPoints(); j++) {
 			Coordinate coordinate = geometry.getCoordinates()[j];
 			Latlng latlng = Latlng.create(coordinate);
@@ -396,5 +470,6 @@ public class GraphicsRenderEngine implements RenderEngine {
 			Graphics2D g2d = getGraphics2D(symbol);
 			g2d.fillPolygon(polygon);
 		}
+		*/
 	}
 }

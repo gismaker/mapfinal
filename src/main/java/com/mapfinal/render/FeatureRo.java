@@ -18,7 +18,7 @@ public class FeatureRo<K> extends RenderObject {
 	public void draw(Event event, RenderEngine engine, Renderer renderer) {
 		// TODO Auto-generated method stub
 		if(feature!=null) {
-			engine.renderFeature(event, renderer, feature);
+			engine.renderFeature(event, null, feature);
 		}
 	}
 

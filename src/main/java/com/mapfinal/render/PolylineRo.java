@@ -11,13 +11,13 @@ public class PolylineRo extends FeatureRo {
 	@Override
 	public void draw(Event event, RenderEngine engine, Renderer renderer) {
 		// TODO Auto-generated method stub
-		LineSymbol symbol = null;
-		if(renderer==null || !(renderer.getSymbol() instanceof LineSymbol)) {
-			symbol = new SimpleLineSymbol(ColorKit.RED, 1);
-		} else {
-			symbol = (LineSymbol) renderer.getSymbol();
-		}
-		engine.renderPolyline(event, symbol, event.get("geometry"));
+//		LineSymbol symbol = null;
+//		if(renderer==null || !(renderer.getSymbol() instanceof LineSymbol)) {
+//			symbol = new SimpleLineSymbol(ColorKit.RED, 1);
+//		} else {
+//			symbol = (LineSymbol) renderer.getSymbol();
+//		}
+//		engine.renderPolyline(event, symbol, event.get("geometry"));
 	}
 
 	@Override

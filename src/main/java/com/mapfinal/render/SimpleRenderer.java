@@ -6,16 +6,16 @@ import com.mapfinal.render.style.Symbol;
 public class SimpleRenderer implements Renderer {
 
 	private Symbol symbol;
-	private Renderable renderable;
+//	private Renderable renderable;
 	
 	public SimpleRenderer(Symbol symbol) {
 		this.setSymbol(symbol);
 	}
 	
-	public SimpleRenderer(Symbol symbol, Renderable renderable) {
-		this.setSymbol(symbol);
-		this.setRenderable(renderable);
-	}
+//	public SimpleRenderer(Symbol symbol, Renderable renderable) {
+//		this.setSymbol(symbol);
+//		this.setRenderable(renderable);
+//	}
 
 	public Symbol getSymbol() {
 		return symbol;
@@ -25,26 +25,27 @@ public class SimpleRenderer implements Renderer {
 		this.symbol = symbol;
 	}
 
-	@Override
-	public Renderable getRenderable() {
-		// TODO Auto-generated method stub
-		return renderable;
-	}
-
-	@Override
-	public void setRenderable(Renderable renderable) {
-		this.renderable = renderable;
-	}
+//	@Override
+//	public Renderable getRenderable() {
+//		// TODO Auto-generated method stub
+//		return renderable;
+//	}
+//
+//	@Override
+//	public void setRenderable(Renderable renderable) {
+//		this.renderable = renderable;
+//	}
 
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		if(renderable!=null) renderable.draw(event, engine, this);
+//		if(renderable!=null) renderable.draw(event, engine, this);
+		
 	}
 
 	@Override
 	public void handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		if(renderable!=null) renderable.handleEvent(event);
+//		if(renderable!=null) renderable.handleEvent(event);
 	}
 }

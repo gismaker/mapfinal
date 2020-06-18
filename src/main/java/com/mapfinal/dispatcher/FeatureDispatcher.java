@@ -31,7 +31,7 @@ public class FeatureDispatcher extends Dispatcher {
 			//System.out.println("[FeatureDispatcher] resultAction render id: " + id);
 			Renderer renderer = event.get("renderer");
 			//QueryParameter query = event.get("queryParameter");
-			engine.renderFeature(event, renderer, feature);
+			engine.renderFeature(event, null, feature);
 		}
 	}
 	

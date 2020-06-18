@@ -1,16 +1,16 @@
 package com.mapfinal.resource.shapefile;
 
 import com.mapfinal.dispatcher.SpatialIndexObject;
-import com.mapfinal.map.FeatureSio;
+import com.mapfinal.map.Feature;
 
 import org.locationtech.jts.geom.Geometry;
 
-public class ShapefileFeature extends FeatureSio<Long> {
+public class ShapefileFeature extends Feature<Long> {
 	
 	private int shpType;
 	
 	public ShapefileFeature(String id, SpatialIndexObject obj, Geometry geometry, int shpType) {
-		super(Long.valueOf(id), obj, geometry);
+		super(Long.valueOf(id), geometry);
 		this.setEnvelope(geometry.getEnvelopeInternal());
 		this.shpType = shpType;
 	}

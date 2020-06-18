@@ -1,8 +1,8 @@
 package com.mapfinal.geometry;
 
 public class ScreenPoint {
-	private float x;
-	private float y;
+	public float x;
+	public float y;
 	
 	public ScreenPoint(float x, float y) {
 		this.x = x;

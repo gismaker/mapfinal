@@ -14,6 +14,11 @@ public class RemoteImage<M> extends Image<M> {
 	private boolean isDestroy = false;
 	private boolean renderOnCache = false;
 	
+	public RemoteImage(String name, String url) {
+		super(name, url, null);
+		setFileType(FileType.http);
+	}
+	
 	public RemoteImage(String name, String url, boolean renderOnCache) {
 		super(name, url, null);
 		setFileType(FileType.http);

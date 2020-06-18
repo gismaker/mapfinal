@@ -20,6 +20,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -41,7 +42,7 @@ public interface RenderEngine {
 	 * @param renderer
 	 * @param feature
 	 */
-	void renderFeature(Event event, Renderer renderer, Feature feature);
+	void renderFeature(Event event, Symbol symbol, Feature feature);
 	
 	/**
 	 * 渲染图片要素
@@ -49,7 +50,7 @@ public interface RenderEngine {
 	 * @param renderer
 	 * @param feature
 	 */
-	void renderImageFeature(Event event, Renderer renderer, GeoImage feature);
+	void renderImageFeature(Event event, Symbol symbol, GeoImage feature);
 	
 	/**
 	 * 渲染图片
@@ -84,7 +85,7 @@ public interface RenderEngine {
 	/**
 	 * 渲染图形
 	 * @param event
-	 * @param renderer
+	 * @param symbol
 	 * @param geometry
 	 */
 	default void render(Event event, Symbol symbol, Geometry geometry) {
@@ -100,9 +101,9 @@ public interface RenderEngine {
 				renderPolygon(event, null, geometry);
 			} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
 				renderPolygon(event, null, geometry);
-			} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
+			} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof Point) {
 				renderPoint(event, null, geometry);
-			} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
+			} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof MultiPoint) {
 				renderPoint(event, null, geometry);
 			}
 		} else {
@@ -180,7 +181,7 @@ public interface RenderEngine {
 		MapContext context = event.get("map");
         for (int i = 1; i < coordinates.size(); i++) {
 			Coordinate la = coordinates.getCoordinate(i-1);
-			Coordinate lb = coordinates.getCoordinate(i-2);
+			Coordinate lb = coordinates.getCoordinate(i);
 			ScenePoint sp1 = context.latLngToPoint(Latlng.create(la));
 			ScenePoint sp2 = context.latLngToPoint(Latlng.create(lb));
 			renderLine(symbol, sp1, sp2);
@@ -236,12 +237,13 @@ public interface RenderEngine {
 				renderPoint(event, symbol, holeLine.getCoordinateSequence());
 			}
 		} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof Point) {
-			renderPoint(event, null, (Point) geometry);
-		} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
+			Point point = (Point) geometry;
+			 renderPoint(event, symbol, point.getCoordinate());
+		} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof MultiPoint) {
 			int numberPolygon = geometry.getNumGeometries();
     		for (int i=0; i<numberPolygon; i++) {
     			Point pt = (Point)geometry.getGeometryN(i);
-    			renderPoint(event, symbol, pt);
+    			renderPoint(event, symbol, pt.getCoordinate());
     		}
 		}
 	}

@@ -6,6 +6,8 @@ import org.locationtech.jts.geom.Envelope;
 public interface GeoImage<M> extends Graphic {
 	
 	public M getImage(); 
+	
+	public boolean isRectImage();
 
 	public Envelope getEnvelope();
 	/**

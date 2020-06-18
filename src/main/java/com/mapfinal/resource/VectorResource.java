@@ -4,8 +4,8 @@ import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.QueryParameter;
-import com.mapfinal.map.Feature;
 import com.mapfinal.map.FeatureClass;
+import com.mapfinal.map.Feature;
 
 /**
  * 空间数据资源对象： 资源唯一性，同一个资源可被多个layer调用，name是主键

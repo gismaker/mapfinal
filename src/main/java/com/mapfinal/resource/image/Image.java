@@ -28,11 +28,6 @@ public class Image<M> extends ResourceObject<Image<M>> implements Data {
 	 */
 	protected M data;
 	
-	protected Image(String name, String url) {
-		this.setName(name);
-		this.setUrl(url);
-	}
-
 	public Image(String name, String url, M image) {
 		this.setName(name);
 		this.setUrl(url);

@@ -1,6 +1,8 @@
 package com.mapfinal.map.layer;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -14,7 +16,6 @@ import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.render.style.Symbol;
 
 public class GeometryLayer extends AbstractLayer {
 
@@ -38,8 +39,8 @@ public class GeometryLayer extends AbstractLayer {
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
 		if(geometry!=null) {
-			Symbol symbol = getRenderer()==null ? null : getRenderer().getSymbol();
-			engine.render(event, symbol, geometry);
+			//Symbol symbol = getRenderer()==null ? null : getRenderer().getSymbol();
+			//engine.render(event, symbol, geometry);
 		}
 	}
 	
@@ -86,5 +87,67 @@ public class GeometryLayer extends AbstractLayer {
 	public void setAttributes(Map<String, Object> attributes) {
 		this.attributes = attributes;
 	}
-
+	
+	public void addAttribute(String name, Object value) {
+		if(attributes==null) {
+			attributes = new HashMap<>();
+		}
+		attributes.put(name, value);
+	}
+	
+	public void addAttr(String name, Object value) {
+		if(attributes==null) {
+			attributes = new HashMap<>();
+		}
+		attributes.put(name, value);
+	}
+	
+	public <M>M getAttr(String name) {
+		if(attributes==null) {
+			return null;
+		}
+		return (M) attributes.get(name);
+	}
+	
+	public <M>M getAttr(String name, M defaultValue) {
+		if(attributes==null) {
+			return defaultValue;
+		}
+		return attributes.get(name)==null ? defaultValue : (M) attributes.get(name);
+	}
+	
+	public Object getAttribute(String name) {
+		if(attributes==null) {
+			return null;
+		}
+		return attributes.get(name);
+	}
+	
+	public Object getAttribute(String name, Object defaultValue) {
+		if(attributes==null) {
+			return defaultValue;
+		}
+		return attributes.get(name)==null ? defaultValue : attributes.get(name);
+	}
+	
+	public Object removeAttr(String name) {
+		if(attributes!=null) {
+			return attributes.remove(name);
+		}
+		return null;
+	}
+	
+	public Object removeAttribute(String name) {
+		if(attributes!=null) {
+			return attributes.remove(name);
+		}
+		return null;
+	}
+	
+	public Set<String> fields() {
+		if(attributes!=null) {
+			return attributes.keySet();
+		}
+		return null;
+	}
 }
