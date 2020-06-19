@@ -149,7 +149,7 @@ public class Shapefile extends VectorResource<Long> {
 		String geometryType = ShpType.shpTypeName(shxRandomAccess.getShpType());
 		featureClass.setGeometryType(geometryType);
 		binit = true;
-		System.out.println("[ShapefileRandomAccess] readInit times: " + (System.currentTimeMillis() - start));
+		System.out.println("[Shapefile] readInit times: " + (System.currentTimeMillis() - start));
 	}
 	
 	/**

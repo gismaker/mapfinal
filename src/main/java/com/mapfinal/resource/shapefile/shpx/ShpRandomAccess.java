@@ -79,7 +79,6 @@ public class ShpRandomAccess {
 		this.mExtent = new Envelope(shpHeader.dbXMin, shpHeader.dbXMax, shpHeader.dbYMin, shpHeader.dbYMax);
 		// 通过索引文件计算主文件记录个数,文件长度数值以16位计
 		this.recordCount = shxRandomAccess.getRecordCount();
-		//System.out.println("[ShpRandomAccess] recordCount: " + recordCount);
 		//System.out.println("[ShpRandomAccess] newClass times: " + (System.currentTimeMillis() - start));
 	}
 
@@ -87,6 +86,7 @@ public class ShpRandomAccess {
 		// TODO Auto-generated method stub
 		Dispatcher dispatchar = null;
 		SpatialIndexer indexer = null;
+		System.out.println("[ShpRandomAccess] shpType: " + shpType);
 		switch (this.shpType) {
 		case ShpType.NULL_SHAPE:
 			break;
@@ -157,7 +157,7 @@ public class ShpRandomAccess {
 		// 读入点记录,记录从1开始
 		for (int i = 1; i <= recordCount; i++) {
 			ShxRecord shx = shxRandomAccess.getRecordPosition(i);
-			length = shx.length();
+			length = shx.length();//28
 			if (length <= 0) {
 				continue;
 			}
@@ -171,11 +171,11 @@ public class ShpRandomAccess {
 				break;
 			}
 			// 记录内容长度是否与shp实体大小一致,索引记录长度是否与记录内容长度一致
-			if (shpRecordHeader.iContentLength * 2 != ShpPointContent.SIZE
-					|| shpRecordHeader.iContentLength * 2 != length) {
+			if (shpRecordHeader.iContentLength * 2 != ShpPointContent.SIZE ) {
+				//|| shpRecordHeader.iContentLength * 2 != length
 				break;
 			}
-			byte[] ptBytesContent = new byte[ShpPointContent.SIZE];
+			byte[] ptBytesContent = new byte[ShpPointContent.SIZE];//20
 			shpRecord.read(ptBytesContent, 0, ptBytesContent.length);
 			pointContent = new ShpPointContent(ptBytesContent);
 			// 类型是否匹配

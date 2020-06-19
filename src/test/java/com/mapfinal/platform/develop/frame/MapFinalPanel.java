@@ -56,11 +56,11 @@ public class MapFinalPanel extends JPanel {
         ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Capitals.shp");
         layer.addTo(Mapfinal.me().getMap());
         
-        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
-        layerPl.addTo(Mapfinal.me().getMap());
-        
-        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
-        layerLine.addTo(Mapfinal.me().getMap());
+//        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
+//        layerPl.addTo(Mapfinal.me().getMap());
+//        
+//        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
+//        layerLine.addTo(Mapfinal.me().getMap());
         
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "loc.png"));
         marker.setScale(0.5f);
