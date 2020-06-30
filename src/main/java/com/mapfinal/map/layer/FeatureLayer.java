@@ -1,7 +1,10 @@
 package com.mapfinal.map.layer;
 
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.dispatcher.FeatureDispatcher;
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
@@ -81,6 +84,9 @@ public class FeatureLayer extends AbstractLayer {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
+		if(dispatcher!=null) {
+			dispatcher.handleEvent(event);
+		}
 		return false;
 	}
 	

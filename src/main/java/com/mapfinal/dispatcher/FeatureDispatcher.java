@@ -1,6 +1,14 @@
 package com.mapfinal.dispatcher;
 
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.index.ItemVisitor;
+
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.geometry.Latlng;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
@@ -43,6 +51,38 @@ public class FeatureDispatcher extends Dispatcher {
 		query(event, context.getSceneEnvelope(), this);
 		//System.out.println("[FeatureDispatcher] size: " + size + ", scene: " + context.getSceneEnvelope().toString());
 		//System.out.println("[FeatureDispatcher] draw times: " + (System.currentTimeMillis() - start));
+	}
+	
+	public boolean handleEvent(Event event) {
+		if(event.isAction("mouseClick")) {
+			MapContext context = event.get("map");
+			//用户点击的像素坐标
+			ScreenPoint sp = event.get("screenPoint");
+			Latlng latlng = context.pointToLatLng(ScenePoint.by(sp));
+			Point point = GeoKit.createPoint(latlng);
+			query(event, new Envelope(latlng), new ItemVisitor() {
+				@Override
+				public void visitItem(Object item) {
+					if (item instanceof SpatialIndexObject) {
+						SpatialIndexObject sio = (SpatialIndexObject) item;
+						boolean bintersects = context.getSceneEnvelope().intersects(sio.getEnvelope());
+						if(!bintersects) return;
+						Feature feature = (Feature) getResource().read(sio);
+						if(feature!=null) {
+							boolean flag = feature.intersects(point);
+							if(flag) {
+								event.put("featureSelected", feature);
+								return;
+							}
+						}
+					}
+				}
+			});
+			if(event.get("featureSelected")!=null)  {
+				return true;
+			}
+		}
+		return false;
 	}
 
 
