@@ -104,11 +104,16 @@ public class SceneGroupNode implements SceneNode {
 	}
 
 	@Override
-	public boolean sendEvent(Event event) {
+	public boolean sendEvent(String action, final Event event) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	@Override
+	public boolean sendEvent(final Event event) {
+		return sendEvent(event.getAction(), event);
+	}
+	
 	@Override
 	public void removeListener(String eventAction, EventListener listener) {
 		// TODO Auto-generated method stub

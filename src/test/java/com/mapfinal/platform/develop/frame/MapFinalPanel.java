@@ -53,8 +53,8 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp
-        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Capitals.shp");
-        layer.addTo(Mapfinal.me().getMap());
+//        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Capitals.shp");
+//        layer.addTo(Mapfinal.me().getMap());
         
 //        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
 //        layerPl.addTo(Mapfinal.me().getMap());

@@ -21,6 +21,7 @@ mapfinal-0.3.2:
 优化：Event可拷贝
 优化：去掉原Graphic，GeoElement改为Graphic
 优化：优化Feature的点、线绘制
+优化：将鼠标事件移出到MapView外部
 修复：无法读取ArcGIS点数据的问题修改
 
 -----------------------------

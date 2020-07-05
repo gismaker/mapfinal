@@ -147,8 +147,13 @@ public abstract class AbstractLayer implements Layer {
 
 	@Override
 	public boolean sendEvent(final Event event) {
+		return sendEvent(event.getAction(), event);
+	}
+	
+	@Override
+	public boolean sendEvent(String action, final Event event) {
 		if(listenerMap!=null) {
-			List<EventListener> syncListeners = listenerMap.get(event.getAction());
+			List<EventListener> syncListeners = listenerMap.get(action);
 			if (syncListeners != null && !syncListeners.isEmpty()) {
 				return invokeListeners(event, syncListeners);
 			}
@@ -168,7 +173,7 @@ public abstract class AbstractLayer implements Layer {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public String getName() {
 		return name;

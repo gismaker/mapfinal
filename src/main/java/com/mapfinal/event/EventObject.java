@@ -27,4 +27,6 @@ public interface EventObject {
 	 * @return
 	 */
 	boolean sendEvent(final Event event);
+	
+	boolean sendEvent(String action, final Event event);
 }

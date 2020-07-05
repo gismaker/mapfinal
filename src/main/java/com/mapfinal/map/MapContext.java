@@ -56,6 +56,10 @@ public class MapContext {
 	 */
 	private float maxZoom = 24;
 	/**
+	 * 正在缩放
+	 */
+	private boolean isZoomScale = true;
+	/**
 	 * 是否缩放动画
 	 */
 	private boolean zoomAnimation = true;
@@ -84,6 +88,8 @@ public class MapContext {
 	 */
 	private ScenePoint sceneSize;
 	
+	private float dragX=0, dragY=0;
+	
 	public MapContext() {
 		// TODO Auto-generated constructor stub
 		sceneCRS = new SceneEPSG3857CRS();
@@ -91,6 +97,31 @@ public class MapContext {
 		centerPoint = getSceneCRS().latLngToPoint(center, this.zoom);
 		resetSceneEnvelope();
 		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), zoom);
+	}
+	
+	public void drag(float x, float y) {
+		dragX = x;
+		dragY = y;
+	}
+	
+	public Coordinate currentDrag() {
+		return new Coordinate(dragX, dragY);
+	}
+	
+	/**
+	 * 鼠标位置的坐标
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Latlng mouseCoordinate(float x, float y) {
+		ScenePoint ct = getCenterPoint();
+		Coordinate t = new Coordinate(-ct.getX() + getWidth() / 2 + dragX,
+				-ct.getY() + getHeight() / 2 + dragY);
+		double tx = x - t.x;
+		double ty = y - t.y;
+		return getSceneCRS().pointToLatLng(new ScenePoint(tx, ty), getZoom());
+		//System.out.println("mouse latlng: " + latlng.toString());
 	}
 	
 	public void resize(int width, int height) {
@@ -122,6 +153,13 @@ public class MapContext {
 	public void resetCenter(float dx, float dy) {
 		if(dx == 0 && dy==0) return;
 		centerPoint.subtract(new ScenePoint(dx, dy));
+		center = getSceneCRS().pointToLatLng(centerPoint, zoom);
+		resetSceneEnvelope();
+	}
+	
+	public void resetCenterForDrag() {
+		if(dragX == 0 && dragY==0) return;
+		centerPoint.subtract(new ScenePoint(dragX, dragY));
 		center = getSceneCRS().pointToLatLng(centerPoint, zoom);
 		resetSceneEnvelope();
 	}
@@ -367,6 +405,14 @@ public class MapContext {
 
 	public void setSpatialReference(SpatialReference spatialReference) {
 		this.spatialReference = spatialReference;
+	}
+
+	public boolean isZoomScale() {
+		return isZoomScale;
+	}
+
+	public void setZoomScale(boolean isZoomScale) {
+		this.isZoomScale = isZoomScale;
 	}
 	
 }

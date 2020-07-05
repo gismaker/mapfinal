@@ -7,9 +7,8 @@ import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.render.SceneNode;
 
-public class LayerGroup extends AbstractLayer implements SceneNode {
+public class LayerGroup extends AbstractLayer {
 
 	private List<Layer> layers;
 	

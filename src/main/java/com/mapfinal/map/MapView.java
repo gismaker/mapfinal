@@ -5,6 +5,8 @@ import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
+import com.mapfinal.event.listener.MapMoveListener;
+import com.mapfinal.event.listener.MapZoomListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.kit.StringKit;
@@ -15,14 +17,11 @@ import org.locationtech.jts.geom.Envelope;
 public class MapView extends LayerGroup {
 
 	private MapContext context;
-	private float x0 = 0, y0 = 0;
-	private float dx = 0, dy = 0;
-	private boolean bMove = false;
-	//private Renderer backgroundRenderer;
-	boolean isZoomScale = false;
 	
 	public MapView() {
 		context = new MapContext();
+		this.addListener("map:move", new MapMoveListener());
+		this.addListener("map:zoom", new MapZoomListener());
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class MapView extends LayerGroup {
 //		ScenePoint ct = context.getCenterPoint();
 //		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
 //				-ct.getY() + context.getHeight() / 2 + dy);
-		Coordinate t = new Coordinate(dx, dy);
+		Coordinate t = context.currentDrag();
 		engine.renderInit(t);
 //		if (backgroundRenderer != null) {
 //			backgroundRenderer.draw(event, engine);
@@ -51,76 +50,18 @@ public class MapView extends LayerGroup {
 		if(flag) return flag;
 		switch (event.getAction()) {
 		case "mouseWheel":
-			isZoomScale = true;
-			if(event.get("rotation")!=null) {
-				int rotation = event.get("rotation");
-				if (rotation == 1) {
-					zoomOut();
-				}
-				if (rotation == -1) {
-					zoomIn();
-				}
-			}
-			if(event.get("scaleFactor")!=null) {
-				float scaleFactor = event.get("scaleFactor");
-				float hzoom = context.getZoom();
-				hzoom += scaleFactor - 1;
-				context.setZoom(hzoom);
-			}
-			// System.out.println("[GeoMap.onEvent] current zoom: " +
-			// getZoom());
-			EventKit.sendEvent("redraw");
-			//isZoomScale = false;
-			break;
+			return sendEvent("map:zoom", event);
 		case "mouseDown":
-			isZoomScale = false;
-			ScreenPoint sp = event.get("screenPoint");
-			x0 = sp.getX();
-			y0 = sp.getY();
-			bMove = true;
-			break;
+			return sendEvent("map:move", event);
 		case "mouseUp":
-			if (bMove) {
-				bMove = false;
-				if(!isZoomScale) {
-					context.resetCenter(dx, dy);
-					//System.out.println("[GeoMap.onEvent] mouseUp: " + dx + ", " + dy);
-				}
-				isZoomScale = false;
-				dx = 0;
-				dy = 0;
-				// System.out.println("[GeoMap.onEvent] mouseUp");
-				EventKit.sendEvent("redraw");
-			}
-			break;
+			return sendEvent("map:move", event);
 		case "mouseMove":
-			if (bMove && !isZoomScale) {
-				ScreenPoint spm = event.get("screenPoint");
-				dx = spm.getX() - x0;
-				dy = spm.getY() - y0;
-				// System.out.println("[GeoMap.onEvent] move x: " + x + ", y: "
-				// + y + ", x0: " + x0 + ", y0: " + y0);
-				// System.out.println("[GeoMap.onEvent] move dx: " + dx + ", dy:
-				// " + dy);
-				EventKit.sendEvent("redraw");
-			}
-			break;
+			return sendEvent("map:move", event);
 		default:
-			break;
+			return false;
 		}
-		return true;
 	}
 	
-	public Latlng mouseCoordinate(float x, float y) {
-		ScenePoint ct = context.getCenterPoint();
-		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
-				-ct.getY() + context.getHeight() / 2 + dy);
-		double tx = x - t.x;
-		double ty = y - t.y;
-		return getSceneCRS().pointToLatLng(new ScenePoint(tx, ty), getZoom());
-		//System.out.println("mouse latlng: " + latlng.toString());
-	}
-
 	public MapContext getContext() {
 		return context;
 	}
