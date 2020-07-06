@@ -421,8 +421,14 @@ public class GraphicsRenderEngine implements RenderEngine {
 		LineString line = geometry.getExteriorRing();
 		CoordinateSequence gcs = line.getCoordinateSequence();
 		int t = (int) zoom;
-		t = t < 10 ? 10 - t : 1;
-		int lens = nPoints / t + 1;
+		int lens = nPoints;
+		if(nPoints > 10000) {
+			t = t < 10 ? 10 - t : 1;
+			lens = nPoints / t + 1;
+		} else {
+			t=1;
+		}
+		
 		if (lens > dnum) {
 			// 动态长度配置
 			dnum = lens;

@@ -14,6 +14,8 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.locationtech.jts.geom.Coordinate;
+
 import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
@@ -24,6 +26,8 @@ import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
+import com.mapfinal.map.layer.PolygonLayer;
+import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
 import com.mapfinal.platform.develop.graphics.GraphicsScene;
@@ -84,6 +88,21 @@ public class MapFinalPanel extends JPanel {
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
 //        bundleLayer.addTo(Mapfinal.me().getMap());
+        
+        // polyline
+        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);
+        polyline.addCoordinate(new Coordinate(80, 10));
+        polyline.addCoordinate(new Coordinate(100, 20));
+        polyline.addCoordinate(new Coordinate(116, 30));
+        polyline.addTo(Mapfinal.me().getMap());
+        
+        //polygon
+        Coordinate[] coordinates = new  Coordinate[]{new Coordinate(110, 0), new Coordinate(105, 10), new Coordinate(108, 15), new Coordinate(110, 0)};
+        PolygonLayer polygon = new PolygonLayer(coordinates, null);
+        polygon.addCoordinate(new Coordinate(120, 10));
+        polygon.addCoordinate(new Coordinate(130, 30));
+        polygon.addTo(Mapfinal.me().getMap());
+        
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         

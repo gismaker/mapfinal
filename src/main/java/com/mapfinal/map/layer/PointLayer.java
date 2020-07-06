@@ -5,9 +5,11 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 
+import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.MapCS;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.style.MarkerSymbol;
 
 public class PointLayer extends GeometryLayer {
@@ -30,6 +32,14 @@ public class PointLayer extends GeometryLayer {
 		createGeomtry(GeoKit.createPoint(coordinate));
 		this.geomType = GeomType.MULTIPOINT;
 		this.symbol = symbol;
+	}
+	
+	@Override
+	public void draw(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		if(geometry!=null) {
+			engine.render(event, symbol, geometry);
+		}
 	}
 	
 	public PointLayer(Coordinate[] coordinates, MarkerSymbol symbol) {

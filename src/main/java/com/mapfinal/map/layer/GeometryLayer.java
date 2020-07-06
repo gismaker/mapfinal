@@ -17,7 +17,7 @@ import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 
-public class GeometryLayer extends AbstractLayer {
+public abstract class GeometryLayer extends AbstractLayer {
 
 	protected Geometry geometry;
 	/**
@@ -35,15 +35,6 @@ public class GeometryLayer extends AbstractLayer {
 		return geometry.getEnvelopeInternal();
 	}
 
-	@Override
-	public void draw(Event event, RenderEngine engine) {
-		// TODO Auto-generated method stub
-		if(geometry!=null) {
-			//Symbol symbol = getRenderer()==null ? null : getRenderer().getSymbol();
-			//engine.render(event, symbol, geometry);
-		}
-	}
-	
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub

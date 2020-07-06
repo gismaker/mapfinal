@@ -5,9 +5,11 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
+import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.MapCS;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.style.SimpleLineSymbol;
 
 public class PolylineLayer extends GeometryLayer {
@@ -20,15 +22,19 @@ public class PolylineLayer extends GeometryLayer {
 	
 	protected boolean isEditMode = false;
 	
-	public PolylineLayer() {
-		super(null);
-		setEditMode(true);
-	}
-	
 	public PolylineLayer(Coordinate[] coordinates, SimpleLineSymbol symbol) {
 		super(GeoKit.createLine(coordinates));
 		this.geomType = GeomType.LINESTRING;
 		this.symbol = symbol;
+		setEditMode(true);
+	}
+	
+	@Override
+	public void draw(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		if(geometry!=null) {
+			engine.render(event, symbol, geometry);
+		}
 	}
 	
 	protected MapCS getMapCS(int index) {

@@ -5,9 +5,11 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
+import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.MapCS;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.style.FillSymbol;
 
 public class PolygonLayer extends GeometryLayer {
@@ -20,15 +22,19 @@ public class PolygonLayer extends GeometryLayer {
 	
 	protected boolean isEditMode = false;
 	
-	public PolygonLayer() {
-		super(null);
-		setEditMode(true);
-	}
-	
 	public PolygonLayer(Coordinate[] coordinates, FillSymbol symbol) {
 		super(GeoKit.createLine(coordinates));
 		this.geomType = GeomType.LINESTRING;
 		this.symbol = symbol;
+		setEditMode(true);
+	}
+	
+	@Override
+	public void draw(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		if(geometry!=null) {
+			engine.render(event, symbol, geometry);
+		}
 	}
 	
 	protected MapCS getMapCS(int index) {
@@ -64,7 +70,7 @@ public class PolygonLayer extends GeometryLayer {
 		if(!createGeomtry(coordinate)) {
 			MapCS mapcs = getMapCS(this.geometry.getNumGeometries()-1);
 			if(mapcs!=null) {
-				mapcs.addCoordinate(coordinate);
+				mapcs.addCoordinate(mapcs.size()-1, coordinate);
 			}
 		}
 	}
@@ -73,7 +79,7 @@ public class PolygonLayer extends GeometryLayer {
 		if(!createGeomtry(coordinate) && polygon_index < this.geometry.getNumGeometries()) {
 			MapCS mapcs = getMapCS(polygon_index);
 			if(mapcs!=null) {
-				mapcs.addCoordinate(coordinate);
+				mapcs.addCoordinate(mapcs.size()-2, coordinate);
 			}
 		}
 	}
