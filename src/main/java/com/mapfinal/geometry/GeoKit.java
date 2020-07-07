@@ -328,6 +328,11 @@ public class GeoKit {
 		Polygon polygon = geometryFactory.createPolygon(coords);
 		return polygon;
 	}
+	
+	public static MultiPolygon createMultiPolygon(Polygon[] polygons) {
+		MultiPolygon multiPolygon = geometryFactory.createMultiPolygon(polygons);
+		return multiPolygon;
+	}
 
 	/**
 	 * create multi polygon by wkt
@@ -342,7 +347,7 @@ public class GeoKit {
 		MultiPolygon mpolygon = (MultiPolygon) reader.read(wkt);
 		return mpolygon;
 	}
-
+	
 	public static Geometry readWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt))
 			return null;

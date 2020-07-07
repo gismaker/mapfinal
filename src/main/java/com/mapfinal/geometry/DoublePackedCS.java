@@ -189,7 +189,7 @@ public class DoublePackedCS extends PackedMapCS {
 		if (this.dimension >= 4)
 			newCoord[len + 3] = coordinate.getOrdinate(3); // M
 		for (int i = len + dimension; i < coords.length + dimension; i++) {
-			newCoord[i] = coords[i];
+			newCoord[i] = coords[i-dimension];
 		}
 		coords = newCoord;
 	}

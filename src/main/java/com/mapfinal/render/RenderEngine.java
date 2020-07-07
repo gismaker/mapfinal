@@ -32,9 +32,10 @@ import org.locationtech.jts.geom.Polygon;
  */
 public interface RenderEngine {
 	
-	void renderInit(Coordinate translate);
-	void translate(Coordinate coordinate);
+	void renderStart();
 	void renderEnd();
+	
+	void translate(Coordinate coordinate);
 	
 	/**
 	 * 渲染要素

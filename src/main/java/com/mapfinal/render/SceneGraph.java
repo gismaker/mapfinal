@@ -55,9 +55,13 @@ public abstract class SceneGraph {
 	public void draw(Event event, RenderEngine engine) {
 		isRendering = true;
 		isRedraw = false;
+		engine.renderStart();
 		sceneRoot.draw(event, engine);
+		engine.renderEnd();
 		isRendering = false;
 	}
+	
+	public abstract void pick(float x, float y);
 	
 	/**
 	 * 事件处理

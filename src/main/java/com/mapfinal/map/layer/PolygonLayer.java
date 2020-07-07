@@ -2,8 +2,8 @@ package com.mapfinal.map.layer;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
@@ -23,8 +23,8 @@ public class PolygonLayer extends GeometryLayer {
 	protected boolean isEditMode = false;
 	
 	public PolygonLayer(Coordinate[] coordinates, FillSymbol symbol) {
-		super(GeoKit.createLine(coordinates));
-		this.geomType = GeomType.LINESTRING;
+		super(GeoKit.createPolygon(coordinates));
+		this.geomType = GeomType.POLYGON;
 		this.symbol = symbol;
 		setEditMode(true);
 	}
@@ -38,19 +38,19 @@ public class PolygonLayer extends GeometryLayer {
 	}
 	
 	protected MapCS getMapCS(int index) {
-		LineString lineString = getLine(index);
-		return lineString==null ? null : (MapCS) lineString.getCoordinateSequence();
+		Polygon lineString = getLine(index);
+		return lineString==null ? null : (MapCS) lineString.getExteriorRing().getCoordinateSequence();
 	}
 	
-	protected LineString getLine(int index) {
-		if(geomType == GeomType.LINESTRING) {
-			LineString lineString = (LineString) this.geometry;
-			return lineString;
-		} else if(geomType == GeomType.MULTILINESTRING) {
-			MultiLineString multiLineString = (MultiLineString) this.geometry;
-			Geometry geo = multiLineString.getGeometryN(index);
+	protected Polygon getLine(int index) {
+		if(geomType == GeomType.POLYGON) {
+			Polygon p = (Polygon) this.geometry;
+			return p;
+		} else if(geomType == GeomType.MULTIPOLYGON) {
+			MultiPolygon multiPolygon = (MultiPolygon) this.geometry;
+			Geometry geo = multiPolygon.getGeometryN(index);
 			if(geo!=null) {
-				return (LineString) geo;
+				return (Polygon) geo;
 			}
 		}
 		return null;
@@ -58,9 +58,9 @@ public class PolygonLayer extends GeometryLayer {
 	
 	protected boolean createGeomtry(Coordinate coordinate) {
 		if(this.geometry==null) {
-			LineString line = GeoKit.createLine(new Coordinate[]{coordinate});
-			this.geometry = GeoKit.createMultiLine(new LineString[]{line});
-			this.geomType = GeomType.MULTILINESTRING;
+			Polygon p = GeoKit.createPolygon(new Coordinate[]{coordinate});
+			this.geometry = GeoKit.createMultiPolygon(new Polygon[]{p});
+			this.geomType = GeomType.MULTIPOLYGON;
 			return true;
 		}
 		return false;

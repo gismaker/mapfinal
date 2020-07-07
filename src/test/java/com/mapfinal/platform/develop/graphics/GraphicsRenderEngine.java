@@ -9,9 +9,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-import javax.swing.JPanel;
-
-import com.mapfinal.converter.ConverterKit;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
@@ -21,7 +18,6 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
-import com.mapfinal.render.Renderer;
 import com.mapfinal.render.style.SimpleMarkerSymbol;
 import com.mapfinal.render.style.Symbol;
 import com.mapfinal.render.style.FillSymbol;
@@ -47,16 +43,11 @@ import org.locationtech.jts.geom.Polygon;
  * @author yangyong
  *
  */
-public class GraphicsRenderEngine implements RenderEngine {
+public abstract class GraphicsRenderEngine implements RenderEngine {
 
 	private Graphics graphics;
-	private JPanel panel;
 
 	private int cx = 0, cy = 0;
-
-	public GraphicsRenderEngine(JPanel panel) {
-		this.panel = panel;
-	}
 
 	public Graphics getGraphics() {
 		return graphics;
@@ -69,14 +60,7 @@ public class GraphicsRenderEngine implements RenderEngine {
 	public void setGraphics(Graphics graphics) {
 		this.graphics = graphics;
 	}
-
-	@Override
-	public void renderInit(Coordinate translate) {
-		// TODO Auto-generated method stub
-		getGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		translate(translate);
-	}
-
+	
 	@Override
 	public void translate(Coordinate coordinate) {
 		// TODO Auto-generated method stub
@@ -86,17 +70,17 @@ public class GraphicsRenderEngine implements RenderEngine {
 	}
 
 	@Override
+	public void renderStart() {
+		// TODO Auto-generated method stub
+		getGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+
+	@Override
 	public void renderEnd() {
 		// TODO Auto-generated method stub
 //		getGraphics().dispose();
 		getGraphics().translate(-cx, -cy);
 		cx = cy = 0;
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		panel.updateUI();
 	}
 
 	int dnum = 1000;

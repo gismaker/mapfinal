@@ -9,11 +9,11 @@ import com.mapfinal.render.SceneGraph;
 
 public class GraphicsScene extends SceneGraph {
 	
-	private GraphicsRenderEngine engine;
+	private GraphicsJPanelRenderEngine engine;
 	
 	public GraphicsScene(JPanel panel) {
 		super();
-		engine = new GraphicsRenderEngine(panel);
+		engine = new GraphicsJPanelRenderEngine(panel);
 	}
 	
 	public void draw(Graphics g, int width, int height) {
@@ -23,6 +23,15 @@ public class GraphicsScene extends SceneGraph {
 		setHeight(height);
 		Event event = new Event("render").set("width", getWidth()).set("height", getHeight());
 		super.draw(event, engine);
+	}
+	
+	@Override
+	public void pick(float x, float y) {
+		GraphicsPickRenderEngine pickEngine = new GraphicsPickRenderEngine();
+		setWidth(1);
+		setHeight(1);
+		Event event = new Event("pick").set("width", getWidth()).set("height", getHeight());
+		super.draw(event, pickEngine);
 	}
 
 	@Override

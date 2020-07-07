@@ -32,12 +32,11 @@ public class MapView extends LayerGroup {
 //		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
 //				-ct.getY() + context.getHeight() / 2 + dy);
 		Coordinate t = context.currentDrag();
-		engine.renderInit(t);
+		engine.translate(t);
 //		if (backgroundRenderer != null) {
 //			backgroundRenderer.draw(event, engine);
 //		}
 		super.draw(event, engine);
-		engine.renderEnd();
 	}
 
 	@Override
