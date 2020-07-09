@@ -225,4 +225,5 @@ public class Latlng extends Coordinate {
 		ret += (150.0 * Math.sin(lat / 12.0 * Math.PI) + 300.0 * Math.sin(lat / 30.0 * Math.PI)) * 2.0 / 3.0;
 		return ret;
 	}
+	
 }

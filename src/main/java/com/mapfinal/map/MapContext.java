@@ -8,8 +8,9 @@ import com.mapfinal.geometry.Latlng;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.util.Assert;
 
-public class MapContext {
+public class MapContext implements Cloneable {
 
 	/**
 	 * 场景坐标系
@@ -26,7 +27,7 @@ public class MapContext {
 	/**
 	 * 地图本身的包围盒
 	 */
-	private Envelope mapEnvelop;
+	//private Envelope mapEnvelop;
 	/**
 	 * 当前窗口的中心点
 	 */
@@ -90,13 +91,106 @@ public class MapContext {
 	
 	private float dragX=0, dragY=0;
 	
+	private boolean isMainThread = false;
+	
 	public MapContext() {
 		// TODO Auto-generated constructor stub
 		sceneCRS = new SceneEPSG3857CRS();
+		spatialReference = SpatialReference.mercator();
 		center = new Latlng(0, 0);
 		centerPoint = getSceneCRS().latLngToPoint(center, this.zoom);
 		resetSceneEnvelope();
 		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), zoom);
+	}
+//	
+//	public MapContext(MapContext context) {
+//		// TODO Auto-generated constructor stub
+//		this.sceneCRS = context.getSceneCRS();
+//		this.spatialReference = context.getSpatialReference();
+//		this.sceneEnvelope = context.getSceneEnvelope();
+//		this.mapEnvelop = context.getMapEnvelop();
+//		this.center = context.getCenter();
+//		this.centerPoint = context.getCenterPoint();
+//		this.zoom = context.getZoom();
+//		this.zoomSnap = context.getZoomSnap();
+//		this.zoomDelta = context.getZoomDelta();
+//		this.minZoom = context.getMinZoom();
+//		this.maxZoom = context.getMaxZoom();
+//		this.isZoomScale = context.isZoomScale();
+//		this.zoomAnimation = context.isZoomAnimation();
+//		this.zoomAnimationThreshold = context.getZoomAnimationThreshold();
+//		this.fadeAnimation = context.isFadeAnimation();
+//		this.markerZoomAnimation = context.isMarkerZoomAnimation();
+//		this.width = context.getWidth();
+//		this.height = context.getHeight();
+//		this.sceneSize = context.getSceneSize();
+//		this.dragX = context.getDragX();
+//		this.dragY = context.getDragY();
+//		isMainThread = false;
+//	}
+	
+	public MapContext newContext() {
+//		//Java对象转化为JSON对象
+//		JSONObject jsonObject = (JSONObject) JSON.toJSON(this);
+//		System.out.println(jsonObject.toJSONString());
+//		//JSON对象转换成Java对象
+//		MapContext newc = JSONObject.toJavaObject(jsonObject, MapContext.class);
+//		JSONObject newJson = (JSONObject) JSON.toJSON(newc);
+//		System.out.println(newJson.toJSONString());
+//		return newc;
+		
+		MapContext context = new MapContext();
+		context.sceneCRS = new SceneEPSG3857CRS();
+		if(this.getSpatialReference()!=null) {
+			context.spatialReference = new SpatialReference(this.getSpatialReference().getName());
+		} else {
+			context.spatialReference = null;
+		}
+		context.sceneEnvelope = new Envelope(this.getSceneEnvelope());
+		//context.mapEnvelop = new Envelope(this.getMapEnvelop());
+		context.center = (Latlng) this.getCenter().clone();
+		context.centerPoint = (ScenePoint) this.getCenterPoint().clone();
+		context.sceneSize = (ScenePoint) this.getSceneSize().clone();
+		context.zoom = this.getZoom();
+		context.zoomSnap = this.getZoomSnap();
+		context.zoomDelta = this.getZoomDelta();
+		context.minZoom = this.getMinZoom();
+		context.maxZoom = this.getMaxZoom();
+		context.isZoomScale = this.isZoomScale();
+		context.zoomAnimation = this.isZoomAnimation();
+		context.zoomAnimationThreshold = this.getZoomAnimationThreshold();
+		context.fadeAnimation = this.isFadeAnimation();
+		context.markerZoomAnimation = this.isMarkerZoomAnimation();
+		context.width = this.getWidth();
+		context.height = this.getHeight();
+		context.dragX = this.getDragX();
+		context.dragY = this.getDragY();
+		context.isMainThread = false;
+		return context;
+        
+	}
+	
+	@Override
+	public Object clone() {
+		try {
+			MapContext context = (MapContext) super.clone();
+			context.sceneCRS = new SceneEPSG3857CRS();
+			if(context.getSpatialReference()!=null) { 
+				context.spatialReference = new SpatialReference(context.getSpatialReference().getName());
+			} else {
+				context.spatialReference = null;
+			}
+			context.sceneEnvelope = new Envelope(context.getSceneEnvelope());
+			//context.mapEnvelop = new Envelope(context.getMapEnvelop());
+			context.center = (Latlng) context.getCenter().clone();
+			context.centerPoint = (ScenePoint) context.getCenterPoint().clone();
+			context.sceneSize = (ScenePoint) context.getSceneSize().clone();
+			context.isMainThread = false;
+			return context; // return the clone
+		} catch (CloneNotSupportedException e) {
+			Assert.shouldNeverReachHere("this shouldn't happen because this class is Cloneable");
+			return null;
+		}
 	}
 	
 	public void drag(float x, float y) {
@@ -133,6 +227,7 @@ public class MapContext {
 	}
 	
 	public void resetSceneEnvelope() {
+		//System.out.println("w: " + width + ", h: " + height);
 		//System.out.println(centerPoint.toString());
 		int x1 = (int) (centerPoint.x - width/2), y1 = (int) (centerPoint.y - height/2);
 		int x2 = (int) (centerPoint.x + width/2), y2 = (int) (centerPoint.y + height/2);
@@ -375,13 +470,13 @@ public class MapContext {
 		this.sceneEnvelope = sceneEnvelope;
 	}
 
-	public Envelope getMapEnvelop() {
-		return mapEnvelop;
-	}
-
-	public void setMapEnvelop(Envelope mapEnvelop) {
-		this.mapEnvelop = mapEnvelop;
-	}
+//	public Envelope getMapEnvelop() {
+//		return mapEnvelop;
+//	}
+//
+//	public void setMapEnvelop(Envelope mapEnvelop) {
+//		this.mapEnvelop = mapEnvelop;
+//	}
 
 	public ScenePoint getCenterPoint() {
 		return centerPoint;
@@ -414,5 +509,20 @@ public class MapContext {
 	public void setZoomScale(boolean isZoomScale) {
 		this.isZoomScale = isZoomScale;
 	}
-	
+
+	public float getDragX() {
+		return dragX;
+	}
+
+	public float getDragY() {
+		return dragY;
+	}
+
+	public boolean isMainThread() {
+		return isMainThread;
+	}
+
+	public void setMainThread(boolean isMainThread) {
+		this.isMainThread = isMainThread;
+	}
 }

@@ -2,6 +2,8 @@ package com.mapfinal.render;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
+import com.mapfinal.kit.StringKit;
+import com.mapfinal.render.pick.PickManager;
 
 public class RendererSceneNode implements SceneNode {
 
@@ -9,9 +11,9 @@ public class RendererSceneNode implements SceneNode {
 	private String name;
 	private boolean bVisible = true;
 	
-	public RendererSceneNode(String name, Renderer renderer) {
+	public RendererSceneNode(Renderer renderer) {
 		// TODO Auto-generated constructor stub
-		this.name = name;
+		setName("renderNode_" + StringKit.getUuid32());
 		this.setRenderer(renderer);
 	}
 	
@@ -22,6 +24,9 @@ public class RendererSceneNode implements SceneNode {
 	}
 	
 	public void setName(String name) {
+		if(StringKit.isBlank(name)) return;
+		if(name.equals(this.name)) return;
+		PickManager.me().registerId(name, this.getClass().getName());
 		this.name = name;
 	}
 

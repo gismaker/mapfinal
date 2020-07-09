@@ -33,8 +33,8 @@ public class MapFinalFrame extends JFrame {
 	
 	public static final String TITLE = "Java图形绘制";
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 600;
 
     public MapFinalFrame() {
         super();

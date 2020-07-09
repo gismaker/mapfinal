@@ -137,7 +137,8 @@ public class MapFinalPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				// TODO Auto-generated method stub
-		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
+		    	//scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
+		    	scene.drawPick(event.getX(), event.getY());
 			}
 		});
         
@@ -182,7 +183,7 @@ public class MapFinalPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         //setBackground(Color.lightGray); //背景色
-        Mapfinal.me().getMap().resize(this.getWidth(), this.getHeight());
+        //Mapfinal.me().getMap().resize(this.getWidth(), this.getHeight());
         
         scene.draw(g, this.getWidth(), this.getHeight());
         

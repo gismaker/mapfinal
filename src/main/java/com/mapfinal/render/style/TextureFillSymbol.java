@@ -11,6 +11,7 @@ public class TextureFillSymbol extends FillSymbol {
 	private LineSymbol outline;
 	private Image image;
 	private int textureId;//for 3D
+	private boolean picked = false;
 
 	public TextureFillSymbol(int color) {
 		// TODO Auto-generated constructor stub
@@ -86,6 +87,26 @@ public class TextureFillSymbol extends FillSymbol {
 
 	public void setTextureId(int textureId) {
 		this.textureId = textureId;
+	}
+
+	@Override
+	public FillSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		TextureFillSymbol symbol = new TextureFillSymbol(this);
+		symbol.setColor(color);
+		symbol.setPicked(true);
+		if(symbol.getOutline()!=null) {
+			symbol.getOutline().setColor(color);
+		}
+		return symbol;
+	}
+
+	public boolean isPicked() {
+		return picked;
+	}
+
+	public void setPicked(boolean picked) {
+		this.picked = picked;
 	}
 
 }

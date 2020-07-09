@@ -18,6 +18,13 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 		this.fill = fill;
 	}
 	
+	public SimpleMarkerSymbol(SimpleMarkerSymbol symbol) {
+		// TODO Auto-generated constructor stub
+		super(symbol);
+		this.fill = symbol.getFill();
+		this.style = symbol.getStyle();
+	}
+	
 	public SimpleMarkerSymbol(FillSymbol fill, float width, float height) {
 		// TODO Auto-generated constructor stub
 		this.fill = fill;
@@ -51,5 +58,16 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 
 	public void setStyle(MarkerSymbol.STYLE style) {
 		this.style = style;
+	}
+
+	@Override
+	public MarkerSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(this);
+		symbol.getFill().setColor(color);
+		if(symbol.getFill().getOutline()!=null) {
+			symbol.getFill().getOutline().setColor(color);
+		}
+		return symbol;
 	}
 }

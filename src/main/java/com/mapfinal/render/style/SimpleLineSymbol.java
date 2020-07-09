@@ -139,4 +139,13 @@ public class SimpleLineSymbol extends LineSymbol {
 		return (JSONObject) JSON.toJSON(this);
 	}
 
+	@Override
+	public LineSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		SimpleLineSymbol symbol = new SimpleLineSymbol(this);
+		symbol.setColor(color);
+		symbol.setWidth(this.getWidth()+5);
+		return symbol;
+	}
+
 }

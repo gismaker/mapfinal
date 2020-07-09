@@ -6,6 +6,7 @@ import java.util.List;
 import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
 
 public class LayerGroup extends AbstractLayer {
@@ -13,6 +14,7 @@ public class LayerGroup extends AbstractLayer {
 	private List<Layer> layers;
 	
 	public LayerGroup() {
+		setName("layerGroup_" + StringKit.getUuid32());
 		setLayers(new ArrayList<Layer>());
 	}
 	

@@ -3,6 +3,9 @@ package com.mapfinal.render;
 import java.util.List;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.kit.StringKit;
+import com.mapfinal.render.pick.PickManager;
+import com.mapfinal.render.pick.PickRenderEngine;
 
 /**
  * 场景图
@@ -61,7 +64,26 @@ public abstract class SceneGraph {
 		isRendering = false;
 	}
 	
-	public abstract void pick(float x, float y);
+	public void pick(PickRenderEngine engine, float x, float y) {
+		Event event = new Event("pick").set("width", width).set("height", height);
+		event.set("pick_screen_x", x);
+		event.set("pick_screen_y", y);
+		PickManager.me().start();
+		engine.renderStart();
+		sceneRoot.draw(event, engine);
+		engine.renderEnd();
+		int color = engine.getPixelColor();
+		String idName = PickManager.me().getPickId(color);
+		System.out.println("SceneGraph: picked: " + idName);
+		if(StringKit.notBlank(idName)) {
+			Event pickedEvent = new Event("picked");
+			pickedEvent.set("picked_color", color);
+			pickedEvent.set("picked_objIdName", idName);
+			System.out.println("SceneGraph: picked_class: " + PickManager.me().getRegisterClass(idName));
+			handleEvent(pickedEvent);
+		}
+		PickManager.me().stop();
+	}
 	
 	/**
 	 * 事件处理

@@ -1,5 +1,7 @@
 package com.mapfinal.render.style;
 
+import com.mapfinal.kit.ColorKit;
+
 /**
  * 所有面样式的基类
  */
@@ -39,5 +41,13 @@ public abstract class FillSymbol implements Symbol {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
+	}
+	
+	public abstract FillSymbol getPickSymbol(int color);
+	
+	public static SimpleFillSymbol DEFAULT() {
+		SimpleFillSymbol fill =  new SimpleFillSymbol(ColorKit.YELLOW);
+		fill.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
+		return fill;
 	}
 }

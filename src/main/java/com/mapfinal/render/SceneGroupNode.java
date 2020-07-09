@@ -3,9 +3,10 @@ package com.mapfinal.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mapfinal.event.Callback;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
+import com.mapfinal.kit.StringKit;
+import com.mapfinal.render.pick.PickManager;
 
 public class SceneGroupNode implements SceneNode {
 
@@ -14,6 +15,7 @@ public class SceneGroupNode implements SceneNode {
 	private boolean bVisible = true;
 	
 	public SceneGroupNode() {
+		setName("groupNode_" + StringKit.getUuid32());
 		setSceneGroup(new ArrayList<SceneNode>());
 	}
 	
@@ -49,6 +51,13 @@ public class SceneGroupNode implements SceneNode {
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
+	}
+	
+	public void setName(String name) {
+		if(StringKit.isBlank(name)) return;
+		if(name.equals(this.name)) return;
+		PickManager.me().registerId(name, this.getClass().getName());
+		this.name = name;
 	}
 
 	@Override

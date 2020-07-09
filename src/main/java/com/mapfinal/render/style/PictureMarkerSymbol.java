@@ -20,4 +20,10 @@ public class PictureMarkerSymbol extends MarkerSymbol {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+	
+	@Override
+	public MarkerSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		return new SimpleMarkerSymbol(color);
+	}
 }

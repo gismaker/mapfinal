@@ -150,8 +150,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		} else if("MultiPolygon".equals(geometry.getGeometryType()) || geometry instanceof MultiPolygon) {
 		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
 		    if(symbol==null) {
-		    	SimpleFillSymbol fs = new SimpleFillSymbol(ColorKit.RED);
-		    	fs.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
+		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
 		    	renderPolygon(event, fs, geometry);
 		    } else {
 		    	renderPolygon(event, (FillSymbol) symbol, geometry);
@@ -159,8 +158,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
 		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
 		    if(symbol==null) {
-		    	SimpleFillSymbol fs = new SimpleFillSymbol(ColorKit.RED);
-		    	fs.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
+		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
 		    	renderPolygon(event, fs, geometry);
 		    } else {
 		    	renderPolygon(event, (FillSymbol) symbol, geometry);
@@ -287,7 +285,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 
 	private Graphics2D getGraphics2D(LineSymbol symbol) {
 		if (symbol == null || !(symbol instanceof LineSymbol)) {
-			symbol = new SimpleLineSymbol(ColorKit.RED, 1);
+			symbol = LineSymbol.DEFAULT();
 		}
 		Graphics2D g2d = getGraphics2D();
 		// 设置画笔颜色
@@ -301,7 +299,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 
 	private Graphics2D getGraphics2D(FillSymbol symbol) {
 		if (symbol == null || !(symbol instanceof FillSymbol)) {
-			symbol = new SimpleFillSymbol(ColorKit.BLUE);
+			symbol = FillSymbol.DEFAULT();
 		}
 		Graphics2D g2d = getGraphics2D();
 		// 设置画笔颜色
@@ -314,7 +312,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 	public void renderPoint(MarkerSymbol symbol, Coordinate coordinate) {
 		// TODO Auto-generated method stub
 		if (symbol == null || !(symbol instanceof MarkerSymbol)) {
-			renderPointFill(new SimpleMarkerSymbol(ColorKit.GREEN), coordinate);
+			renderPointFill(MarkerSymbol.DEFAULT(), coordinate);
 		} else if (symbol instanceof SimpleMarkerSymbol) {
 			renderPointFill((SimpleMarkerSymbol) symbol, coordinate);
 		} else if (symbol instanceof PictureMarkerSymbol) {
@@ -324,7 +322,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 
 	private void renderPointFill(SimpleMarkerSymbol symbol, Coordinate coordinate) {
 		if (symbol == null) {
-			symbol = new SimpleMarkerSymbol(ColorKit.RED);
+			symbol = MarkerSymbol.DEFAULT();
 		}
 		int width = (int) symbol.getWidth();
 		int height = (int) symbol.getHeight();
@@ -350,7 +348,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
      */
     private void drawOval(FillSymbol symbol, int x, int y, int width, int height) {
     	if (symbol == null || !(symbol instanceof FillSymbol)) {
-			symbol = new SimpleFillSymbol(ColorKit.RED);
+			symbol = FillSymbol.DEFAULT();
 		}
     	if (symbol.getOutline() != null) {
 			Graphics2D g2d = getGraphics2D(symbol.getOutline());
@@ -369,7 +367,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
      */
     private void drawRect(FillSymbol symbol, int x, int y, int width, int height) {
     	if (symbol == null || !(symbol instanceof FillSymbol)) {
-			symbol = new SimpleFillSymbol(ColorKit.RED);
+			symbol = FillSymbol.DEFAULT();
 		}
     	if (symbol.getOutline() != null) {
 			Graphics2D g2d = getGraphics2D(symbol.getOutline());
@@ -400,7 +398,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		MapContext context = event.get("map");
 		double zoom = context.getZoom();
 		if (symbol == null || !(symbol instanceof FillSymbol)) {
-			symbol = new SimpleFillSymbol(ColorKit.RED);
+			symbol = FillSymbol.DEFAULT();
 		}
 		LineString line = geometry.getExteriorRing();
 		CoordinateSequence gcs = line.getCoordinateSequence();

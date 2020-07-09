@@ -2,6 +2,7 @@ package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.kit.ColorKit;
 
 public abstract class MarkerSymbol implements Symbol {
 	/**
@@ -54,6 +55,11 @@ public abstract class MarkerSymbol implements Symbol {
 	 */
 	private boolean isBillboard = false;
 	
+	
+	public static SimpleMarkerSymbol DEFAULT() {
+		return new SimpleMarkerSymbol(ColorKit.RED);
+	}
+	
 	public MarkerSymbol() {
 	}
 	
@@ -65,6 +71,8 @@ public abstract class MarkerSymbol implements Symbol {
 		this.offsetY = symbol.getOffsetY();
 		this.isBillboard = symbol.isBillboard();
 	}
+	
+	public abstract MarkerSymbol getPickSymbol(int color);
 	
 	public float getX(float x) {
 		return x - width / 2 + offsetX;

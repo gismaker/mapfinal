@@ -1,5 +1,7 @@
 package com.mapfinal.render.style;
 
+import com.mapfinal.kit.ColorKit;
+
 /**
  * 所有线样式的基类
  */
@@ -39,5 +41,11 @@ public abstract class LineSymbol implements Symbol {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
+	}
+	
+	public abstract LineSymbol getPickSymbol(int color);
+	
+	public static SimpleLineSymbol DEFAULT() {
+		return new SimpleLineSymbol(ColorKit.BLUE);
 	}
 }

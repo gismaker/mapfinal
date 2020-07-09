@@ -1,7 +1,6 @@
 package com.mapfinal.render;
 
 import com.mapfinal.MapfinalObject;
-import com.mapfinal.converter.JsonStore;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventObject;
 

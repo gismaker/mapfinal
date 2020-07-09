@@ -10,6 +10,7 @@ mapfinal-0.3.2:
 新增：新增ImageOverlay图层
 新增：新增Marker图层
 新增：PointLayer、PolylineLayer和PolygonLayer增加点线面图层
+新增：新增拾取功能
 优化：RenderEngine精简
 优化：所有cancelDraw更改为handleEvent，以适应opengl的渲染需要
 优化：优化鼠标坐标的传递，统一jwt和android

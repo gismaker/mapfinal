@@ -1,39 +1,12 @@
 package com.mapfinal.platform.develop.graphics;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
-import com.mapfinal.converter.scene.ScenePoint;
-import com.mapfinal.event.Event;
-import com.mapfinal.geometry.Latlng;
-import com.mapfinal.geometry.LatlngBounds;
-import com.mapfinal.kit.ColorKit;
-import com.mapfinal.map.Feature;
-import com.mapfinal.map.GeoImage;
-import com.mapfinal.map.MapContext;
-import com.mapfinal.render.style.SimpleMarkerSymbol;
-import com.mapfinal.render.style.Symbol;
-import com.mapfinal.render.style.FillSymbol;
-import com.mapfinal.render.style.PictureMarkerSymbol;
-import com.mapfinal.render.style.LineSymbol;
-import com.mapfinal.render.style.MarkerSymbol;
-import com.mapfinal.render.style.SimpleFillSymbol;
-import com.mapfinal.render.style.SimpleLineSymbol;
+import com.mapfinal.render.pick.PickRenderEngine;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
 
 /**
  * Java绘图: 使用 Graphics 类绘制线段、矩形、椭圆/圆弧/扇形、图片、文本
@@ -42,48 +15,74 @@ import org.locationtech.jts.geom.Polygon;
  * @author yangyong
  *
  */
-public class GraphicsPickRenderEngine extends GraphicsRenderEngine {
+public class GraphicsPickRenderEngine extends GraphicsRenderEngine implements PickRenderEngine {
 
-	private Graphics graphics;
 	private BufferedImage pickImage;
+	private int width = 300;
+	private int height = 300;
 
-	public GraphicsPickRenderEngine() {
-	}
-
-	public Graphics getGraphics() {
-		return graphics;
-	}
-
-	public Graphics2D getGraphics2D() {
-		return (Graphics2D) graphics;
-	}
-
-	public void setGraphics(Graphics graphics) {
-		this.graphics = graphics;
+	public GraphicsPickRenderEngine(int width, int height) {
+		this.width = width;
+		this.height = height;
+		pickImage = new BufferedImage(width,height, BufferedImage.TYPE_INT_ARGB);
+		renderStart();
+		renderEnd();
 	}
 	
+	public void resize(int width, int height) {
+		
+	}
+
 	@Override
 	public void update() {
-		graphics.dispose();
 	}
 	
 	@Override
 	public void translate(Coordinate coordinate) {
 		// TODO Auto-generated method stub
-		getGraphics().translate((int) coordinate.x, (int) coordinate.y);
+		getGraphics2D().translate((int) coordinate.x, (int) coordinate.y);
 	}
 
 	@Override
 	public void renderStart() {
-		pickImage = new BufferedImage(1,1, BufferedImage.TYPE_INT_RGB);
-		graphics = pickImage.createGraphics();
+		setGraphics(pickImage.createGraphics());
 		getGraphics2D().setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		getGraphics2D().setBackground(Color.WHITE);
+		getGraphics2D().clearRect(0, 0, getWidth(), getHeight());
 	}
 
 	@Override
 	public void renderEnd() {
 		// TODO Auto-generated method stub
-		graphics.dispose();
-		pickImage = null;
+		getGraphics2D().dispose();
+		pickImage.flush();
+	}
+	
+	@Override
+	public int getPixelColor() {
+		// TODO Auto-generated method stub
+		int k = width / 2;
+		int n = height / 2;
+		int color = pickImage.getRGB(k, n) + 16777216;
+		System.out.println("PickRenderEngine: color: " + color);
+//		for (int i = 0; i < height; i++) {
+//			for (int j = 0; j < width; j++) {
+//				int c = pickImage.getRGB(j,i) + 16777216;
+//				if(c > 0) System.out.println("PickRenderEngine: " + i + ", " + j + ", " + c);
+//			}
+//		}
+		return color;
+	}
+	
+	public BufferedImage getPickImage() {
+		return pickImage;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 }

@@ -9,7 +9,9 @@ import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.MapCS;
+import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
+import com.mapfinal.render.pick.PickManager;
 import com.mapfinal.render.style.MarkerSymbol;
 
 public class PointLayer extends GeometryLayer {
@@ -24,6 +26,7 @@ public class PointLayer extends GeometryLayer {
 	
 	public PointLayer() {
 		super(null);
+		setName("pointLayer_" + StringKit.getUuid32());
 		setEditMode(true);
 	}
 	
@@ -37,9 +40,41 @@ public class PointLayer extends GeometryLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if("pick".equals(event.getAction())) {
+			pick(event, engine);
+		} else {
+			render(event, engine);
+		}
+	}
+	
+	private void render(Event event, RenderEngine engine) {
 		if(geometry!=null) {
 			engine.render(event, symbol, geometry);
 		}
+	}
+	
+	private void pick(Event event, RenderEngine engine) {
+		if(geometry!=null) {
+			int color = PickManager.me().getRenderColor(getName());
+			MarkerSymbol pickSymbol = symbol==null ? MarkerSymbol.DEFAULT().getPickSymbol(color)
+					: symbol.getPickSymbol(color);
+			engine.render(event, pickSymbol, geometry);
+		}
+	}
+	
+	@Override
+	public boolean handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		super.handleEvent(event);
+		if(geometry==null) return false;
+		if(event.isAction("picked")) {
+			String idName = event.get("picked_objIdName");
+			if(getName().equals(idName)) {
+				sendEvent("picked", event.set("picked_objHandle", this));
+				return true;
+			}
+		}
+		return false;		
 	}
 	
 	public PointLayer(Coordinate[] coordinates, MarkerSymbol symbol) {

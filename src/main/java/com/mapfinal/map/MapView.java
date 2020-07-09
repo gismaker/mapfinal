@@ -2,13 +2,11 @@ package com.mapfinal.map;
 
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.converter.scene.SceneCRS;
-import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.event.listener.MapMoveListener;
 import com.mapfinal.event.listener.MapZoomListener;
 import com.mapfinal.geometry.Latlng;
-import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
 import org.locationtech.jts.geom.Coordinate;
@@ -19,7 +17,9 @@ public class MapView extends LayerGroup {
 	private MapContext context;
 	
 	public MapView() {
+		setName("map_" + StringKit.getUuid32());
 		context = new MapContext();
+		context.setMainThread(true);
 		this.addListener("map:move", new MapMoveListener());
 		this.addListener("map:zoom", new MapZoomListener());
 	}
@@ -27,7 +27,18 @@ public class MapView extends LayerGroup {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		event.set("map", context);
+		if("pick".equals(event.getAction())) {
+			MapContext pickContext = (MapContext) context.clone();//context.newContext();//
+			event.set("map", pickContext);
+			float x = event.get("pick_screen_x");
+			float y = event.get("pick_screen_y");
+			Latlng center = context.mouseCoordinate(x, y);
+			pickContext.setCenter(center);
+			pickContext.resize(event.get("width"), event.get("height"));
+		} else {
+			context.resize(event.get("width"), event.get("height"));
+			event.set("map", context);
+		}
 //		ScenePoint ct = context.getCenterPoint();
 //		Coordinate t = new Coordinate(-ct.getX() + context.getWidth() / 2 + dx,
 //				-ct.getY() + context.getHeight() / 2 + dy);
@@ -202,13 +213,13 @@ public class MapView extends LayerGroup {
 		context.setSceneEnvelope(sceneEnvelope);
 	}
 
-	public Envelope getMapEnvelop() {
-		return context.getMapEnvelop();
-	}
-
-	public void setMapEnvelop(Envelope mapEnvelop) {
-		context.setMapEnvelop(mapEnvelop);
-	}
+//	public Envelope getMapEnvelop() {
+//		return context.getMapEnvelop();
+//	}
+//
+//	public void setMapEnvelop(Envelope mapEnvelop) {
+//		context.setMapEnvelop(mapEnvelop);
+//	}
 	
 	@Override
 	public SpatialReference getSpatialReference() {

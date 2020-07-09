@@ -10,6 +10,7 @@ import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.GeomType;
 import com.mapfinal.geometry.MapCS;
 import com.mapfinal.render.RenderEngine;
+import com.mapfinal.render.pick.PickManager;
 import com.mapfinal.render.style.FillSymbol;
 
 public class PolygonLayer extends GeometryLayer {
@@ -32,9 +33,44 @@ public class PolygonLayer extends GeometryLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if("pick".equals(event.getAction())) {
+			pick(event, engine);
+		} else {
+			render(event, engine);
+		}
+	}
+	
+	private void render(Event event, RenderEngine engine) {
 		if(geometry!=null) {
 			engine.render(event, symbol, geometry);
 		}
+	}
+	
+	private void pick(Event event, RenderEngine engine) {
+		if(geometry!=null) {
+			//MapContext context = event.get("map");
+			//System.out.println("PolygonLayer: context: " + context.isMainThread() + "," + context.getCenter());
+			int color = PickManager.me().getRenderColor(getName());
+			//System.out.println("PolygonLayer: color: " + color);
+			FillSymbol pickSymbol = symbol==null ? FillSymbol.DEFAULT().getPickSymbol(color)
+					: symbol.getPickSymbol(color);
+			engine.render(event, pickSymbol, geometry);
+		}
+	}
+	
+	@Override
+	public boolean handleEvent(Event event) {
+		// TODO Auto-generated method stub
+		super.handleEvent(event);
+		if(geometry==null) return false;
+		if(event.isAction("picked")) {
+			String idName = event.get("picked_objIdName");
+			if(getName().equals(idName)) {
+				sendEvent("picked", event.set("picked_objHandle", this));
+				return true;
+			}
+		}
+		return false;		
 	}
 	
 	protected MapCS getMapCS(int index) {

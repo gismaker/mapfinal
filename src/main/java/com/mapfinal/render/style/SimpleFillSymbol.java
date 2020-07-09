@@ -123,4 +123,15 @@ public class SimpleFillSymbol extends FillSymbol {
 		return (JSONObject) JSON.toJSON(this);
 	}
 
+	@Override
+	public FillSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		SimpleFillSymbol symbol = new SimpleFillSymbol(this);
+		symbol.setColor(color);
+		if(symbol.getOutline()!=null) {
+			symbol.getOutline().setColor(color);
+			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + 5);
+		}
+		return symbol;
+	}
 }

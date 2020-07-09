@@ -10,6 +10,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.Renderer;
+import com.mapfinal.render.pick.PickManager;
 
 /**
  * https://blog.csdn.net/Smart3S/article/details/81121349
@@ -42,6 +43,10 @@ public abstract class AbstractLayer implements Layer {
 	 */
 	private Map<String, List<EventListener>> listenerMap;
 	
+	public AbstractLayer() {
+		setName("layer_" + StringKit.getUuid32());
+	}
+	
 	public MapContext getMapContext(Event event) {
 		if(event!=null) {
 			return event.get("map");
@@ -53,9 +58,6 @@ public abstract class AbstractLayer implements Layer {
 	public void addTo(LayerGroup layerGroup) {
 		this.id = layerGroup.add(this);
 		this.setParent(layerGroup);
-		if(id > -1 && StringKit.isBlank(name)) {
-			this.name = String.valueOf(id);
-		}
 	}
 	
 	@Override
@@ -176,11 +178,17 @@ public abstract class AbstractLayer implements Layer {
 	
 	@Override
 	public String getName() {
+		if(StringKit.isBlank(name)) {
+			setName("layer_" + StringKit.getUuid32());
+		}
 		return name;
 	}
 	
 	@Override
 	public void setName(String name) {
+		if(StringKit.isBlank(name)) return;
+		if(name.equals(this.name)) return;
+		PickManager.me().registerId(name, this.getClass().getName());
 		this.name = name;
 	}
 	
