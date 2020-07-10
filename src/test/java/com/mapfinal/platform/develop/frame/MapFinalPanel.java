@@ -23,6 +23,7 @@ import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
 import com.mapfinal.geometry.ScreenPoint;
+import com.mapfinal.map.Feature;
 import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
@@ -57,8 +58,21 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp
-//        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Capitals.shp");
-//        layer.addTo(Mapfinal.me().getMap());
+        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "states.shp");
+        layer.addTo(Mapfinal.me().getMap());
+        layer.addListener("featureSelected", new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				// TODO Auto-generated method stub
+				if(event.hasData("featureSelected")) {
+					Feature feature = event.get("featureSelected");
+					Object id = feature.getId();
+					System.out.println("Listener: featureId: " + id.toString());
+					System.out.println("Listener: featureId: " + feature.getAttr("STATE_NAME"));
+				}
+				return false;
+			}
+		});
         
 //        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
 //        layerPl.addTo(Mapfinal.me().getMap());
@@ -137,8 +151,8 @@ public class MapFinalPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				// TODO Auto-generated method stub
-		    	//scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
-		    	scene.drawPick(event.getX(), event.getY());
+		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
+		    	//scene.drawPick(event.getX(), event.getY());
 			}
 		});
         

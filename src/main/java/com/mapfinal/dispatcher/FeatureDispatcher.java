@@ -59,6 +59,7 @@ public class FeatureDispatcher extends Dispatcher {
 			//用户点击的像素坐标
 			ScreenPoint sp = event.get("screenPoint");
 			Latlng latlng = context.pointToLatLng(ScenePoint.by(sp));
+			System.out.println("Screen Point: " + latlng.toString());
 			Point point = GeoKit.createPoint(latlng);
 			query(event, new Envelope(latlng), new ItemVisitor() {
 				@Override
@@ -71,6 +72,7 @@ public class FeatureDispatcher extends Dispatcher {
 						if(feature!=null) {
 							boolean flag = feature.intersects(point);
 							if(flag) {
+								System.out.println("Listener: featureId: " + feature.getId().toString());
 								event.put("featureSelected", feature);
 								return;
 							}
