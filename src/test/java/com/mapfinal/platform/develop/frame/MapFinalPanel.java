@@ -109,6 +109,13 @@ public class MapFinalPanel extends JPanel {
         polyline.addCoordinate(new Coordinate(100, 20));
         polyline.addCoordinate(new Coordinate(116, 30));
         polyline.addTo(Mapfinal.me().getMap());
+        polyline.addClick(new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				System.out.println("polyline picked....");
+				return false;
+			}
+		});
         
         //polygon
         Coordinate[] coordinates = new  Coordinate[]{new Coordinate(110, 0), new Coordinate(105, 10), new Coordinate(108, 15), new Coordinate(110, 0)};
@@ -116,6 +123,13 @@ public class MapFinalPanel extends JPanel {
         polygon.addCoordinate(new Coordinate(120, 10));
         polygon.addCoordinate(new Coordinate(130, 30));
         polygon.addTo(Mapfinal.me().getMap());
+        polygon.addClick(new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				System.out.println("polygon picked....");
+				return false;
+			}
+		});
         
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
@@ -152,7 +166,7 @@ public class MapFinalPanel extends JPanel {
 			public void mouseClicked(MouseEvent event) {
 				// TODO Auto-generated method stub
 		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
-		    	//scene.drawPick(event.getX(), event.getY());
+		    	scene.drawPick(event.getX(), event.getY());
 			}
 		});
         

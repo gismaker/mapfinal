@@ -45,22 +45,22 @@ public abstract class GeometryLayer extends AbstractLayer {
 			ScreenPoint sp = event.get("screenPoint");
 			Latlng p1 = context.pointToLatLng(ScenePoint.by(sp));
 			if(geometry.contains(GeoKit.createPoint(p1))) {
-				return sendEvent(Event.by(getEventAction("Click"), "layer", this));
+				return sendEvent(Event.by(getEventAction("click"), "layer", this));
 			}
 		}
 		return false;
 	}
 	
 	public void addClick(EventListener listener) {
-		addListener(getEventAction("Click"), listener);
+		addListener(getEventAction("click"), listener);
 	}
 	
 	public void removeClick(EventListener listener) {
-		removeListener(getEventAction("Click"), listener);
+		removeListener(getEventAction("click"), listener);
 	}
 	
 	public void clearClick() {
-		clearListener(getEventAction("Click"));
+		clearListener(getEventAction("click"));
 	}
 
 	public Geometry getGeometry() {

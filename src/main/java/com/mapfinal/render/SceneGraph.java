@@ -78,8 +78,8 @@ public abstract class SceneGraph {
 		if(StringKit.notBlank(idName)) {
 			Event pickedEvent = new Event("picked");
 			pickedEvent.set("picked_color", color);
-			pickedEvent.set("picked_objIdName", idName);
-			System.out.println("SceneGraph: picked_class: " + PickManager.me().getRegisterClass(idName));
+			pickedEvent.set("picked_name", idName);
+			System.out.println("SceneGraph: picked_name: " + idName);
 			handleEvent(pickedEvent);
 		}
 		PickManager.me().stop();

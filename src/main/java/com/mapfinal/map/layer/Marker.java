@@ -71,22 +71,22 @@ public class Marker extends AbstractLayer {
 			float y0 = sp.getY();
 			
 			if(x0 >= x && x0<=ex && y0 >= y && y0<=ey) {
-				return sendEvent(Event.by(getEventAction("Click"), "center", center));
+				return sendEvent(Event.by(getEventAction("click"), "center", center));
 			}
 		}
 		return false;
 	}
 	
 	public void addClick(EventListener listener) {
-		addListener(getEventAction("Click"), listener);
+		addListener(getEventAction("click"), listener);
 	}
 	
 	public void removeClick(EventListener listener) {
-		removeListener(getEventAction("Click"), listener);
+		removeListener(getEventAction("click"), listener);
 	}
 	
 	public void clearClick() {
-		clearListener(getEventAction("Click"));
+		clearListener(getEventAction("click"));
 	}
 
 	public Latlng getCenter() {

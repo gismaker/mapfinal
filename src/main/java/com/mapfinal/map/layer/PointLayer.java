@@ -68,9 +68,9 @@ public class PointLayer extends GeometryLayer {
 		super.handleEvent(event);
 		if(geometry==null) return false;
 		if(event.isAction("picked")) {
-			String idName = event.get("picked_objIdName");
+			String idName = event.get("picked_name");
 			if(getName().equals(idName)) {
-				sendEvent("picked", event.set("picked_objHandle", this));
+				sendEvent(getEventAction("click"), event.set("picked_object", this));
 				return true;
 			}
 		}

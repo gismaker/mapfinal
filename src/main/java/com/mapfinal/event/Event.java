@@ -50,6 +50,15 @@ public class Event implements Cloneable, Serializable {
 		return new Event(action, name, data);
 	}
 	
+	public static Event by(String action, Event other) {
+		//Event e = new Event(action);
+		//e.getData().putAll(other.getData());
+		//e.callback = other.callback;
+		Event e = other.clone();
+		e.action = action;
+		return e;
+	}
+	
 	public Event clone() {
 		Event o = null;
         try {
