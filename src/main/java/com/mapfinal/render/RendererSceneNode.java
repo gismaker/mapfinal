@@ -42,6 +42,11 @@ public class RendererSceneNode implements SceneNode {
 		//System.out.println("Renderer draw");
 		if(renderer!=null) renderer.draw(event, engine);
 	}
+	
+	@Override
+	public void pick(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public boolean handleEvent(Event event) {

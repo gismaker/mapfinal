@@ -34,10 +34,12 @@ public class PolylineLayer extends GeometryLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		if("pick".equals(event.getAction())) {
-			pick(event, engine);
-		} else {
+		if(!isDrawable()) return;
+		if(!isVisible()) return;
+		if(event.isRender()) {
 			render(event, engine);
+		} else if("pick".equals(event.getAction())) {
+			pick(event, engine);
 		}
 	}
 	
@@ -47,7 +49,7 @@ public class PolylineLayer extends GeometryLayer {
 		}
 	}
 	
-	private void pick(Event event, RenderEngine engine) {
+	public void pick(Event event, RenderEngine engine) {
 		if(geometry!=null) {
 			int color = PickManager.me().getRenderColor(getName());
 			//System.out.println("PolygonLayer: color: " + color);

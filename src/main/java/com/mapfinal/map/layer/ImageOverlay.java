@@ -33,6 +33,9 @@ public class ImageOverlay extends AbstractLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if(!isDrawable()) return;
+		if(!isVisible()) return;
+		if(!event.isRender()) return;
 		if(image==null || bounds==null || !bounds.isValid()) return;
 		if(image.getData()==null) {
 			image.read();

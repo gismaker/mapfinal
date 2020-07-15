@@ -41,10 +41,12 @@ public class GraphicsLayer extends AbstractLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if(!isDrawable()) return;
+		if(!isVisible()) return;
+		if(!event.isRender()) return;
 		for (int i = 0; i < graphics.size(); i++) {
 			if(i==editIndex) continue;
 			Feature<Long> g = graphics.getFeature(i);
-			
 		}
 	}
 

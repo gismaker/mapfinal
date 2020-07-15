@@ -59,6 +59,8 @@ public class FeatureGroupLayer extends AbstractLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if(!isDrawable()) return;
+		if(!isVisible()) return;
 		for (int i = 0; i < layers.size(); i++) {
 			layers.get(i).draw(event, engine);
 		}

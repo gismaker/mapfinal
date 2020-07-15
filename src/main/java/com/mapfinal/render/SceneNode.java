@@ -17,6 +17,12 @@ public interface SceneNode extends MapfinalObject, EventObject/*, JsonStore*/ {
 	 */
 	void draw(Event event, RenderEngine engine);
 	/**
+	 * 拾取过程
+	 * @param event
+	 * @param engine
+	 */
+	void pick(Event event, RenderEngine engine);
+	/**
 	 * 事件过程
 	 * @param event
 	 * @return

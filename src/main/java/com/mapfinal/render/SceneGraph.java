@@ -70,7 +70,7 @@ public abstract class SceneGraph {
 		event.set("pick_screen_y", y);
 		PickManager.me().start();
 		engine.renderStart();
-		sceneRoot.draw(event, engine);
+		sceneRoot.pick(event, engine);
 		engine.renderEnd();
 		int color = engine.getPixelColor();
 		String idName = PickManager.me().getPickId(color);

@@ -47,6 +47,8 @@ public class TileLayer extends AbstractLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
+		if(!event.isRender()) return;
+		if(!isDrawable()) return;
 		if(!isVisible()) return;
 		MapContext context = event.get("map");
 		int zoom = (int) context.getZoom();

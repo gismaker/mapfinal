@@ -90,6 +90,15 @@ public class LayerGroup extends AbstractLayer {
 			layers.get(i).draw(event, engine);
 		}
 	}
+	
+	@Override
+	public void pick(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		if(!isVisible()) return;
+		for (int i = 0; i < layers.size(); i++) {
+			layers.get(i).pick(event, engine);
+		}
+	}
 
 	@Override
 	public boolean handleEvent(Event event) {

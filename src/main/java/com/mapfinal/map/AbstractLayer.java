@@ -9,6 +9,7 @@ import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
 import com.mapfinal.kit.StringKit;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
 import com.mapfinal.render.pick.PickManager;
 
@@ -76,6 +77,12 @@ public abstract class AbstractLayer implements Layer {
 	public boolean isDrawable() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	
+	@Override
+	public void pick(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
 	}
 	
 	@Override

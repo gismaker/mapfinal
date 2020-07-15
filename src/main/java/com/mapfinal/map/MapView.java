@@ -49,6 +49,19 @@ public class MapView extends LayerGroup {
 //		}
 		super.draw(event, engine);
 	}
+	
+	@Override
+	public void pick(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		MapContext pickContext = (MapContext) context.clone();//context.newContext();//
+		event.set("map", pickContext);
+		float x = event.get("pick_screen_x");
+		float y = event.get("pick_screen_y");
+		Latlng center = context.mouseCoordinate(x, y);
+		pickContext.setCenter(center);
+		pickContext.resize(event.get("width"), event.get("height"));
+		super.pick(event, engine);
+	}
 
 	@Override
 	public boolean handleEvent(Event event) {

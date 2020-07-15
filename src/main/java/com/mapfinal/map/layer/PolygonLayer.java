@@ -33,10 +33,12 @@ public class PolygonLayer extends GeometryLayer {
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
-		if("pick".equals(event.getAction())) {
-			pick(event, engine);
-		} else {
+		if(!isDrawable()) return;
+		if(!isVisible()) return;
+		if(event.isRender()) {
 			render(event, engine);
+		} else if("pick".equals(event.getAction())) {
+			pick(event, engine);
 		}
 	}
 	
@@ -46,7 +48,7 @@ public class PolygonLayer extends GeometryLayer {
 		}
 	}
 	
-	private void pick(Event event, RenderEngine engine) {
+	public void pick(Event event, RenderEngine engine) {
 		if(geometry!=null) {
 			//MapContext context = event.get("map");
 			//System.out.println("PolygonLayer: context: " + context.isMainThread() + "," + context.getCenter());

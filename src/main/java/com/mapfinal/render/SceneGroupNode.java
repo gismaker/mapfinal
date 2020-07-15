@@ -74,6 +74,15 @@ public class SceneGroupNode implements SceneNode {
 			if(node!=null) node.draw(event, engine);
 		}
 	}
+	
+	@Override
+	public void pick(Event event, RenderEngine engine) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < sceneGroup.size(); i++) {
+			SceneNode node = sceneGroup.get(i);
+			if(node!=null) node.pick(event, engine);
+		}
+	}
 
 	@Override
 	public boolean handleEvent(Event event) {
