@@ -139,7 +139,7 @@ public class ShapefileRandomAccess4Thread {
 				break;
 			}
 			Coordinate p =new Coordinate(pointContent.x, pointContent.y);
-			String id = String.valueOf(i);
+			String id = String.valueOf(i-1);
 			String dataType = "shp";
 			String geometryType = "POINT";
 			Envelope env = new Envelope(p);
@@ -199,7 +199,7 @@ public class ShapefileRandomAccess4Thread {
 				continue;
 			}
 			// 设置shp矩形范围
-			String id = String.valueOf(i);
+			String id = String.valueOf(i-1);
 			String dataType = "shp";
 			String geometryType = ShpType.shpTypeName(shpType);
 			Envelope env = new Envelope(shpInfo.ptBox[0].x, shpInfo.ptBox[1].x, shpInfo.ptBox[0].y, shpInfo.ptBox[1].y);
@@ -269,8 +269,8 @@ public class ShapefileRandomAccess4Thread {
 	public Feature readRecord(SpatialIndexObject obj, ShapefileRandomAccess randomAccess) throws IOException {
 		Integer i = Integer.valueOf(obj.getId());
 		//System.out.println("[shp_thread] sio: " + obj.getId() + ", recordCount: " + randomAccess.getRecordCount());
-		if(i==null || i <1 || i>randomAccess.getRecordCount()) return null;
-		ShxRecord shx = randomAccess.getShxRandomAccess().getRecordPosition(i);
+		if(i==null || i <0 || i>randomAccess.getRecordCount()) return null;
+		ShxRecord shx = randomAccess.getShxRandomAccess().getRecordPosition(i+1);
 		//System.out.println("[shp_thread] shxRecord: " + shx.toString());
 		ShpRandomAccess shp = randomAccess.getShpRandomAccess();
 		MapRecordSet recordSet = randomAccess.getRecordSet();

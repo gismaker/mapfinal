@@ -182,7 +182,7 @@ public class Shapefile extends VectorResource<Long> {
 		// TODO Auto-generated method stub
 		if(!binit) return null;
 		Long id = Long.valueOf(sio.getId());
-		if(id == null || id < 1 || id > shxRandomAccess.getRecordCount()) {
+		if(id == null || id < 0 || id > shxRandomAccess.getRecordCount()) {
 			return null;
 		}
 		ShapefileFeature feature = (ShapefileFeature) getFeatureClass().getFeature(id);
@@ -254,11 +254,11 @@ public class Shapefile extends VectorResource<Long> {
 	private ShapefileFeature readRecordPoint(int i, SpatialIndexObject obj) throws IOException {
 		Point point = null;
 		if(obj.getEnvelope()==null) {
-			point = shpRandomAccess.readRecordPoint(shxRandomAccess.getRecordPosition(i));
+			point = shpRandomAccess.readRecordPoint(shxRandomAccess.getRecordPosition(i+1));
 		} else {
 			point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		}
-		point.setUserData(i - 1);
+		point.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, point, shxRandomAccess.getShpType());
 		feature.setEnvelope(point.getEnvelopeInternal());
 		//属性
@@ -272,8 +272,8 @@ public class Shapefile extends VectorResource<Long> {
 	}
 	
 	private ShapefileFeature readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
-		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i));
-		line.setUserData(i-1);
+		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
+		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shxRandomAccess.getShpType());
 		feature.setEnvelope(line.getEnvelopeInternal());
 		//属性
@@ -287,8 +287,8 @@ public class Shapefile extends VectorResource<Long> {
 	}
 	
 	private ShapefileFeature readRecordPolygon(int i, SpatialIndexObject obj) throws IOException {
-		MultiPolygon mpolygon = shpRandomAccess.readRecordPolygon(shxRandomAccess.getRecordPosition(i));
-		mpolygon.setUserData(i-1);
+		MultiPolygon mpolygon = shpRandomAccess.readRecordPolygon(shxRandomAccess.getRecordPosition(i+1));
+		mpolygon.setUserData(i);
 		//ShapefileFeatureRender renderer = factory.build(mpolygon, shxRandomAccess.getShpType());
 		//System.out.println("read shp polygon times: " + (System.currentTimeMillis() - start));
 		//return new ShapefileFeature(obj.getId(), obj, renderer, mpolygon.getEnvelopeInternal());

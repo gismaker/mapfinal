@@ -139,16 +139,16 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		if(feature==null || feature.getGeometry()==null) return;
 		Geometry geometry = feature.getGeometry();
 		if("MultiLineString".equals(geometry.getGeometryType()) || geometry instanceof MultiLineString) {
-		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
 		    renderPolyline(event, (LineSymbol) symbol, geometry);
 		} else if("LineString".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
-		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
 		    renderPolyline(event, (LineSymbol) symbol, geometry);
 		} else if("LineRing".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
-		    symbol = symbol!=null && symbol instanceof LineSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
 		    renderPolyline(event, (LineSymbol) symbol, geometry);
 		} else if("MultiPolygon".equals(geometry.getGeometryType()) || geometry instanceof MultiPolygon) {
-		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? symbol : null;
 		    if(symbol==null) {
 		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
 		    	renderPolygon(event, fs, geometry);
@@ -156,7 +156,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		    	renderPolygon(event, (FillSymbol) symbol, geometry);
 		    }
 		} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
-		    symbol = symbol!=null && symbol instanceof FillSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? symbol : null;
 		    if(symbol==null) {
 		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
 		    	renderPolygon(event, fs, geometry);
@@ -164,10 +164,10 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		    	renderPolygon(event, (FillSymbol) symbol, geometry);
 		    }
 		} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof org.locationtech.jts.geom.Point) {
-		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? symbol : null;
 		    renderPoint(event, (MarkerSymbol) symbol, geometry);
 		} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof MultiPoint) {
-		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? null : symbol;
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? symbol : null;
 		    renderPoint(event, (MarkerSymbol) symbol, geometry);
 		}
 	}

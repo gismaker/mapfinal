@@ -68,7 +68,7 @@ public class MapFinalPanel extends JPanel {
 					Feature feature = event.get("featureSelected");
 					Object id = feature.getId();
 					System.out.println("Listener: featureId: " + id.toString());
-					System.out.println("Listener: featureId: " + feature.getAttr("STATE_NAME"));
+					System.out.println("Listener: NAME: " + feature.getAttr("STATE_NAME"));
 				}
 				return false;
 			}

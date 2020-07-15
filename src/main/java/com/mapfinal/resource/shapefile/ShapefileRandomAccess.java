@@ -145,7 +145,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		//System.out.println("shapefile read of SpatialIndexObject");
 		Integer i = Integer.valueOf(obj.getId());
 		try {
-			return i==null || i <1 || i>shxRandomAccess.getRecordCount() ? null : readRecord(i.intValue(), obj);
+			return i==null || i < 0 || i>shxRandomAccess.getRecordCount() ? null : readRecord(i.intValue(), obj);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -220,8 +220,8 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 	}
 	
 	private ShapefileFeature readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
-		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i));
-		line.setUserData(i-1);
+		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
+		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shxRandomAccess.getShpType());
 		feature.setEnvelope(line.getEnvelopeInternal());
 		//属性
@@ -235,12 +235,11 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 	}
 	
 	private ShapefileFeature readRecordPolygon(int i, SpatialIndexObject obj) throws IOException {
-		MultiPolygon mpolygon = shpRandomAccess.readRecordPolygon(shxRandomAccess.getRecordPosition(i));
-		mpolygon.setUserData(i-1);
+		MultiPolygon mpolygon = shpRandomAccess.readRecordPolygon(shxRandomAccess.getRecordPosition(i+1));
+		mpolygon.setUserData(i);
 		//ShapefileFeatureRender renderer = factory.build(mpolygon, shxRandomAccess.getShpType());
 		//System.out.println("read shp polygon times: " + (System.currentTimeMillis() - start));
 		//return new ShapefileFeature(obj.getId(), obj, renderer, mpolygon.getEnvelopeInternal());
-		mpolygon.setUserData(i - 1);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, mpolygon, shxRandomAccess.getShpType());
 		feature.setEnvelope(mpolygon.getEnvelopeInternal());
 		

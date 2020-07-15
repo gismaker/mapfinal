@@ -154,7 +154,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	public ShapefileFeature readRecordPoint(MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		Integer i = Integer.valueOf(obj.getId());
-		point.setUserData(i - 1);
+		point.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, point, shpType);
 		feature.setEnvelope(point.getEnvelopeInternal());
 		//属性
@@ -171,7 +171,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	public ShapefileFeature readRecordPoint(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		Point point = GeoKit.getGeometryFactory().createPoint(obj.getEnvelope().centre());
 		Integer i = Integer.valueOf(obj.getId());
-		point.setUserData(i - 1);
+		point.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, point, shpType);
 		feature.setEnvelope(point.getEnvelopeInternal());
 		//属性
@@ -292,7 +292,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	public ShapefileFeature readRecordPolyline(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		LineString line = readRecordPolyline(shpRecord);
 		Integer i = Integer.valueOf(obj.getId());
-		line.setUserData(i - 1);
+		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shpType);
 		feature.setEnvelope(line.getEnvelopeInternal());
 		//属性
@@ -425,7 +425,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	public ShapefileFeature readRecordPolygon(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
 		MultiPolygon mpolygon = readRecordPolygon(shpRecord);
 		Integer i = Integer.valueOf(obj.getId());
-		mpolygon.setUserData(i - 1);
+		mpolygon.setUserData(i);
 		// System.out.println("read shp polygon times: " +
 		// (System.currentTimeMillis() - start));
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, mpolygon, shpType);
