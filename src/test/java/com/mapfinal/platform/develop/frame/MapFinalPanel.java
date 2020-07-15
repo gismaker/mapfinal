@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.scene.ScenePoint;
@@ -131,6 +132,20 @@ public class MapFinalPanel extends JPanel {
 			}
 		});
         
+      //polygon
+        Coordinate[] coordinates2 = new  Coordinate[]{new Coordinate(120, 30), new Coordinate(120, 35), new Coordinate(125, 35), new Coordinate(120, 30)};
+        PolygonLayer polygon2 = new PolygonLayer(coordinates2, null);
+        polygon2.addCoordinate(new Coordinate(125, 30));
+        polygon2.addTo(Mapfinal.me().getMap());
+        polygon2.addClick(new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				System.out.println("polygon2 picked....");
+				return false;
+			}
+		});
+        
+        
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
@@ -167,6 +182,8 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
 		    	scene.drawPick(event.getX(), event.getY());
+		    	
+		    	Mapfinal.map().getContext().fitBounds(new Envelope(120, 125, 30, 35));
 			}
 		});
         

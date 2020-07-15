@@ -106,7 +106,7 @@ public abstract class SceneCRS {
 	// @method zoom(scale: Number): Number
 	// Inverse of `scale()`, returns the zoom level corresponding to a scale
 	// factor of `scale`.
-	public double zoom(float scale) {
+	public double zoom(double scale) {
 		return (Math.log(scale / 256) / Math.log(2));
 	}
 

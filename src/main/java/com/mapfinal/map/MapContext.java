@@ -313,12 +313,22 @@ public class MapContext implements Cloneable {
 		return pointToCoordinate(point, zoom);
 	}
 	
+	/**
+	 * 场景坐标转屏幕坐标
+	 * @param point
+	 * @return
+	 */
 	public ScenePoint sceneToView(ScenePoint point) {
 		ScenePoint ct = getCenterPoint();
 		point.translate(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
 		return point;
 	}
 	
+	/**
+	 * 屏幕坐标转场景坐标
+	 * @param point
+	 * @return
+	 */
 	public ScenePoint viewToScene(ScenePoint point) {
 		ScenePoint ct = getCenterPoint();
 		point.subtract(-ct.getX() + getWidth() / 2, -ct.getY() + getHeight() / 2);
@@ -362,6 +372,22 @@ public class MapContext implements Cloneable {
 		resetSceneEnvelope();
 		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), zoom);
 	}
+	
+	/**
+	 * 场景设置
+	 * @param center
+	 * @param zoom
+	 */
+	public void setView(Latlng center, float zoom) {
+		this.center = center;
+		this.zoom = zoom;
+		this.zoom = this.zoom < minZoom ? minZoom : this.zoom;
+		this.zoom = this.zoom > maxZoom ? maxZoom : this.zoom;
+		ScenePoint ct = getSceneCRS().latLngToPoint(this.center, this.zoom);
+		setCenterPoint(ct);
+		resetSceneEnvelope();
+		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), this.zoom);
+	}
 
 	public Latlng getCenter() {
 		return center;
@@ -381,7 +407,67 @@ public class MapContext implements Cloneable {
 		setCenterPoint(ct);
 		resetSceneEnvelope();
 	}
+	
+	public void fitBounds(Envelope envelope) {
+		fitBounds(envelope, null, null, null);
+	}
+	
+	public void fitBounds(Envelope envelope, Float maxZoom, ScenePoint paddingTopLeft, ScenePoint paddingBottonRight) {
+		if(envelope==null || envelope.isNull()) return;
+		paddingTopLeft = paddingTopLeft==null ? new ScenePoint(0, 0) : paddingTopLeft;
+		paddingBottonRight = paddingBottonRight==null ? new ScenePoint(0, 0) : paddingBottonRight;
+		ScenePoint nsp = (ScenePoint) paddingTopLeft.clone();
+		System.out.println("1-nsp: " + nsp);
+		float fzoom = getBoundsZoom(envelope, false, nsp.plus(paddingBottonRight));
+		System.out.println("9-fzoom: " + fzoom);
+		fzoom = maxZoom!=null ? Math.min(maxZoom, fzoom) : fzoom;
+		System.out.println("10-fzoom: " + fzoom);
+		ScenePoint paddingOffset = paddingBottonRight.subtract(paddingTopLeft).divideBy(2);
+		System.out.println("11-paddingOffset: " + paddingOffset);
+		ScenePoint swPoint = latLngToPoint(new Latlng(envelope.getMinY(), envelope.getMinX()), fzoom);
+		ScenePoint nePoint = latLngToPoint(new Latlng(envelope.getMaxY(), envelope.getMaxX()), fzoom);
+		System.out.println("12-swPoint: " + swPoint);
+		System.out.println("13-nePoint: " + nePoint);
+		Latlng fcenter = pointToLatLng(swPoint.plus(nePoint).divideBy(2).plus(paddingOffset), fzoom);
+		System.out.println("14-fcenter: " + fcenter);
+		setView(fcenter, fzoom);
+	}
 
+	private float getBoundsZoom(Envelope envelope, boolean inside, ScenePoint padding) {
+		// TODO Auto-generated method stub
+		padding = padding==null ? new ScenePoint(0, 0) : padding;
+		float fzoom = getZoom();
+		float min = getMinZoom();
+		float max = getMaxZoom();
+		Latlng nw =	 new Latlng(envelope.getMaxY(), envelope.getMinX());
+		Latlng se = new Latlng(envelope.getMinY(), envelope.getMaxX());
+		System.out.println("2-nw: " + nw);
+		System.out.println("3-se: " + se);
+		ScenePoint size = new ScenePoint(width, height).subtract(padding);
+		System.out.println("4-size: " + size);
+		ScenePoint boundsSize = latLngToPoint(se, fzoom).subtract(latLngToPoint(nw, fzoom));
+		System.out.println("5-boundsSize: " + boundsSize);
+		//snap = L.Browser.any3d ? this.options.zoomSnap : 1;
+		float snap = getZoomSnap();
+		double scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
+		System.out.println("6-scale: " + scale);
+		fzoom = getScaleZoom(scale, fzoom);
+		System.out.println("7-fzoom: " + fzoom);
+		if (snap > 0) {
+			fzoom = Math.round(fzoom / (snap / 100)) * (snap / 100); // don't jump if within 1% of a snap level
+			fzoom = (float) (inside ? Math.ceil(fzoom / snap) * snap : Math.floor(fzoom / snap) * snap);
+			System.out.println("8-fzoom: " + fzoom);
+		}
+		return Math.max(min, Math.min(max, fzoom));
+	}
+
+	private float getScaleZoom(double scale, Float fromZoom) {
+		// TODO Auto-generated method stub
+		fromZoom = fromZoom == null ? this.zoom : fromZoom;
+		Double fzoom = sceneCRS.zoom(scale * sceneCRS.scale(fromZoom));
+		return fzoom.isNaN() ? Float.POSITIVE_INFINITY : fzoom.floatValue();
+	}
+	
 	public float getZoomSnap() {
 		return zoomSnap;
 	}

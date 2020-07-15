@@ -2,6 +2,7 @@ package com.mapfinal.map;
 
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.converter.scene.SceneCRS;
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.event.listener.MapMoveListener;
@@ -104,6 +105,18 @@ public class MapView extends LayerGroup {
 
 	public void setSceneCRS(SceneCRS sceneCRS) {
 		context.setSceneCRS(sceneCRS);
+	}
+	
+	public void fitBounds(Envelope envelope) {
+		context.fitBounds(envelope);
+	}
+	
+	public void fitBounds(Envelope envelope, Float maxZoom, ScenePoint paddingTopLeft, ScenePoint paddingBottonRight) {
+		context.fitBounds(envelope, maxZoom, paddingTopLeft, paddingBottonRight);
+	}
+	
+	public void setView(Latlng center, float zoom) {
+		context.setView(center, zoom);
 	}
 
 	public double getZoom() {
