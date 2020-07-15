@@ -182,8 +182,7 @@ public class MapFinalPanel extends JPanel {
 				// TODO Auto-generated method stub
 		    	scene.handleEvent(Event.by("mouseClick", "event", event).setScreenPoint(event.getX(), event.getY()));
 		    	scene.drawPick(event.getX(), event.getY());
-		    	
-		    	Mapfinal.map().getContext().fitBounds(new Envelope(120, 125, 30, 35));
+		    	//Mapfinal.map().getContext().fitBounds(new Envelope(120, 125, 30, 35));
 			}
 		});
         
