@@ -28,6 +28,7 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.ImageOverlay;
 import com.mapfinal.map.layer.Marker;
+import com.mapfinal.map.layer.PointLayer;
 import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
@@ -59,21 +60,21 @@ public class MapFinalPanel extends JPanel {
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp
-        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "states.shp");
-        layer.addTo(Mapfinal.me().getMap());
-        layer.addListener("featureSelected", new EventListener() {
-			@Override
-			public boolean onEvent(Event event) {
-				// TODO Auto-generated method stub
-				if(event.hasData("featureSelected")) {
-					Feature feature = event.get("featureSelected");
-					Object id = feature.getId();
-					System.out.println("Listener: featureId: " + id.toString());
-					System.out.println("Listener: NAME: " + feature.getAttr("STATE_NAME"));
-				}
-				return false;
-			}
-		});
+//        ShapefileLayer layer = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "states.shp");
+//        layer.addTo(Mapfinal.me().getMap());
+//        layer.addListener("featureSelected", new EventListener() {
+//			@Override
+//			public boolean onEvent(Event event) {
+//				// TODO Auto-generated method stub
+//				if(event.hasData("featureSelected")) {
+//					Feature feature = event.get("featureSelected");
+//					Object id = feature.getId();
+//					System.out.println("Listener: featureId: " + id.toString());
+//					System.out.println("Listener: NAME: " + feature.getAttr("STATE_NAME"));
+//				}
+//				return false;
+//			}
+//		});
         
 //        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
 //        layerPl.addTo(Mapfinal.me().getMap());
@@ -93,11 +94,15 @@ public class MapFinalPanel extends JPanel {
 			}
 		});
         
+        
+        PointLayer point = new PointLayer();
+        point.addPoint(new Coordinate(115, 30));
+        point.addTo(Mapfinal.map());
+        
 //        LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
 //        ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "psds17397.jpg"));
 //        imgo.setOpacity(0.8f);
 //        imgo.addTo(Mapfinal.me().getMap());
-        
 
 //        //bundle
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";

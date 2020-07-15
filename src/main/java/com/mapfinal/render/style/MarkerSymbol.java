@@ -37,11 +37,11 @@ public abstract class MarkerSymbol implements Symbol {
 	/**
 	 * 标注样式宽度
 	 */
-	private float width = 5;
+	private float width = 10;
 	/**
 	 * 标注样式高度
 	 */
-	private float height = 5;
+	private float height = 10;
 	/**
 	 * 标注样式X方向偏移量
 	 */

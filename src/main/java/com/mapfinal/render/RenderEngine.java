@@ -11,6 +11,7 @@ import com.mapfinal.map.MapContext;
 import com.mapfinal.render.style.FillSymbol;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.MarkerSymbol;
+import com.mapfinal.render.style.SimpleFillSymbol;
 import com.mapfinal.render.style.Symbol;
 import com.mapfinal.resource.image.Image;
 
@@ -90,6 +91,7 @@ public interface RenderEngine {
 	 * @param geometry
 	 */
 	default void render(Event event, Symbol symbol, Geometry geometry) {
+		/*
 		if(geometry==null) return;
 		if(symbol==null) {
 			if("MultiLineString".equals(geometry.getGeometryType()) || geometry instanceof MultiLineString) {
@@ -113,6 +115,39 @@ public interface RenderEngine {
 			} else if(symbol instanceof LineSymbol) {
 				renderPolyline(event, (LineSymbol) symbol, geometry);
 			}
+		}*/
+		if(geometry==null) return;
+		if("MultiLineString".equals(geometry.getGeometryType()) || geometry instanceof MultiLineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("LineString".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("LineRing".equals(geometry.getGeometryType()) || geometry instanceof LineString) {
+		    symbol = symbol!=null && symbol instanceof LineSymbol ? symbol : null;
+		    renderPolyline(event, (LineSymbol) symbol, geometry);
+		} else if("MultiPolygon".equals(geometry.getGeometryType()) || geometry instanceof MultiPolygon) {
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? symbol : null;
+		    if(symbol==null) {
+		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
+		    	renderPolygon(event, fs, geometry);
+		    } else {
+		    	renderPolygon(event, (FillSymbol) symbol, geometry);
+		    }
+		} else if("Polygon".equals(geometry.getGeometryType()) || geometry instanceof Polygon) {
+		    symbol = symbol!=null && symbol instanceof FillSymbol ? symbol : null;
+		    if(symbol==null) {
+		    	SimpleFillSymbol fs = FillSymbol.DEFAULT();
+		    	renderPolygon(event, fs, geometry);
+		    } else {
+		    	renderPolygon(event, (FillSymbol) symbol, geometry);
+		    }
+		} else if("Point".equals(geometry.getGeometryType()) || geometry instanceof org.locationtech.jts.geom.Point) {
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? symbol : null;
+		    renderPoint(event, (MarkerSymbol) symbol, geometry);
+		} else if("MultiPoint".equals(geometry.getGeometryType()) || geometry instanceof MultiPoint) {
+		    symbol = symbol!=null && symbol instanceof MarkerSymbol ? symbol : null;
+		    renderPoint(event, (MarkerSymbol) symbol, geometry);
 		}
 	}
 	

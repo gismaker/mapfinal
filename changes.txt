@@ -30,6 +30,7 @@ mapfinal-0.3.2:
 修复：修复无法读取ArcGIS点数据的问题修改
 修复：修复PolygonLayer内部存储错误
 修复：修复shp文件和dbf记录对应错误
+修复：修复PointLayer拾取错误
 
 -----------------------------
 mapfinal-0.3.1:

@@ -27,7 +27,7 @@ public class TileMercatorIndexer implements SpatialIndexer {
 	@Override
 	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		// TODO Auto-generated method stub
-		if(event==null || event.get("map")==null) {
+		if(event==null) {
 			return;
 		}
 		MapContext context = event.get("map");
