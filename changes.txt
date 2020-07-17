@@ -27,6 +27,7 @@ mapfinal-0.3.2:
 优化：将鼠标事件移出到MapView外部
 优化：拾取监听改为click监听
 优化：优化pick过程
+优化：优化shp格式文件dbf记录获取接口
 修复：修复无法读取ArcGIS点数据的问题修改
 修复：修复PolygonLayer内部存储错误
 修复：修复shp文件和dbf记录对应错误

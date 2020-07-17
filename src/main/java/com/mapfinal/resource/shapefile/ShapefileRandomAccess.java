@@ -339,6 +339,22 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		return this.recordSet;
 	}
 	
+	/**
+	 * 获取某一条记录
+	 * @param i
+	 * @return
+	 */
+	public MapFields getRecord(int i) {
+		try {
+			this.recordSet.move(i, RecordStart.BookmarkFirst);
+			MapFields mFields = this.recordSet.getFields(0);
+			return mFields;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public List<Field> getFields() {
 		MapTableDesc desc = this.recordSet.getTableDesc();
 		short cnt = desc.getFieldCount();
