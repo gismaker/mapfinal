@@ -36,6 +36,8 @@ public class MapRecordSet {
 	 */
 //	private RandomAccessFile dbfFile;
 	private RandomReader dbfFile;
+	
+	private String charsetName = "utf-8";
 
 	public MapRecordSet() {
 		this.mFields = new ArrayList<MapFields>();
@@ -298,7 +300,7 @@ public class MapRecordSet {
 					}
 					mapField.setValue(varValue);
 				} else if (fieldElement.fieldType == 'C') {
-					mapField.setValue(new String(szBuffer, "GBK").trim());
+					mapField.setValue(new String(szBuffer, charsetName).trim());
 					// 0表示string
 					mapField.setType(0);
 				} else {
@@ -315,5 +317,13 @@ public class MapRecordSet {
 			this.mFields.add(mapFields);
 			this.cursorPos = recordId;
 		}
+	}
+
+	public String getCharsetName() {
+		return charsetName;
+	}
+
+	public void setCharsetName(String charsetName) {
+		this.charsetName = charsetName;
 	}
 }
