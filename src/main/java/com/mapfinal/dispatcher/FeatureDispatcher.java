@@ -13,6 +13,7 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
+import com.mapfinal.render.style.Symbol;
 import com.mapfinal.resource.ResourceDispatcher;
 
 public class FeatureDispatcher extends Dispatcher {
@@ -38,8 +39,9 @@ public class FeatureDispatcher extends Dispatcher {
 		if(feature!=null) {
 			//System.out.println("[FeatureDispatcher] resultAction render id: " + id);
 			Renderer renderer = event.get("renderer");
+			Symbol symbol = renderer==null ? null : renderer.getSymbol(feature);
 			//QueryParameter query = event.get("queryParameter");
-			engine.renderFeature(event, null, feature);
+			engine.renderFeature(event, symbol, feature);
 		}
 	}
 	

@@ -1,6 +1,11 @@
 package com.mapfinal.render;
 
+import java.util.Map;
+
+import org.locationtech.jts.geom.Geometry;
+
 import com.mapfinal.event.Event;
+import com.mapfinal.map.Feature;
 import com.mapfinal.render.style.Symbol;
 
 /**
@@ -27,11 +32,9 @@ public interface Renderer {
 	
 	public static final String EVENT_CANCELDRAW = "render:cancelDraw";
 
-//	public Symbol getSymbol();
-//	public void setSymbol(Symbol symbol);
-//	
-//	public Renderable getRenderable();
-//	public void setRenderable(Renderable renderable);
+	public Symbol getSymbol(Feature feature);
+	
+	public Symbol getSymbol(Geometry geometry, Map<String, Object> attributes);
 	
 	public void draw(Event event, RenderEngine engine);
 	public void handleEvent(Event event);

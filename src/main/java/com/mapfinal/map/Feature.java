@@ -44,7 +44,7 @@ public class Feature<K> implements Graphic, JsonStore {
 	/**
 	 * 符号化
 	 */
-	//protected Symbol symbol;
+	protected Symbol symbol;
 
 	public Feature() {
 	}
@@ -275,11 +275,11 @@ public class Feature<K> implements Graphic, JsonStore {
 		return null;
 	}
 
-//	public Symbol getSymbol() {
-//		return symbol;
-//	}
-//
-//	public void setSymbol(Symbol symbol) {
-//		this.symbol = symbol;
-//	}
+	public Symbol getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(Symbol symbol) {
+		this.symbol = symbol;
+	}
 }

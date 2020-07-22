@@ -13,4 +13,8 @@ public class ShapefileLayer extends FeatureLayer {
 		super(resource);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Shapefile getShapefile() {
+		return (Shapefile) getResource();
+	}
 }

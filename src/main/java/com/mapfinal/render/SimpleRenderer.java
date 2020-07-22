@@ -1,6 +1,11 @@
 package com.mapfinal.render;
 
+import java.util.Map;
+
+import org.locationtech.jts.geom.Geometry;
+
 import com.mapfinal.event.Event;
+import com.mapfinal.map.Feature;
 import com.mapfinal.render.style.Symbol;
 
 public class SimpleRenderer implements Renderer {
@@ -25,17 +30,6 @@ public class SimpleRenderer implements Renderer {
 		this.symbol = symbol;
 	}
 
-//	@Override
-//	public Renderable getRenderable() {
-//		// TODO Auto-generated method stub
-//		return renderable;
-//	}
-//
-//	@Override
-//	public void setRenderable(Renderable renderable) {
-//		this.renderable = renderable;
-//	}
-
 	@Override
 	public void draw(Event event, RenderEngine engine) {
 		// TODO Auto-generated method stub
@@ -47,5 +41,17 @@ public class SimpleRenderer implements Renderer {
 	public void handleEvent(Event event) {
 		// TODO Auto-generated method stub
 //		if(renderable!=null) renderable.handleEvent(event);
+	}
+
+	@Override
+	public Symbol getSymbol(Feature feature) {
+		// TODO Auto-generated method stub
+		return getSymbol();
+	}
+
+	@Override
+	public Symbol getSymbol(Geometry geometry, Map<String, Object> attributes) {
+		// TODO Auto-generated method stub
+		return getSymbol();
 	}
 }
