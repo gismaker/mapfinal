@@ -1,5 +1,13 @@
 -----------------------------
+mapfinal-0.3.3:
+
+优化：优化Renderer接口，根据传入Feature返回Symbol
+修复：修复dbf标题没有编码的问题
+
+-----------------------------
 mapfinal-0.3.2:
+
+该版本已上传到mvn
 
 新增：新增RenderObject渲染对象
 新增：RenderEngine新增点线面渲染方法
@@ -29,7 +37,6 @@ mapfinal-0.3.2:
 优化：优化pick过程
 优化：优化shp格式文件dbf记录获取接口
 优化：dbf读取增加charsetName编码设置
-优化：优化Renderer接口，根据传入Feature返回Symbol
 修复：修复无法读取ArcGIS点数据的问题修改
 修复：修复PolygonLayer内部存储错误
 修复：修复shp文件和dbf记录对应错误

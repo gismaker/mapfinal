@@ -276,7 +276,7 @@ public class MapRecordSet {
 			for (short j = 0; j < fieldCount; j++) {
 				MapField mapField = new MapField();
 				fieldElement = mTableDesc.getDesc(j);
-				mapField.setName(new String(fieldElement.szFiledName).trim());
+				mapField.setName(new String(fieldElement.szFiledName, charsetName).trim());
 				mapField.setType(fieldElement.fieldType);
 				Arrays.fill(szBuffer, (byte) 0);
 				// 略过该记录是否删除标记字节buffer+1
