@@ -4,6 +4,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.ParseException;
 
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
@@ -29,6 +30,13 @@ public class PolygonLayer extends GeometryLayer {
 		this.symbol = symbol;
 		setEditMode(true);
 	}
+	
+	public PolygonLayer(String wkt, FillSymbol symbol) throws ParseException {
+		super(GeoKit.createPointByWKT(wkt));
+		this.geomType = GeomType.POLYGON;
+		this.symbol = symbol;
+		setEditMode(true);
+	} 
 	
 	@Override
 	public void draw(Event event, RenderEngine engine) {
