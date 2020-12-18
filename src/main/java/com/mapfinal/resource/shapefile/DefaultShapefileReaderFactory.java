@@ -20,6 +20,7 @@ import com.mapfinal.resource.shapefile.shpx.ShpType;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -192,7 +193,7 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 	 * @throws IOException
 	 */
 	@Override
-	public LineString readRecordPolyline(ShpRecordRandomReader shpRecord) throws IOException {
+	public MultiLineString readRecordPolyline(ShpRecordRandomReader shpRecord) throws IOException {
 		// 获得记录头信息
 		ShpRecordHeader shpRecordHeader = shpRecord.getRecordHeader();
 		if (shpRecordHeader == null) {
@@ -239,8 +240,9 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 		}
 		int firstIndex = 0, nextFirstIndex = 0;
 		int posPointer = 0;
-		CoordinateList coordList = new CoordinateList();
+		LineString[] lines = new LineString[shpInfo.iNumParts];
 		for (int j = 0; j < shpInfo.iNumParts; j++) {
+			CoordinateList coordList = new CoordinateList();
 			if (j == shpInfo.iNumParts - 1) {
 				// 本段第一个顶点索引
 				firstIndex = partsIndex[j];
@@ -283,14 +285,16 @@ public class DefaultShapefileReaderFactory implements ShapefileReaderFactory {
 				double y = BigEndian.littleToDouble(bTemp);
 				coordList.add(new Coordinate(x, y), true);
 			}
+			LineString line = GeoKit.getGeometryFactory().createLineString(coordList.toCoordinateArray());
+			lines[j] = line;
 		}
-		LineString line = GeoKit.getGeometryFactory().createLineString(coordList.toCoordinateArray());
-		return line;
+		MultiLineString multiLineString = GeoKit.getGeometryFactory().createMultiLineString(lines);
+		return multiLineString;
 	}
 
 	@Override
 	public ShapefileFeature readRecordPolyline(ShpRecordRandomReader shpRecord, MapRecordSet recordSet, SpatialIndexObject obj) throws IOException {
-		LineString line = readRecordPolyline(shpRecord);
+		MultiLineString line = readRecordPolyline(shpRecord);
 		Integer i = Integer.valueOf(obj.getId());
 		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shpType);

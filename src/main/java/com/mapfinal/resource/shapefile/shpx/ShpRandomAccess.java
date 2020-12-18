@@ -20,6 +20,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -285,7 +286,7 @@ public class ShpRandomAccess {
 				points.add(pt);
 				break;
 			case ShpType.POLYLINE: /* 已测试 */
-				LineString line = readRecordPolyline(shx);
+				MultiLineString line = readRecordPolyline(shx);
 				line.setUserData(i-1);
 				points.add(line);
 				break;
@@ -361,7 +362,7 @@ public class ShpRandomAccess {
 	 * @return
 	 * @throws IOException
 	 */
-	public LineString readRecordPolyline(ShxRecord shx) throws IOException {
+	public MultiLineString readRecordPolyline(ShxRecord shx) throws IOException {
 		int length = shx.length();
 		if (length <= 0) {
 			return null;
@@ -415,8 +416,9 @@ public class ShpRandomAccess {
 		}
 		int firstIndex = 0, nextFirstIndex = 0;
 		int posPointer = 0;
-		CoordinateList coordList = new CoordinateList();
+		LineString[] lines = new LineString[shpInfo.iNumParts];
 		for (int j = 0; j < shpInfo.iNumParts; j++) {
+			CoordinateList coordList = new CoordinateList();
 			if (j == shpInfo.iNumParts - 1) {
 				// 本段第一个顶点索引
 				firstIndex = partsIndex[j];
@@ -461,9 +463,11 @@ public class ShpRandomAccess {
 				double y = BigEndian.littleToDouble(bTemp);
 				coordList.add(new Coordinate(x, y), true);
 			}
+			LineString line = GeoKit.getGeometryFactory().createLineString(coordList.toCoordinateArray());
+			lines[j] = line;
 		}
-		LineString line = GeoKit.getGeometryFactory().createLineString(coordList.toCoordinateArray());
-		return line;
+		MultiLineString multiLineString = GeoKit.getGeometryFactory().createMultiLineString(lines);
+		return multiLineString;
 	}
 	
 	/**

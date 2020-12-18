@@ -50,7 +50,7 @@ public class MapFinalPanel extends JPanel {
         //GeoMap map = new GeoMap();
         //scene.addNode(map);
         Mapfinal.me().init(scene, new GraphicsMapfinalFactory());
-        Mapfinal.me().setCacheFolder("D:\\lambkit-gis-earth\\data\\cache");
+        Mapfinal.me().setCacheFolder("/Users/yangyong/data/gisdata");
        
         //tile
         //String url = "D:\\web\\gwzw\\tomcat\\webapps\\tile\\grey\\{z}\\{y}_{x}.png";
@@ -82,6 +82,10 @@ public class MapFinalPanel extends JPanel {
 //        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
 //        layerLine.addTo(Mapfinal.me().getMap());
         
+        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "doodle.shp");
+        layerLine.addTo(Mapfinal.me().getMap());
+        
+        /*
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "loc.png"));
         marker.setScale(0.5f);
         marker.addTo(Mapfinal.me().getMap());
@@ -93,7 +97,7 @@ public class MapFinalPanel extends JPanel {
 				return false;
 			}
 		});
-        
+        */
         
         PointLayer point = new PointLayer();
         point.addPoint(new Coordinate(115, 30));
@@ -150,12 +154,14 @@ public class MapFinalPanel extends JPanel {
 			}
 		});
         
-        
-        
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
 //        Mapfinal.map().setCenter(new Latlng(35.43800418056032,102.98341606580078));
 //        Mapfinal.map().setZoom(13);
+        
+        
+        Mapfinal.map().setCenter(new Latlng(39.943,116.1888));
+        Mapfinal.map().setZoom(15);
         
         addMouseListener(new MouseListener() {
 			@Override

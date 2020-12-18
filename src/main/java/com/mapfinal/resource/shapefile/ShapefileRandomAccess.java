@@ -31,6 +31,7 @@ import com.mapfinal.resource.shapefile.shpx.ShxRandomAccess;
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
@@ -220,7 +221,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 	}
 	
 	private ShapefileFeature readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
-		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
+		MultiLineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
 		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shxRandomAccess.getShpType());
 		feature.setEnvelope(line.getEnvelopeInternal());

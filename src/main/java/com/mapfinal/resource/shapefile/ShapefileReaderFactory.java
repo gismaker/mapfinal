@@ -7,6 +7,7 @@ import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
 import com.mapfinal.resource.shapefile.shpx.ShpRecordRandomReader;
 
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
@@ -21,7 +22,7 @@ public interface ShapefileReaderFactory {
 
 	public Point readRecordPoint(ShpRecordRandomReader shpRecord) throws IOException;
 
-	public LineString readRecordPolyline(ShpRecordRandomReader shpRecord) throws IOException;
+	public MultiLineString readRecordPolyline(ShpRecordRandomReader shpRecord) throws IOException;
 
 	public MultiPolygon readRecordPolygon(ShpRecordRandomReader shpRecord) throws IOException;
 

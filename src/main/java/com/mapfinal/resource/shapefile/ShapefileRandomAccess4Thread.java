@@ -26,6 +26,7 @@ import com.mapfinal.resource.shapefile.shpx.ShxRecord;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
@@ -232,7 +233,7 @@ public class ShapefileRandomAccess4Thread {
 				points.add(pt);
 				break;
 			case ShpType.POLYLINE: /* 已测试 */
-				LineString line = readRecordPolyline(shx, shp, shpType);
+				MultiLineString line = readRecordPolyline(shx, shp, shpType);
 				line.setUserData(i-1);
 				points.add(line);
 				break;
@@ -332,7 +333,7 @@ public class ShapefileRandomAccess4Thread {
 	 * @return
 	 * @throws IOException
 	 */
-	public LineString readRecordPolyline(ShxRecord shx, ShpRandomAccess shp, int shpType) throws IOException {
+	public MultiLineString readRecordPolyline(ShxRecord shx, ShpRandomAccess shp, int shpType) throws IOException {
 		int length = shx.length();
 		if (length <= 0) {
 			return null;

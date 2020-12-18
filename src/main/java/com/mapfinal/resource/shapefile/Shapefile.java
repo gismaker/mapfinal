@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
@@ -272,7 +273,7 @@ public class Shapefile extends VectorResource<Long> {
 	}
 	
 	private ShapefileFeature readRecordPolyline(int i, SpatialIndexObject obj) throws IOException {
-		LineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
+		MultiLineString line = shpRandomAccess.readRecordPolyline(shxRandomAccess.getRecordPosition(i+1));
 		line.setUserData(i);
 		ShapefileFeature feature = new ShapefileFeature(obj.getId(), obj, line, shxRandomAccess.getShpType());
 		feature.setEnvelope(line.getEnvelopeInternal());
