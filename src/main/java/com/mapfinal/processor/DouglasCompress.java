@@ -20,6 +20,7 @@ public class DouglasCompress implements GeoCompress {
 	@Override
 	public List<Integer> excute(Event event, CoordinateSequence points, Double tolerance) {
 		// TODO Auto-generated method stub
+		//允许最大误差
 		tolerance = tolerance == null ? 1 : tolerance;
 		/*
 		String type = event.get("type", "polyline");
@@ -151,7 +152,7 @@ public class DouglasCompress implements GeoCompress {
 		double CA = distance(p, e);
 
 		double S = helen(CB, CA, AB);
-		double H = 2 * S / AB;
+		double H = 2.0f * S / AB;
 
 		return H;
 	}
@@ -183,7 +184,7 @@ public class DouglasCompress implements GeoCompress {
 	 * @return 面积
 	 */
 	public double helen(double CB, double CA, double AB) {
-		double p = (CB + CA + AB) / 2;
+		double p = (CB + CA + AB) / 2.0;
 		double S = Math.sqrt(p * (p - CB) * (p - CA) * (p - AB));
 		return S;
 	}

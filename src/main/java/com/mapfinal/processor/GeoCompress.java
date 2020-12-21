@@ -36,5 +36,12 @@ public interface GeoCompress {
 	
 	//public void excute(Collection points, Callback callback);
 
+	/**
+	 * 抽稀算法
+	 * @param event
+	 * @param points 坐标列表
+	 * @param tolerance 允许最大误差
+	 * @return
+	 */
 	public List<Integer> excute(Event event, CoordinateSequence points, Double tolerance);
 }
