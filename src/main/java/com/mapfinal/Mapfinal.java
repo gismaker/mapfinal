@@ -44,6 +44,15 @@ public class Mapfinal {
 		EventManager.me().registerListener(SceneRedrawListener.class);
 	}
 	
+	public void init(MapfinalFactory factory) {
+		this.factory = factory;
+		this.factory.init();
+		
+		this.cacheFolder = this.factory.getCacheFolder();
+		System.out.println("cacheFolder: " + cacheFolder);
+		EventManager.me().registerListener(SceneRedrawListener.class);
+	}
+	
 	public void setCenter(Latlng center) {
 		map.setCenter(center);
 	}

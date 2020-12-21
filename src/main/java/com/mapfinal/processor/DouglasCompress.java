@@ -49,6 +49,9 @@ public class DouglasCompress implements GeoCompress {
 		int end = points.size();
 		int index = 0;
 		Coordinate s = points.getCoordinate(0), e = points.getCoordinate(end - 1);
+		if(s.equals2D(e, 0.0000000001)) {
+			e = points.getCoordinate(end - 2);
+		}
 		for (int i = 1; i < end - 1; i++) {
 			double h = H(points.getCoordinate(i), s, e);
 			if (h > maxH) {

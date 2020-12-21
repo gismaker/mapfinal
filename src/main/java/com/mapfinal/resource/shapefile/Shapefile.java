@@ -50,10 +50,24 @@ public class Shapefile extends VectorResource<Long> {
 	 * dbf
 	 */
 	private MapRecordSet recordSet;
+	private String charsetName = "utf-8";
 	
 	private boolean binit = false;
 	
 	private FeatureClass<Long> featureClass;
+	
+	public Shapefile(String url, String charsetName) {
+		this.charsetName = charsetName;
+		setUrl(url);
+		setName(FileKit.getFileNameNoEx(getUrl()));
+		try {
+			isShapefileExists(getUrl());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		recordSet = new MapRecordSet();
+		ShapefileManager.me().addResource(url, this);
+	}
 	
 	public Shapefile(String url) {
 		// TODO Auto-generated constructor stub
@@ -163,6 +177,7 @@ public class Shapefile extends VectorResource<Long> {
 	 */
 	protected boolean readDBF(String dbfFile) throws IOException { /* 已测试 */
 		this.recordSet = new MapRecordSet();
+		this.recordSet.setCharsetName(charsetName);
 		return recordSet.openDBF(dbfFile);
 	}
 
