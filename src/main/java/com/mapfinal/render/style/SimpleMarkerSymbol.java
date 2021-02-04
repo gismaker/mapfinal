@@ -2,6 +2,7 @@ package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.Mapfinal;
 
 public class SimpleMarkerSymbol extends MarkerSymbol {
 
@@ -65,8 +66,8 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 		// TODO Auto-generated method stub
 		SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(this);
 		symbol.getFill().setColor(color);
-		symbol.setWidth(this.getWidth()+10);
-		symbol.setHeight(this.getHeight()+10);
+		symbol.setWidth(this.getWidth() + Mapfinal.factory().pickPointZommPixel());
+		symbol.setHeight(this.getHeight() + Mapfinal.factory().pickPointZommPixel());
 		if(symbol.getFill().getOutline()!=null) {
 			symbol.getFill().getOutline().setColor(color);
 		}

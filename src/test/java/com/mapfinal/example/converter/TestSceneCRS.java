@@ -36,7 +36,7 @@ public class TestSceneCRS {
 		
 		System.out.println("------------------------------------------");
 		//测试距离计算
-		double dist = crs.distance(new Latlng(40, 116), new Latlng(39, 116));
+		double dist = crs.distance(new Latlng(39.907, 116.390), new Latlng(39.903, 116.398));
 		System.out.println("distance: " + dist);
 		
 		System.out.println("------------------------------------------");

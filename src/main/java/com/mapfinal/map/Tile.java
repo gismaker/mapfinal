@@ -37,6 +37,27 @@ public class Tile {
 		this.envelope = envelope;
 	}
 	
+	public Tile(String name, int x, int y, int z) {
+		// TODO Auto-generated constructor stub
+		this.setName(name);
+		this.x = x; 
+		this.y = y;
+		this.z = z;
+		double fullBoundsMinX = -SphericalMercatorProjection.MAX_DIMENSION;
+        double fullBoundsMinY = -SphericalMercatorProjection.MAX_DIMENSION;
+        int tilesInMapOneDimension = 1 << z;
+        double halfTilesInMapOneDimension = tilesInMapOneDimension * 0.5;
+        double tilesSizeOneDimension = SphericalMercatorProjection.MAX_DIMENSION / halfTilesInMapOneDimension;
+        double minX = fullBoundsMinX + x * tilesSizeOneDimension;
+        double minY = fullBoundsMinY + y * tilesSizeOneDimension;
+        Envelope tileEnv = new Envelope(
+                minX,
+                minX + tilesSizeOneDimension,
+                minY,
+                minY + tilesSizeOneDimension);
+        this.envelope = tileEnv;
+	}
+	
 	public String getId() {
 		return name.replaceAll("_", "-") + "_" + z + "_" + x + "_" + y 
 				+ "_" + envelope.getMinX() + "_" + envelope.getMaxX() 

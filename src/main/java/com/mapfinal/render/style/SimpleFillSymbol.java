@@ -2,6 +2,7 @@ package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.Mapfinal;
 
 public class SimpleFillSymbol extends FillSymbol {
 
@@ -130,7 +131,7 @@ public class SimpleFillSymbol extends FillSymbol {
 		symbol.setColor(color);
 		if(symbol.getOutline()!=null) {
 			symbol.getOutline().setColor(color);
-			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + 5);
+			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + Mapfinal.factory().pickLineZommPixel());
 		}
 		return symbol;
 	}

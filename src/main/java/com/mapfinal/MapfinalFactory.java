@@ -30,4 +30,20 @@ public abstract class MapfinalFactory {
 	 * @return
 	 */
 	public abstract ImageHandle getImageHandle();
+	
+	/**
+	 * 点拾取的时候，放大多少像素
+	 * @return
+	 */
+	public int pickPointZommPixel() {
+		return 5;
+	}
+	
+	/**
+	 * 线拾取的时候，放大多少像素
+	 * @return
+	 */
+	public int pickLineZommPixel() {
+		return 10;
+	}
 }

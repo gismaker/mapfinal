@@ -2,6 +2,7 @@ package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.Mapfinal;
 
 public class SimpleLineSymbol extends LineSymbol {
 
@@ -144,7 +145,7 @@ public class SimpleLineSymbol extends LineSymbol {
 		// TODO Auto-generated method stub
 		SimpleLineSymbol symbol = new SimpleLineSymbol(this);
 		symbol.setColor(color);
-		symbol.setWidth(this.getWidth()+5);
+		symbol.setWidth(this.getWidth() + Mapfinal.factory().pickLineZommPixel());
 		return symbol;
 	}
 
