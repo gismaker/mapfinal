@@ -178,33 +178,37 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 		RandomAccessFile isBundle = null;
 		RandomAccessFile isBundlx = null;
 		try {
-			String l = "0" + level;
+			String l = String.valueOf(level);
 			int lLength = l.length();
-			if (lLength > 2) {
+			if (lLength < 2) {
+				l = "0" + l;
 				l = l.substring(lLength - 2);
 			}
 			l = "L" + l;
 			int rGroup = size * (row / size);
-			String r = "000" + Integer.toHexString(rGroup);
+			String r = Integer.toHexString(rGroup);
 			int rLength = r.length();
-			if (rLength > 4) {
+			if(rLength < 4) {
+				r = "000" + r;
 				r = r.substring(rLength - 4);
 			}
+			
 			r = "R" + r;
 			int cGroup = size * (col / size);
-			String c = "000" + Integer.toHexString(cGroup);
+			String c = Integer.toHexString(cGroup);
 			int cLength = c.length();
-			if (cLength > 4) {
+			if(cLength < 4) {
+				c = "000" + c;
 				c = c.substring(cLength - 4);
 			}
 			c = "C" + c;
 			String bundleBase = bundlesDir + File.separator + l + File.separator + r + c;
 			String bundlxFileName = bundleBase + ".bundlx";
 			String bundleFileName = bundleBase + ".bundle";
+			//System.out.println("col:"+col+", cg:"+cGroup+", row:"+row+", rg:"+rGroup);
 			// 行列号是整个范围内的，在某个文件中需要先减去前面文件所占有的行列号（都是128的整数）这样就得到在文件中的真是行列号
 			isBundlx = new RandomAccessFile(bundlxFileName, "r");
 			int index = size * (col - cGroup) + (row - rGroup);//4896;//
-//			System.out.println("col:"+col+", cg:"+cGroup+", row:"+row+", rg:"+rGroup);
 			isBundlx.seek(16 + 5 * index);
 			byte[] buffer = new byte[5];
 			isBundlx.read(buffer, 0, 5);
@@ -222,7 +226,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			int bytesRead = 0;
 			bytesRead = isBundle.read(result, 0, length);
 			
-//			System.out.println("Bundle: " + bundleFileName + ", index:"+index+", offset:"+offset+", len:"+length+", readlen:"+bytesRead);
+			//System.out.println("Bundle: " + bundleFileName + ", index:"+index+", offset:"+offset+", len:"+length+", readlen:"+bytesRead);
 			if (isBundle != null) {
 				isBundle.close();
 				isBundlx.close();
@@ -234,6 +238,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			//ex.printStackTrace();
 			return null;
 		}
 		return result;

@@ -25,7 +25,7 @@ public abstract class AbstractLayer implements Layer {
 	private String title;
 	private float opacity = 1.0f;
 	private float minZoom = 0;
-	private float maxZoom = 18;
+	private float maxZoom = 24;
 	private boolean visible = true;
 	/**
 	 * 坐标系，应用于转换器
