@@ -15,6 +15,14 @@ import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Data;
 
+/**
+ * 
+ * https://www.cnblogs.com/yuantf/p/3320876.html
+ * https://blog.csdn.net/abc553226713/article/details/8668839
+ * @author yangyong
+ *
+ * @param <M>
+ */
 public class BundleFeature<M> implements GeoImage<M>, Data {
 
 	//名称
@@ -182,15 +190,16 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			int lLength = l.length();
 			if (lLength < 2) {
 				l = "0" + l;
-				l = l.substring(lLength - 2);
+				l = l.substring(l.length() - 2);
 			}
 			l = "L" + l;
 			int rGroup = size * (row / size);
 			String r = Integer.toHexString(rGroup);
+			//System.out.println("rGroup:" + rGroup + ", row:" + row + ", r:" + r);
 			int rLength = r.length();
 			if(rLength < 4) {
 				r = "000" + r;
-				r = r.substring(rLength - 4);
+				r = r.substring(r.length() - 4);
 			}
 			
 			r = "R" + r;
@@ -199,13 +208,13 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			int cLength = c.length();
 			if(cLength < 4) {
 				c = "000" + c;
-				c = c.substring(cLength - 4);
+				c = c.substring(c.length() - 4);
 			}
 			c = "C" + c;
 			String bundleBase = bundlesDir + File.separator + l + File.separator + r + c;
 			String bundlxFileName = bundleBase + ".bundlx";
 			String bundleFileName = bundleBase + ".bundle";
-			//System.out.println("col:"+col+", cg:"+cGroup+", row:"+row+", rg:"+rGroup);
+			//System.out.println("col:"+col+", cg:"+cGroup+", row:"+row+", rg:"+rGroup + ", file:" + bundleBase);
 			// 行列号是整个范围内的，在某个文件中需要先减去前面文件所占有的行列号（都是128的整数）这样就得到在文件中的真是行列号
 			isBundlx = new RandomAccessFile(bundlxFileName, "r");
 			int index = size * (col - cGroup) + (row - rGroup);//4896;//
@@ -238,7 +247,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//ex.printStackTrace();
+			ex.printStackTrace();
 			return null;
 		}
 		return result;

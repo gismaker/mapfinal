@@ -1,10 +1,12 @@
 package com.mapfinal.resource.bundle;
 
+import java.io.File;
 import java.util.List;
+
+import org.locationtech.jts.geom.Envelope;
 
 import com.mapfinal.cache.Cache;
 import com.mapfinal.cache.impl.ScreenLruCacheImpl;
-import com.mapfinal.converter.CRS;
 import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
@@ -14,6 +16,11 @@ import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
 
+/**
+ * https://blog.csdn.net/hellfire2007/article/details/81710725
+ * @author yangyong
+ *
+ */
 public class BundleResource extends TileResourceDispatcher<BundleFeature> implements Resource<BundleFeature> {
 
 	private String name;
@@ -21,12 +28,28 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	private int cacheScreenNum = 2;
 	private int screenTileNumber = 15;
 	private String url;
+	private boolean standard = true;
 	private int tmsType = Tile.TMS_LT;
 	private SpatialReference spatialReference = SpatialReference.mercator();
+	
+	private Envelope envelope;
 	
 	public BundleResource(String name, String url) {
 		this.name = name;
 		this.url = url;
+		setEnvelope(ReadCdiUtils.getCdiEnvelope(url + File.separator + "conf.cdi"));
+		this.screenTileNumber = 15;
+		int cacheSize = cacheScreenNum * screenTileNumber;
+		cache = new ScreenLruCacheImpl<>(cacheSize);
+	}
+	
+	public BundleResource(String name, String url, boolean standard) {
+		this.name = name;
+		this.url = url;
+		this.setStandard(standard);
+		if(standard) {
+			setEnvelope(ReadCdiUtils.getCdiEnvelope(url + File.separator + "conf.cdi"));
+		}
 		this.screenTileNumber = 15;
 		int cacheSize = cacheScreenNum * screenTileNumber;
 		cache = new ScreenLruCacheImpl<>(cacheSize);
@@ -59,7 +82,8 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 		BundleFeature feature =  getFromCache(sio.getId());
 		if(feature==null) {
 			Tile tile = (Tile) sio.getOption("tile");
-			String tileUrl = tile.getIntactUrl(this.url);
+			String url = this.standard ? this.url + File.separator + "_alllayers" : this.url;
+			String tileUrl = tile.getIntactUrl(url);
 			//System.out.println("[BundleSource] tile: " + tile.getId() + ", url: " + tileUrl);
 			//System.out.println("[BundleCollection] dataCache: " + cache.size());
 			feature = new BundleFeature(tileUrl, tile);
@@ -96,7 +120,8 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	public BundleFeature getFeature(Tile tile) {
 		BundleFeature feature =  getFromCache(tile.getId());
 		if(feature==null) {
-			String tileUrl = tile.getIntactUrl(this.url);
+			String url = this.standard ? this.url + File.separator + "_alllayers" : this.url;
+			String tileUrl = tile.getIntactUrl(url);
 			feature = new BundleFeature(tileUrl, tile);
 			if(feature!=null) {
 				putToCache(tile.getId(), feature);
@@ -201,6 +226,22 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	public void destroy() {
 		// TODO Auto-generated method stub
 		clear();
+	}
+
+	public Envelope getEnvelope() {
+		return envelope;
+	}
+
+	public void setEnvelope(Envelope envelope) {
+		this.envelope = envelope;
+	}
+
+	public boolean isStandard() {
+		return standard;
+	}
+
+	public void setStandard(boolean standard) {
+		this.standard = standard;
 	}
 
 }

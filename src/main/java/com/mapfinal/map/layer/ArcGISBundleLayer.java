@@ -27,6 +27,16 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		setSpatialReference(SpatialReference.mercator());
 	}
 	
+	public ArcGISBundleLayer(String name, String url, boolean standard) {
+		// TODO Auto-generated constructor stub
+		resource = new BundleResource(name, url, standard);
+		setName(resource.getName());
+		setTitle(resource.getName());
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		setDispatcher(dispatcher);
+		setSpatialReference(SpatialReference.mercator());
+	}
+	
 	public ArcGISBundleLayer(BundleResource resource) {
 		this.resource = resource;
 		setName(resource.getName());
@@ -80,6 +90,6 @@ public class ArcGISBundleLayer extends AbstractLayer {
 	@Override
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.resource.getEnvelope();
 	}
 }
