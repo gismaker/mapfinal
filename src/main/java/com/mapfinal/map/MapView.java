@@ -5,6 +5,8 @@ import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
+import com.mapfinal.event.listener.MapMoveAnimationListener;
+import com.mapfinal.event.listener.MapMoveEaseListener;
 import com.mapfinal.event.listener.MapMoveListener;
 import com.mapfinal.event.listener.MapZoomListener;
 import com.mapfinal.geometry.Latlng;
@@ -21,7 +23,8 @@ public class MapView extends LayerGroup {
 		setName("map_" + StringKit.getUuid32());
 		context = new MapContext();
 		context.setMainThread(true);
-		this.addListener("map:move", new MapMoveListener());
+		//this.addListener("map:move", new MapMoveListener());
+		this.addListener("map:move", new MapMoveEaseListener());
 		this.addListener("map:zoom", new MapZoomListener());
 	}
 

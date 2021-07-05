@@ -32,7 +32,8 @@ public class GraphicsScene extends SceneGraph {
 		super.draw(event, engine);
 //		g.drawImage(bi, 0, 0, width,height, null);
 //		bi.flush();
-		g.drawImage(pickEngine.getPickImage(), 0, 0, pickEngine.getWidth(),pickEngine.getHeight(), null);
+		//pick画板
+		//g.drawImage(pickEngine.getPickImage(), 0, 0, pickEngine.getWidth(),pickEngine.getHeight(), null);
 	}
 	
 	public void drawPick(float x, float y) {

@@ -195,8 +195,11 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		int h = (int) Math.round(p2.y) - y;
 		// System.out.println("[renderImageFeature] draw: " + x + ", " + y + ", " + w +
 		// ", " + h);
+		//设置为透明覆盖
+		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
 		// 绘制图片（如果宽高传的不是图片原本的宽高, 则图片将会适当缩放绘制）
 		g2d.drawImage((Image) feature.getImage(), x, y, w, h, null);
+		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
 //        g2d.setColor(Color.lightGray);
 //        g2d.drawLine(x, y, p2.getSx(), y);

@@ -175,6 +175,7 @@ public class BufferedImageHandle extends ImageHandle<BufferedImage> {
 		BufferedImage bufferdImage = null;
 		try {
 			bufferdImage = ImageIO.read(in);
+			//if(bufferdImage != null) System.out.println("BufferedImage type: " + bufferdImage.getType());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

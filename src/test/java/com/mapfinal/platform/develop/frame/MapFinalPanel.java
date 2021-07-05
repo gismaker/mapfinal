@@ -82,8 +82,8 @@ public class MapFinalPanel extends JPanel {
 //        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
 //        layerLine.addTo(Mapfinal.me().getMap());
         
-        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "doodle.shp");
-        layerLine.addTo(Mapfinal.me().getMap());
+//        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "doodle.shp");
+//        layerLine.addTo(Mapfinal.me().getMap());
         
         /*
         Marker marker = new Marker(new Latlng(39.9, 117), new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "loc.png"));
@@ -112,47 +112,53 @@ public class MapFinalPanel extends JPanel {
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
 //        bundleLayer.addTo(Mapfinal.me().getMap());
+      //String bundle = "/Users/yangyong/data/atlas/qinghai";
+      //ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+      //bundleLayer.setMaxZoom(19);
+      //bundleLayer.addTo(Mapfinal.me().getMap());
+      
+      //Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
         // polyline
-        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);
-        polyline.addCoordinate(new Coordinate(80, 10));
-        polyline.addCoordinate(new Coordinate(100, 20));
-        polyline.addCoordinate(new Coordinate(116, 30));
-        polyline.addTo(Mapfinal.me().getMap());
-        polyline.addClick(new EventListener() {
-			@Override
-			public boolean onEvent(Event event) {
-				System.out.println("polyline picked....");
-				return false;
-			}
-		});
-        
-        //polygon
-        Coordinate[] coordinates = new  Coordinate[]{new Coordinate(110, 0), new Coordinate(105, 10), new Coordinate(108, 15), new Coordinate(110, 0)};
-        PolygonLayer polygon = new PolygonLayer(coordinates, null);
-        polygon.addCoordinate(new Coordinate(120, 10));
-        polygon.addCoordinate(new Coordinate(130, 30));
-        polygon.addTo(Mapfinal.me().getMap());
-        polygon.addClick(new EventListener() {
-			@Override
-			public boolean onEvent(Event event) {
-				System.out.println("polygon picked....");
-				return false;
-			}
-		});
-        
-      //polygon
-        Coordinate[] coordinates2 = new  Coordinate[]{new Coordinate(120, 30), new Coordinate(120, 35), new Coordinate(125, 35), new Coordinate(120, 30)};
-        PolygonLayer polygon2 = new PolygonLayer(coordinates2, null);
-        polygon2.addCoordinate(new Coordinate(125, 30));
-        polygon2.addTo(Mapfinal.me().getMap());
-        polygon2.addClick(new EventListener() {
-			@Override
-			public boolean onEvent(Event event) {
-				System.out.println("polygon2 picked....");
-				return false;
-			}
-		});
+//        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);
+//        polyline.addCoordinate(new Coordinate(80, 10));
+//        polyline.addCoordinate(new Coordinate(100, 20));
+//        polyline.addCoordinate(new Coordinate(116, 30));
+//        polyline.addTo(Mapfinal.me().getMap());
+//        polyline.addClick(new EventListener() {
+//			@Override
+//			public boolean onEvent(Event event) {
+//				System.out.println("polyline picked....");
+//				return false;
+//			}
+//		});
+//        
+//        //polygon
+//        Coordinate[] coordinates = new  Coordinate[]{new Coordinate(110, 0), new Coordinate(105, 10), new Coordinate(108, 15), new Coordinate(110, 0)};
+//        PolygonLayer polygon = new PolygonLayer(coordinates, null);
+//        polygon.addCoordinate(new Coordinate(120, 10));
+//        polygon.addCoordinate(new Coordinate(130, 30));
+//        polygon.addTo(Mapfinal.me().getMap());
+//        polygon.addClick(new EventListener() {
+//			@Override
+//			public boolean onEvent(Event event) {
+//				System.out.println("polygon picked....");
+//				return false;
+//			}
+//		});
+//        
+//      //polygon
+//        Coordinate[] coordinates2 = new  Coordinate[]{new Coordinate(120, 30), new Coordinate(120, 35), new Coordinate(125, 35), new Coordinate(120, 30)};
+//        PolygonLayer polygon2 = new PolygonLayer(coordinates2, null);
+//        polygon2.addCoordinate(new Coordinate(125, 30));
+//        polygon2.addTo(Mapfinal.me().getMap());
+//        polygon2.addClick(new EventListener() {
+//			@Override
+//			public boolean onEvent(Event event) {
+//				System.out.println("polygon2 picked....");
+//				return false;
+//			}
+//		});
         
         //Mapfinal.me().getMap().setBackgroundRenderer(new GraphicsMapBackgroundRenderer());
         
@@ -161,7 +167,9 @@ public class MapFinalPanel extends JPanel {
         
         
         Mapfinal.map().setCenter(new Latlng(39.943,116.1888));
-        Mapfinal.map().setZoom(15);
+        Mapfinal.map().setZoom(6);
+//        Mapfinal.map().setZoom(15);
+        //Mapfinal.map().setMaxZoom(19);
         
         addMouseListener(new MouseListener() {
 			@Override
