@@ -103,21 +103,24 @@ public class MapFinalPanel extends JPanel {
         point.addPoint(new Coordinate(115, 30));
         point.addTo(Mapfinal.map());
         
+        //ImageOverlay
 //        LatlngBounds bounds = new LatlngBounds(new Latlng(30, 110), new Latlng(35, 115));
 //        ImageOverlay imgo = new ImageOverlay(bounds, new LocalImage("test", Mapfinal.me().getCacheFolder() + File.separator + "psds17397.jpg"));
 //        imgo.setOpacity(0.8f);
 //        imgo.addTo(Mapfinal.me().getMap());
 
-//        //bundle
+//        //bundle01
 //        String bundle = "D:\\lambkit-gis-earth\\data\\_alllayers";
 //        ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
 //        bundleLayer.addTo(Mapfinal.me().getMap());
-      //String bundle = "/Users/yangyong/data/atlas/qinghai";
-      //ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
-      //bundleLayer.setMaxZoom(19);
-      //bundleLayer.addTo(Mapfinal.me().getMap());
-      
-      //Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
+        
+      //bundle02
+//      String bundle = "/Users/yangyong/data/atlas/qinghai";
+//      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+//      bundleLayer.setMaxZoom(19);
+//      bundleLayer.addTo(Mapfinal.me().getMap());
+//      
+//      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
         // polyline
 //        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);
@@ -166,8 +169,9 @@ public class MapFinalPanel extends JPanel {
 //        Mapfinal.map().setZoom(13);
         
         
-        Mapfinal.map().setCenter(new Latlng(39.943,116.1888));
-        Mapfinal.map().setZoom(6);
+//        Mapfinal.map().setCenter(new Latlng(39.943,116.1888));
+//        Mapfinal.map().setZoom(6);
+        Mapfinal.map().flyTo(Latlng.by(39.943,116.1888), 6);
 //        Mapfinal.map().setZoom(15);
         //Mapfinal.map().setMaxZoom(19);
         

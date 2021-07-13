@@ -217,6 +217,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			//System.out.println("col:"+col+", cg:"+cGroup+", row:"+row+", rg:"+rGroup + ", file:" + bundleBase);
 			// 行列号是整个范围内的，在某个文件中需要先减去前面文件所占有的行列号（都是128的整数）这样就得到在文件中的真是行列号
 			isBundlx = new RandomAccessFile(bundlxFileName, "r");
+			
 			int index = size * (col - cGroup) + (row - rGroup);//4896;//
 			isBundlx.seek(16 + 5 * index);
 			byte[] buffer = new byte[5];
@@ -247,7 +248,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			return null;
 		}
 		return result;

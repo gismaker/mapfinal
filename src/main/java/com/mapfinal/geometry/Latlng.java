@@ -30,7 +30,19 @@ public class Latlng extends Coordinate {
 		}
 	}
 	
+	public static Latlng by(Coordinate coordinate) {
+		if (coordinate instanceof Latlng) {
+			return new Latlng((Latlng) coordinate);
+		} else {
+			return new Latlng(coordinate.y, coordinate.x, coordinate.getZ());
+		}
+	}
+	
 	public static Latlng create(double lat, double lng) {
+		return new Latlng(lat, lng);
+	}
+	
+	public static Latlng by(double lat, double lng) {
 		return new Latlng(lat, lng);
 	}
 	
@@ -224,6 +236,22 @@ public class Latlng extends Coordinate {
 		ret += (20.0 * Math.sin(lat * Math.PI) + 40.0 * Math.sin(lat / 3.0 * Math.PI)) * 2.0 / 3.0;
 		ret += (150.0 * Math.sin(lat / 12.0 * Math.PI) + 300.0 * Math.sin(lat / 30.0 * Math.PI)) * 2.0 / 3.0;
 		return ret;
+	}
+	
+	public Latlng plus(Latlng otherPoint) {
+		this.x += otherPoint.x;
+		this.y += otherPoint.y;
+		return this;
+	}
+	
+	/**
+	 * Returns the result of subtraction of the given point from the current.
+	 * @return
+	 */
+	public Latlng subtract(Latlng otherPoint) {
+		this.x -= otherPoint.x;
+		this.y -= otherPoint.y;
+		return this;
 	}
 	
 }

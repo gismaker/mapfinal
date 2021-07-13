@@ -27,6 +27,18 @@ package com.mapfinal.animation;
 
 import java.util.ArrayList;
 
+/**
+ * BaseEasingMethod出处： 
+ * https://github.com/daimajia/AnimationEasingFunctions </br>
+ * 贝塞尔曲线： 
+ * https://cubic-bezier.com/ </br>
+ * ease动画图片示例：
+ * https://blog.csdn.net/u014271114/article/details/47703061 </br>
+ * ease动画js代码示例：
+ * https://blog.csdn.net/jebe7282/article/details/7521067?utm_source=blogxgwz5&utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-4&spm=1001.2101.3001.4242
+ * @author yangyong
+ *
+ */
 public abstract class BaseEasingMethod {
     protected float mDuration;
 

@@ -5,12 +5,11 @@ import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
-import com.mapfinal.event.listener.MapMoveAnimationListener;
 import com.mapfinal.event.listener.MapMoveEaseListener;
-import com.mapfinal.event.listener.MapMoveListener;
-import com.mapfinal.event.listener.MapZoomListener;
+import com.mapfinal.event.listener.MapZoomEaseListener;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.kit.StringKit;
+import com.mapfinal.map.handler.MoveFly;
 import com.mapfinal.render.RenderEngine;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -25,7 +24,7 @@ public class MapView extends LayerGroup {
 		context.setMainThread(true);
 		//this.addListener("map:move", new MapMoveListener());
 		this.addListener("map:move", new MapMoveEaseListener());
-		this.addListener("map:zoom", new MapZoomListener());
+		this.addListener("map:zoom", new MapZoomEaseListener());
 	}
 
 	@Override
@@ -150,6 +149,11 @@ public class MapView extends LayerGroup {
 	
 	public String getCenterString() {
 		return context.getCenter().toString();
+	}
+	
+	public void flyTo(Latlng latlng, float zoom) {
+		MoveFly fly = new MoveFly();
+		fly.flyTo(context, latlng, zoom);
 	}
 
 	public void setCenter(Latlng center) {

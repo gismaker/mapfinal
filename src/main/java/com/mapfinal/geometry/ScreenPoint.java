@@ -1,5 +1,7 @@
 package com.mapfinal.geometry;
 
+import com.mapfinal.converter.scene.ScenePoint;
+
 public class ScreenPoint {
 	public float x;
 	public float y;
@@ -11,6 +13,10 @@ public class ScreenPoint {
 	
 	public static ScreenPoint by(float x, float y) {
 		return new ScreenPoint(x, y);
+	}
+	
+	public static ScreenPoint by(ScenePoint sp) {
+		return new ScreenPoint((float) sp.getX(), (float) sp.getY());
 	}
 	
 	public void set(float x, float y) {

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.plaf.SliderUI;
-
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventKit;
 import com.mapfinal.event.EventListener;
@@ -178,8 +176,6 @@ public class MapMoveEaseListener implements EventListener {
 
 	public class DragTask extends TimerTask {
 
-		private ScreenPoint firstPos;
-	
 		private MapContext context;
 		
 		private long _startTime = 0;
@@ -187,20 +183,14 @@ public class MapMoveEaseListener implements EventListener {
 		//private boolean _inProgress;
 		private float _easeOutPower;
 
-		private ScreenPoint _startPos;
 		private ScreenPoint _offset;
 		
-		private boolean isRun = false;
+//		private boolean isRun = false;
 
 		public DragTask(Event event, ScreenPoint offset, ScreenPoint firstPos, Double duration, Float easeLinearity) {
 			// TODO Auto-generated constructor stub
 			this.context = event.get("map");
-			ScreenPoint spm = event.get("screenPoint");
-			this._startPos = spm;
-			this._offset = offset;//newPos.subtract(this._startPos);
-
-			this.firstPos = firstPos;
-			//this._inProgress = true;
+			this._offset = offset;
 			this._duration = duration == null ? 0.25 : duration;
 			float ease = easeLinearity == null ? 0.5f : easeLinearity.floatValue();
 			this._easeOutPower = 1 / Math.max(ease, 0.2f);
@@ -214,7 +204,7 @@ public class MapMoveEaseListener implements EventListener {
 
 		public void complete() {
 			cancel();
-			isRun = false;
+//			isRun = false;
 			context.resetCenterForDrag();
 			context.drag(0, 0);
 			//System.out.println("----------------------------------");
@@ -225,18 +215,18 @@ public class MapMoveEaseListener implements EventListener {
 			return 1 - Math.pow(1 - t, this._easeOutPower);
 		}
 		
-		public void start() {
-			isRun = true;
-			while(isRun) {
-				run();
-				try {
-					Thread.currentThread().sleep(INTERVAL);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+//		public void start() {
+//			isRun = true;
+//			while(isRun) {
+//				run();
+//				try {
+//					Thread.currentThread().sleep(INTERVAL);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 
 		@Override
 		public void run() {
