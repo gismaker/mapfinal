@@ -1,5 +1,6 @@
 package com.mapfinal.converter;
 
+import java.util.List;
 import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -19,6 +20,7 @@ import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.FeatureClass;
+import com.mapfinal.map.FeatureList;
 
 public class JsonConverter implements DataConverter<String, Geometry> {
 
@@ -26,11 +28,42 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	public Geometry convert(String paramS) {
 		// TODO Auto-generated method stub
 		JSONObject geometry = JSON.parseObject(paramS);
-		return parseGeometry(geometry);
+		String type = geometry.getString("type");
+		if("FeatureCollection".equalsIgnoreCase(type)) {
+			JSONArray features = geometry.getJSONArray("features");
+			if(features!=null && features.size() > 0) {
+				Geometry[] geoms = new Geometry[features.size()];
+				for (int i=0; i<features.size(); i++) {
+					Geometry geo = parseGeometry(features.getJSONObject(i).getJSONObject("geometry"));
+					geoms[i] = geo;
+				}
+				return GeoKit.getGeometryFactory().createGeometryCollection(geoms);
+			}
+			return null;
+		} else if("Feature".equalsIgnoreCase(type)) {
+			return parseGeometry(geometry.getJSONObject("geometry"));
+		} else {
+			return parseGeometry(geometry);
+		}
 	}
 
 	public Geometry parseGeometry(JSONObject geometry) {
 		String geotype = geometry.getString("type");
+		if("FeatureCollection".equalsIgnoreCase(geotype)) {
+			JSONArray features = geometry.getJSONArray("features");
+			if(features!=null && features.size() > 0) {
+				Geometry[] geoms = new Geometry[features.size()];
+				for (int i=0; i<features.size(); i++) {
+					Geometry geo = parseGeometry(features.getJSONObject(i).getJSONObject("geometry"));
+					geoms[i] = geo;
+				}
+				return GeoKit.getGeometryFactory().createGeometryCollection(geoms);
+			}
+			return null;
+		}
+		if("Feature".equalsIgnoreCase(geotype)) {
+			return parseGeometry(geometry.getJSONObject("geometry"));
+		}
 		// System.out.println("[geotype] " + geotype);
 		if (StringKit.isBlank(geotype))
 			return null;
@@ -77,6 +110,21 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 		}
 		return null;
 	}
+	
+	
+	public FeatureList parseFeatureCollection(JSONObject featureCollection) {
+		JSONArray features = featureCollection.getJSONArray("features");
+		if(features!=null && features.size() > 0) {
+			FeatureList featureList = new FeatureList();
+			for (int i=0; i<features.size(); i++) {
+				Feature feature = parseFeature(features.getJSONObject(i));
+				featureList.addFeature(feature);
+			}
+			return featureList;
+		}
+		return null;
+	}
+	
 
 	public Feature parseFeature(JSONObject feature) {
 		Map<String, Object> properties = (Map) feature.get("properties");
