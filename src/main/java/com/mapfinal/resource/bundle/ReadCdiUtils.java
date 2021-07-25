@@ -18,12 +18,16 @@ public class ReadCdiUtils {
 //    public static String cdiPath = "D:\\data\\conf.cdi";
 
     public static Envelope getCdiEnvelope(String cdiPath) {
+    	File cdiFile = new File(cdiPath);
+    	if(!cdiFile.exists()) {
+    		return null;
+    	}
         //1.创建DocumentBuilderFactory对象
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         //2.创建DocumentBuilder对象
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document d = builder.parse(new File(cdiPath));
+            Document d = builder.parse(cdiFile);
             NodeList sList = d.getElementsByTagName("EnvelopeN");
             //获取切片最大最小坐标
             Double xMin = null;

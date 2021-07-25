@@ -50,6 +50,7 @@ public class GeoKit {
 	}
 
 	public static GeometryFactory getGeometryFactory() {
+		initGeometryFactory();
 		return geometryFactory;
 	}
 	

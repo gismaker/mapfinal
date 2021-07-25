@@ -122,6 +122,14 @@ public class MapFinalPanel extends JPanel {
 //      
 //      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
+        String bundle = "/Users/yangyong/data/atlas/new";
+      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+      bundleLayer.setMaxZoom(19);
+      bundleLayer.addTo(Mapfinal.me().getMap());
+      
+    Mapfinal.map().setCenter(new Latlng(42.946,89.183));
+    Mapfinal.map().setZoom(17);
+        
         // polyline
 //        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);
 //        polyline.addCoordinate(new Coordinate(80, 10));
@@ -171,7 +179,7 @@ public class MapFinalPanel extends JPanel {
         
 //        Mapfinal.map().setCenter(new Latlng(39.943,116.1888));
 //        Mapfinal.map().setZoom(6);
-        Mapfinal.map().flyTo(Latlng.by(39.943,116.1888), 6);
+        //Mapfinal.map().flyTo(Latlng.by(39.943,116.1888), 6);
 //        Mapfinal.map().setZoom(15);
         //Mapfinal.map().setMaxZoom(19);
         
