@@ -194,5 +194,103 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 			return GeoKit.getGeometryFactory().createPolygon(shell);
 		}
 	}
+	
+	public JSONObject parseJSONObject(Geometry geometry) {
+		if(geometry==null) return null;
+		String geotype = geometry.getGeometryType();
+		JSONObject geom = new JSONObject();
+		if ("Point".equalsIgnoreCase(geotype)) {
+			geom.put("type", "Point");
+		} else if ("MultiPoint".equalsIgnoreCase(geotype)) {
+			geom.put("type", "MultiPoint");
+		} else if ("LineString".equalsIgnoreCase(geotype)) {
+			geom.put("type", "LineString");
+		} else if ("MultiLineString".equalsIgnoreCase(geotype)) {
+			geom.put("type", "MultiLineString");
+		} else if ("Polygon".equalsIgnoreCase(geotype)) {
+			geom.put("type", "Polygon");
+		} else if ("MultiPolygon".equalsIgnoreCase(geotype)) {
+			geom.put("type", "MultiPolygon");
+		}
+		JSONArray coords = parseJSONArray(geometry);
+		geom.put("coordinates", coords);
+		return geom;
+	}
+	
+	public JSONArray parseJSONArray(Coordinate coordinate) {
+		JSONArray coords = new JSONArray();
+		coords.add(coordinate.getX());
+		coords.add(coordinate.getY());
+		return coords;
+	}
+	
+	public JSONArray parseJSONArray(Geometry geometry) {
+		if(geometry==null) return null;
+		String geotype = geometry.getGeometryType();
+		System.out.println("geotype: " + geotype);
+		if ("Point".equalsIgnoreCase(geotype)) {
+			Coordinate coordinate = geometry.getCoordinate();
+			return parseJSONArray(coordinate);
+		} else if ("MultiPoint".equalsIgnoreCase(geotype)) {
+//			Coordinate[] coordinates = geometry.getCoordinates();
+//			JSONArray coords = new JSONArray();
+//			for(int i=0; i<coordinates.length; i++) {
+//				JSONArray cd = parseJSONArray(coordinates[i]);
+//				coords.add(cd);
+//			}
+//			return coords;
+			int gn = geometry.getNumGeometries();
+			JSONArray coords = new JSONArray();
+			for(int n=0; n<gn; n++) {
+				Geometry geo = geometry.getGeometryN(n);
+				JSONArray ja = parseJSONArray(geo);
+				coords.add(ja);
+			}
+			return coords;
+		} else if ("LineString".equalsIgnoreCase(geotype) || "LinearRing".equalsIgnoreCase(geotype)) {
+			Coordinate[] coordinates = geometry.getCoordinates();
+			JSONArray coords = new JSONArray();
+			for(int i=0; i<coordinates.length; i++) {
+				JSONArray cd = parseJSONArray(coordinates[i]);
+				coords.add(cd);
+			}
+			return coords;
+		} else if ("MultiLineString".equalsIgnoreCase(geotype)) {
+			int gn = geometry.getNumGeometries();
+			JSONArray coords = new JSONArray();
+			for(int n=0; n<gn; n++) {
+				Geometry geo = geometry.getGeometryN(n);
+				JSONArray ja = parseJSONArray(geo);
+				coords.add(ja);
+			}
+			return coords;
+		} else if ("Polygon".equalsIgnoreCase(geotype)) {
+			Polygon polygon = (Polygon) geometry;
+			JSONArray coords = new JSONArray();
+			LineString shell = polygon.getExteriorRing();
+			coords.add(parseJSONArray(shell));
+			int hs = polygon.getNumInteriorRing();
+			for (int i = 0; i < hs; i++) {
+				LineString hole = polygon.getInteriorRingN(i);
+				coords.add(parseJSONArray(hole));
+			}
+			return coords;
+		} else if ("MultiPolygon".equalsIgnoreCase(geotype)) {
+			int gn = geometry.getNumGeometries();
+			JSONArray coords = new JSONArray();
+			for(int n=0; n<gn; n++) {
+				Geometry geo = geometry.getGeometryN(n);
+				JSONArray ja = parseJSONArray(geo);
+				coords.add(ja);
+			}
+			return coords;
+		}
+		return null;
+	}
+	
+	public String parseJson(Geometry geometry) {
+		JSONObject obj = parseJSONObject(geometry);
+		return obj.toJSONString();
+	}
 
 }

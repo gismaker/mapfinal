@@ -7,6 +7,7 @@ import com.mapfinal.converter.proj4.Proj4ConverterFactory;
 import com.mapfinal.kit.StringKit;
 
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 转换器和坐标系的管理：注册、获取、转换
@@ -74,6 +75,26 @@ public class ConverterManager {
 			return transform.transform(srouce, target);
 		}
 		return null;
+	}
+	
+	public static boolean transform(Geometry geometry) {
+		if(me.getMainFransform()!=null) {
+			Converter transform = me.getMainFransform();
+			ConverterCoordinateFilter filter = new ConverterCoordinateFilter(transform);
+			geometry.apply(filter);
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean transform(String transformName, Geometry geometry) {
+		Converter transform = me.getConverter(transformName);
+		if(transform!=null) {
+			ConverterCoordinateFilter filter = new ConverterCoordinateFilter(transform);
+			geometry.apply(filter);
+			return true;
+		}
+		return false;
 	}
 	
 	public Converter getConverter(String name) {
