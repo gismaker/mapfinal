@@ -32,7 +32,7 @@ public class PolygonLayer extends GeometryLayer {
 	}
 	
 	public PolygonLayer(String wkt, FillSymbol symbol) throws ParseException {
-		super(GeoKit.createPointByWKT(wkt));
+		super(GeoKit.createPolygonByWKT(wkt));
 		this.geomType = GeomType.POLYGON;
 		this.symbol = symbol;
 		setEditMode(true);

@@ -1,21 +1,17 @@
-package com.mapfinal.platform.develop;
+package com.mapfinal.platform.swing;
 
 import java.io.File;
 
-import com.mapfinal.MapfinalFactory;
-import com.mapfinal.geometry.ArrayMapCS;
-import com.mapfinal.geometry.DoublePackedCS;
+import com.mapfinal.Platform;
 import com.mapfinal.geometry.FloatPackedCS;
 import com.mapfinal.geometry.GeoKit;
-import com.mapfinal.geometry.ListMapCS;
 import com.mapfinal.geometry.MapCSFactory;
-import com.mapfinal.platform.develop.graphics.BufferedImageHandle;
 import com.mapfinal.processor.GeoCompress;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.render.SimpleRenderCompress;
 import com.mapfinal.resource.image.ImageHandle;
 
-public class GraphicsMapfinalFactory extends MapfinalFactory {
+public class JavaSwingPlatform implements Platform {
 
 	private RenderCompress renderCompress;
 	private BufferedImageHandle imageHandle;
@@ -23,7 +19,6 @@ public class GraphicsMapfinalFactory extends MapfinalFactory {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		super.init();
 	}
 	
 	@Override

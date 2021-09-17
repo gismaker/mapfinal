@@ -131,7 +131,7 @@ public class SimpleFillSymbol extends FillSymbol {
 		symbol.setColor(color);
 		if(symbol.getOutline()!=null) {
 			symbol.getOutline().setColor(color);
-			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + Mapfinal.factory().pickLineZommPixel());
+			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + Mapfinal.platform().pickLineZommPixel());
 		}
 		return symbol;
 	}

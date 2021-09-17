@@ -13,7 +13,7 @@ import com.mapfinal.map.Feature;
  * @author yangyong
  *
  */
-public abstract class VectorResource<K> extends ResourceObject<FeatureClass<K>> implements ResourceDispatcher<Feature<K>> {
+public abstract class FeatureResource<K> extends ResourceObject<FeatureClass<K>> implements ResourceDispatcher<Feature<K>> {
 	
 	public abstract Envelope getEnvelope();
 

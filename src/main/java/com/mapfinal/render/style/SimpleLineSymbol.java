@@ -145,7 +145,7 @@ public class SimpleLineSymbol extends LineSymbol {
 		// TODO Auto-generated method stub
 		SimpleLineSymbol symbol = new SimpleLineSymbol(this);
 		symbol.setColor(color);
-		symbol.setWidth(this.getWidth() + Mapfinal.factory().pickLineZommPixel());
+		symbol.setWidth(this.getWidth() + Mapfinal.platform().pickLineZommPixel());
 		return symbol;
 	}
 

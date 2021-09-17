@@ -1,4 +1,4 @@
-package com.mapfinal.platform.develop.graphics;
+package com.mapfinal.platform.swing;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -187,14 +187,14 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		Coordinate c1 = feature.getTopLeft();
 		// 右下角
 		Coordinate c2 = feature.getBottomRight();
+		System.out.println(c1.toString() + "," + c2.toString());
 		ScenePoint p1 = context.coordinateToPoint(c1, mapZoom);
 		ScenePoint p2 = context.coordinateToPoint(c2, mapZoom);
 		int x = (int) Math.round(p1.getX());
 		int y = (int) Math.round(p1.getY());
 		int w = (int) Math.round(p2.x) - x;
 		int h = (int) Math.round(p2.y) - y;
-		// System.out.println("[renderImageFeature] draw: " + x + ", " + y + ", " + w +
-		// ", " + h);
+		 System.out.println("[renderImageFeature] draw: " + x + ", " + y + ", " + w + ", " + h);
 		//设置为透明覆盖
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
 		// 绘制图片（如果宽高传的不是图片原本的宽高, 则图片将会适当缩放绘制）

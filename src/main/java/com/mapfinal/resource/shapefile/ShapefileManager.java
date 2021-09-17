@@ -24,6 +24,7 @@ public class ShapefileManager {
 		Shapefile shp = getResource(url);
 		if(shp==null) {
 			shp = new Shapefile(url);
+			addResource(url, shp);
 		}
 		return shp;
 	}

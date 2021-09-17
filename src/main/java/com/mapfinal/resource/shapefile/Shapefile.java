@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
@@ -26,7 +25,7 @@ import com.mapfinal.kit.StringKit;
 import com.mapfinal.map.FeatureClass;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.FieldType;
-import com.mapfinal.resource.VectorResource;
+import com.mapfinal.resource.FeatureResource;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
@@ -36,7 +35,7 @@ import com.mapfinal.resource.shapefile.shpx.ShpRandomAccess;
 import com.mapfinal.resource.shapefile.shpx.ShpType;
 import com.mapfinal.resource.shapefile.shpx.ShxRandomAccess;
 
-public class Shapefile extends VectorResource<Long> {
+public class Shapefile extends FeatureResource<Long> {
 
 	/**
 	 * Shp文件输入流

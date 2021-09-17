@@ -34,6 +34,8 @@ public class Proj4WKTParser {
 	public static final Datum beduaram  = new Datum("beduaram", -106,-87,188, Ellipsoid.CLARKE_1880, "Beduaram");
 	public static final Datum gunung_segara  = new Datum("gunung_segara", -403,684,41, Ellipsoid.BESSEL, "Gunung Segara Jakarta");
 	public static final Datum rnb72  = new Datum("rnb72", 106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1, Ellipsoid.INTL, "Reseau National Belge 1972");
+	public static final Datum china_2000  = new Datum("china_2000", 0, 0, 0, Ellipsoid.GRS80, "china_2000");
+	
 	public static final Datum[] datumArrays = {
 			ch1903,osni52,rassadiran,s_jtsk,beduaram,gunung_segara,rnb72
 	};
@@ -138,6 +140,7 @@ public class Proj4WKTParser {
 		datums.put("Beduaram","beduaram");
 		datums.put("Gunung Segara Jakarta","gunung_segara");
 		datums.put("Reseau National Belge 1972","rnb72");
+		datums.put("china_2000","china_2000");
 //		datums.put("wgs84","wgs84");
 //		datums.put("ch1903","ch1903");
 //		datums.put("ggrs87","ggrs87");
@@ -199,6 +202,7 @@ public class Proj4WKTParser {
 		ellips.put("WGS 72","WGS7");
 		ellips.put("WGS 84","WGS84");
 		ellips.put("Normal Sphere (r=6370997)","sphere");
+		ellips.put("CGCS2000","GRS80");
 	}
 	
 	public CRS parse(String name, String wkt) {

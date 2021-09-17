@@ -2,7 +2,7 @@ package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class Appearance implements Symbol {
+public class Style implements Symbol {
 
 	// Whether to draw stroke along the path. Set it to false to disable borders
 	// on polygons or circles.

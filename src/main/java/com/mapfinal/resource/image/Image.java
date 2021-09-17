@@ -35,7 +35,7 @@ public class Image<M> extends ResourceObject<Image<M>> implements Data {
 	}
 	
 	public ImageHandle<M> getHandle() {
-		return Mapfinal.me().getFactory().getImageHandle();
+		return Mapfinal.me().getPlatform().getImageHandle();
 	}
 	
 	@Override

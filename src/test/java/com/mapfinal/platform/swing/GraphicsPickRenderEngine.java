@@ -1,4 +1,4 @@
-package com.mapfinal.platform.develop.graphics;
+package com.mapfinal.platform.swing;
 
 import java.awt.Color;
 import java.awt.RenderingHints;

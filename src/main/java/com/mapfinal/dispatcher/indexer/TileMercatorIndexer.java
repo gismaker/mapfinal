@@ -3,6 +3,7 @@ package com.mapfinal.dispatcher.indexer;
 import java.util.List;
 
 import com.mapfinal.converter.ConverterManager;
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.converter.scene.SphericalMercatorProjection;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.SpatialIndexer;
@@ -31,6 +32,9 @@ public class TileMercatorIndexer implements SpatialIndexer {
 			return;
 		}
 		MapContext context = event.get("map");
+		ScenePoint spt = context.getCenterPoint();
+		System.out.println("sceneCenter: " + spt.toString());
+		System.out.println("envelope: " + env.toString());
 		int tmsType =  event.get("type", Tile.TMS_LT);
 		String name = event.get("name");
 		int decimalZoom = event.get("zoom",(int) context.getZoom());
@@ -135,7 +139,7 @@ public class TileMercatorIndexer implements SpatialIndexer {
                 Tile tile = new Tile(name, realX, realY, decimalZoom, tileEnv);
                 SpatialIndexObject sio = new SpatialIndexObject(tile.getId(), "image", "tile", tileEnv);
     			sio.setOption("tile", tile);
-    			//System.out.println("[TileDispatcher] query tile: " + tile.getId() + ", " + env.toString());
+    			System.out.println("[TileDispatcher] query tile: " + tile.getId() + ", " + env.toString());
     			visitor.visitItem(sio);
             }
         }

@@ -1,4 +1,4 @@
-package com.mapfinal.platform.develop.frame;
+package com.mapfinal.platform.swing;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,24 +32,22 @@ import com.mapfinal.map.layer.PointLayer;
 import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
-import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
-import com.mapfinal.platform.develop.graphics.GraphicsScene;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.image.LocalImage;
 import com.mapfinal.resource.shapefile.ShapefileLayer;
 
-public class MapFinalPanel extends JPanel {
+public class JavaSwingPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private GraphicsScene scene;
 
-    public MapFinalPanel(MapFinalFrame frame) {
+    public JavaSwingPanel(JavaSwingFrame frame) {
         super();
         this.scene = new GraphicsScene(this);
         //GeoMap map = new GeoMap();
         //scene.addNode(map);
-        Mapfinal.me().init(scene, new GraphicsMapfinalFactory());
+        Mapfinal.me().init(scene, new JavaSwingPlatform());
         Mapfinal.me().setCacheFolder("/Users/yangyong/data/gisdata");
        
         //tile
@@ -122,13 +120,16 @@ public class MapFinalPanel extends JPanel {
 //      
 //      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
-        String bundle = "/Users/yangyong/data/atlas/new";
-      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
-      bundleLayer.setMaxZoom(19);
-      bundleLayer.addTo(Mapfinal.me().getMap());
+//        String bundle = "/Users/yangyong/data/atlas/new";
+//      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+//      bundleLayer.setMaxZoom(19);
+//      bundleLayer.addTo(Mapfinal.me().getMap());
       
-    Mapfinal.map().setCenter(new Latlng(42.946,89.183));
-    Mapfinal.map().setZoom(17);
+//    Mapfinal.map().setCenter(new Latlng(42.946,89.183));
+//    Mapfinal.map().setZoom(17);
+        
+        Mapfinal.map().setCenter(new Latlng(39.85,116.3));
+        Mapfinal.map().setZoom(11);
         
         // polyline
 //        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);

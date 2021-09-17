@@ -95,7 +95,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 //				System.out.println("bundle: img_" + tile.getImageName() + ", length: " + img.length);
 //			}
 //		}
-		this.image = img != null ? (M) Mapfinal.me().getFactory().getImageHandle().toImage(img) : this.image;
+		this.image = img != null ? (M) Mapfinal.me().getPlatform().getImageHandle().toImage(img) : this.image;
 	}
 
 	public void writer() {

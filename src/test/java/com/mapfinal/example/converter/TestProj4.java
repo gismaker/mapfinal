@@ -19,11 +19,31 @@ import com.mapfinal.converter.proj4.WKTParser;
 public class TestProj4 {
 
 	public static void main(String[] args) {
-		String wktString = 
-				"PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]";
+		String wktString =
+				"PROJCS[\"PCS Name = CGCS2000_3_Degree_GK_Zone_41\", \r\n" + 
+				"  GEOGCS[\"GCS Name = GCS_China_Geodetic_Coordinate_System_2000\", \r\n" + 
+				"    DATUM[\"Datum = China_2000\", \r\n" + 
+				"      SPHEROID[\"Ellipsoid = CGCS2000\", 6378137.0, 298.257222101]], \r\n" + 
+				"    PRIMEM[\"Greenwich\", 0.0], \r\n" + 
+				"    UNIT[\"degree\", 0.017453292519943295], \r\n" + 
+				"    AXIS[\"Geodetic longitude\", EAST], \r\n" + 
+				"    AXIS[\"Geodetic latitude\", NORTH]], \r\n" + 
+				"  PROJECTION[\"Transverse_Mercator\"], \r\n" + 
+				"  PARAMETER[\"central_meridian\", 123.0], \r\n" + 
+				"  PARAMETER[\"latitude_of_origin\", 0.0], \r\n" + 
+				"  PARAMETER[\"scale_factor\", 1.0], \r\n" + 
+				"  PARAMETER[\"false_easting\", 41500000.0], \r\n" + 
+				"  PARAMETER[\"false_northing\", 0.0], \r\n" + 
+				"  UNIT[\"m\", 1.0], \r\n" + 
+				"  AXIS[\"Easting\", EAST], \r\n" + 
+				"  AXIS[\"Northing\", NORTH]]";
+				//"PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]";
 		//"PROJCS[\"NAD83 / Massachusetts Mainland\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6269\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4269\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Lambert_Conformal_Conic_2SP\"],PARAMETER[\"standard_parallel_1\",42.68333333333333],PARAMETER[\"standard_parallel_2\",41.71666666666667],PARAMETER[\"latitude_of_origin\",41],PARAMETER[\"central_meridian\",-71.5],PARAMETER[\"false_easting\",200000],PARAMETER[\"false_northing\",750000],AUTHORITY[\"EPSG\",\"26986\"],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH]]";
 		//"GEOGCS[\"Lat Long for MAPINFO type 0 Datum\",DATUM[\"D_MAPINFO\",SPHEROID[\"World_Geodetic_System_of_1984\",6378137,298.257222932867]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]]";
-		WKTParser.ParamMap lisp = WKTParser.parseString(wktString);
+		String wktText = wktString.replaceAll("[\\t\\n\\r]", "");
+		wktText = wktText.replaceAll(",	", ",").replaceAll(",   ", ",").replaceAll(",  ", ",");
+		System.out.println(wktText);
+		WKTParser.ParamMap lisp = WKTParser.parseString(wktText);
 		System.out.println("type: " + lisp.getType());
 		System.out.println("name: " + lisp.getName());
 		CRSFactory targetFactory = new CRSFactory();

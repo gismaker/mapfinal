@@ -66,8 +66,8 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 		// TODO Auto-generated method stub
 		SimpleMarkerSymbol symbol = new SimpleMarkerSymbol(this);
 		symbol.getFill().setColor(color);
-		symbol.setWidth(this.getWidth() + Mapfinal.factory().pickPointZommPixel());
-		symbol.setHeight(this.getHeight() + Mapfinal.factory().pickPointZommPixel());
+		symbol.setWidth(this.getWidth() + Mapfinal.platform().pickPointZommPixel());
+		symbol.setHeight(this.getHeight() + Mapfinal.platform().pickPointZommPixel());
 		if(symbol.getFill().getOutline()!=null) {
 			symbol.getFill().getOutline().setColor(color);
 		}

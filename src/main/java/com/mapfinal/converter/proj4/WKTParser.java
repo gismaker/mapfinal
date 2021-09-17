@@ -35,6 +35,8 @@ public class WKTParser {
 	}
 
 	public static ParamMap parseString(String text) {
+		text = text.replaceAll("[\\t\\n\\r]", "");
+		text = text.replaceAll(",	", ",").replaceAll(",   ", ",").replaceAll(",  ", ",");
 		WKTParser parser = new WKTParser(text);
 		if (parser.testWKT(text)) {
 			ParamMap out = parser.output();
@@ -546,7 +548,10 @@ public class WKTParser {
 			return;
 		case "SPHEROID":
 		case "ELLIPSOID":
-			npm.put("name", po.getStr(0));
+			String t0 = po.getStr(0);
+			t0 = t0.replace("Ellipsoid", "").replace("ellipsoid", "").replace("ELLIPSOID", "").replace("=", "");
+			t0 = t0.trim();
+			npm.put("name", t0);
 			npm.put("a", po.getStr(1));
 			npm.put("rf", po.getStr(2));
 			if (po.length() == 4) {
@@ -575,7 +580,10 @@ public class WKTParser {
 		case "LOCAL_DATUM":
 		case "DATUM":
 			//v[0] = ["name", v[0]];
-			npm.put("name", po.getStr(0));
+			String datum0 = po.getStr(0);
+			datum0 = datum0.replace("datum", "").replace("Datum", "").replace("DATUM", "").replace("=", "");
+			datum0 = datum0.trim();
+			npm.put("name", datum0);
 			//mapit(pm, key, po);
 //			if(po.getSubObjs()!=null) {
 //				for (ParamObject subobj : po.getSubObjs()) {

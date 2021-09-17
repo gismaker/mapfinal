@@ -9,7 +9,7 @@ import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
-import com.mapfinal.resource.VectorResource;
+import com.mapfinal.resource.FeatureResource;
 
 import org.locationtech.jts.geom.Envelope;
 
@@ -23,13 +23,13 @@ public class FeatureLayer extends AbstractLayer {
 	/**
 	 * 资源
 	 */
-	private VectorResource resource;
+	private FeatureResource resource;
 	/**
 	 * 默认通过FeatureDispatcher调度器实现
 	 */
 	private FeatureDispatcher dispatcher;
 	
-	public FeatureLayer(VectorResource resource) {
+	public FeatureLayer(FeatureResource resource) {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
@@ -38,7 +38,7 @@ public class FeatureLayer extends AbstractLayer {
 		setSpatialReference(resource.getSpatialReference());
 	}
 	
-	public FeatureLayer(VectorResource resource, Renderer renderer) {
+	public FeatureLayer(FeatureResource resource, Renderer renderer) {
 		this(resource);
 		setRenderer(renderer);
 	}
@@ -100,11 +100,11 @@ public class FeatureLayer extends AbstractLayer {
 		return resource.getEnvelope();
 	}
 
-	public VectorResource getResource() {
+	public FeatureResource getResource() {
 		return resource;
 	}
 
-	public void setResource(VectorResource resource) {
+	public void setResource(FeatureResource resource) {
 		this.resource = resource;
 	}
 }

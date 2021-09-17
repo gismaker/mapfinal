@@ -1,4 +1,4 @@
-package com.mapfinal.platform.develop.frame;
+package com.mapfinal.platform.swing;
 
 import java.awt.EventQueue;
 
@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
  * @author yangyong
  *
  */
-public class MapFinalFrame extends JFrame {
+public class JavaSwingFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class MapFinalFrame extends JFrame {
             @Override
             public void run() {
                 // 创建窗口对象
-            	MapFinalFrame frame = new MapFinalFrame();
+            	JavaSwingFrame frame = new JavaSwingFrame();
                 // 显示窗口
                 frame.setVisible(true);
             }
@@ -33,10 +33,10 @@ public class MapFinalFrame extends JFrame {
 	
 	public static final String TITLE = "Java图形绘制";
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 594;
+    public static final int HEIGHT = 724;
 
-    public MapFinalFrame() {
+    public JavaSwingFrame() {
         super();
         initFrame();
     }
@@ -53,7 +53,7 @@ public class MapFinalFrame extends JFrame {
         setLocationRelativeTo(null);
 
         // 设置窗口的内容面板
-        MapFinalPanel panel = new MapFinalPanel(this);
+        JavaSwingPanel panel = new JavaSwingPanel(this);
         setContentPane(panel);
     }
 

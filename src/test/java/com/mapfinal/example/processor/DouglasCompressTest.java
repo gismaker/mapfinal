@@ -9,7 +9,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.dispatcher.SpatialIndexObject;
-import com.mapfinal.platform.develop.GraphicsMapfinalFactory;
+import com.mapfinal.platform.swing.JavaSwingPlatform;
 import com.mapfinal.processor.DouglasCompress;
 import com.mapfinal.resource.shapefile.Shapefile;
 import com.mapfinal.resource.shapefile.ShapefileFeature;
@@ -18,7 +18,7 @@ import com.mapfinal.resource.shapefile.ShapefileManager;
 public class DouglasCompressTest {
 
 	public static void main(String[] args) {
-		Mapfinal.me().init(new GraphicsMapfinalFactory());
+		Mapfinal.me().init(new JavaSwingPlatform());
         Mapfinal.me().setCacheFolder("/Users/yangyong/data/gisdata");
         
 		String filepath = "/Users/yangyong/data/gisdata/china_city_region.shp";
