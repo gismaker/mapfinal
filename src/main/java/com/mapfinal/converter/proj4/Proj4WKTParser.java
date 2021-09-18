@@ -211,15 +211,22 @@ public class Proj4WKTParser {
 		WKTParser.ParamMap lisp = WKTParser.parseString(wkt);
 		//lisp.print();
 		if(lisp.getType().equals("proj4")) {
-			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, new String[] {wkt});
+			//return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, new String[] {wkt});
+			return new CRS(name, new String[] {lisp.getName()});
 		} else if(lisp.getType().equals("epsg")) {
-			String crsName = lisp.get("name");
+			String crsName = lisp.getName();
 			Proj4FileReader proj4FileReader = new Proj4FileReader();
 			String[] param = proj4FileReader.getParameters(crsName);
 			return new CRS(crsName, param);
 		} else {
 			String[] args = parseProj(lisp.getObjs());
-			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, args, CRS.WKT2PROJ4);
+//			System.out.println("-----------------------------");
+//			for (String str : args) {
+//				System.out.println(str);
+//			}
+//			System.out.println("-----------------------------");
+			String crsName = StringKit.isBlank(name) ? lisp.get("name") : name;
+			return new CRS(name, args, CRS.WKT2PROJ4);
 		}
 	}
 	
@@ -239,6 +246,11 @@ public class Proj4WKTParser {
 		if (args == null || args.length < 1)
 			return null;
 		Map params = createParameterMap(args);
+//		System.out.println("-----------------------------");
+//		for (Object str : params.keySet()) {
+//			System.out.println(str +"," + params.get(str).toString());
+//		}
+//		System.out.println("-----------------------------");
 		Proj4Keyword.checkUnsupported(params.keySet());
 		DatumParameters datumParam = new DatumParameters();
 		parseDatum(params, datumParam);
@@ -450,6 +462,7 @@ public class Proj4WKTParser {
 		s = (String) params.get(Proj4Keyword.units);
 		if (s != null) {
 			Unit unit = Units.findUnits(s);
+			System.out.println("unit: " + unit.name);
 			// TODO: report unknown units name as error
 			if (unit != null) {
 				projection.setFromMetres(1.0 / unit.value);

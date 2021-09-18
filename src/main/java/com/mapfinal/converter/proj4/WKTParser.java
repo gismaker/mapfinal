@@ -189,9 +189,11 @@ public class WKTParser {
 					if (place >= text.length()) {
 						return;
 					}
-					c = text.substring(p, place++);
+					place++;
+					c = text.substring(p, place);
 				}
 			}
+			c = c.trim();
 			if (this.state == NEUTRAL) {
 				this.neutral(c);
 			} else if (this.state == KEYWORD) {
@@ -331,6 +333,8 @@ public class WKTParser {
 	}
 
 	public ParamMap output() {
+		//System.out.println(text);
+		System.out.println("--------start-----------");
 		while (this.place < this.text.length()) {
 			this.readCharicter();
 		}
@@ -338,7 +342,7 @@ public class WKTParser {
 			//currentObject.print();
 			//System.out.println("--------current-----------");
 			//stack.print();
-			//System.out.println("--------stack-----------");
+			System.out.println("--------stack-----------");
 			ParamMap pm = obj2Map(stack);
 			//pm.print();
 			//System.out.println("---------param----------");
@@ -951,6 +955,9 @@ public class WKTParser {
 			wkt.put("lat0", d2r(lat1 > 0 ? 90 : -90));
 			wkt.put("lat_ts", wkt.getObj("lat1"));
 		}
+//		if(wkt.getObj("central_meridian")==null && wkt.getObj("Central_Meridian")!=null) {
+//			
+//		}
 	}
 	
 	double D2R$1 = 0.01745329251994329577;

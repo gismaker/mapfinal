@@ -38,6 +38,8 @@ public class Proj4ConverterFactory implements ConverterFactory {
 	public Converter build(CRS sourceCRS, CRS targetCRS) {
 		// TODO Auto-generated method stub
 		if(sourceCRS==null || targetCRS==null) return null;
+		System.out.println("ConverterFactory build: " + sourceCRS.getName() + "," + sourceCRS.getType());
+		System.out.println("ConverterFactory build: " + targetCRS.getName() + "," + targetCRS.getType());
 		CRSFactory targetFactory = new CRSFactory();
 		CoordinateReferenceSystem source = null, target = null;
 		if(sourceCRS.getType()==CRS.WKT2PROJ4) {
@@ -53,6 +55,7 @@ public class Proj4ConverterFactory implements ConverterFactory {
 			target = targetFactory.createFromParameters(targetCRS.getName(), targetCRS.getParam());
 		}
 		CoordinateTransformFactory ctf = new CoordinateTransformFactory();
+		System.out.println("ConverterFactory build: " + source.getName() + "," + target.getName());
 		CoordinateTransform transform = ctf.createTransform(source, target);
 		return new Proj4Converter(transform);
 	}
