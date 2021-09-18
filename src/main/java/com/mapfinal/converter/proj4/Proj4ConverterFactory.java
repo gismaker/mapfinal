@@ -38,10 +38,20 @@ public class Proj4ConverterFactory implements ConverterFactory {
 	public Converter build(CRS sourceCRS, CRS targetCRS) {
 		// TODO Auto-generated method stub
 		if(sourceCRS==null || targetCRS==null) return null;
-		if(sourceCRS.getType()!=CRS.PROJ4 || targetCRS.getType()!=CRS.PROJ4) return null;
 		CRSFactory targetFactory = new CRSFactory();
-		CoordinateReferenceSystem source = targetFactory.createFromParameters(sourceCRS.getName(), sourceCRS.getParam());
-        CoordinateReferenceSystem target = targetFactory.createFromParameters(targetCRS.getName(), targetCRS.getParam());
+		CoordinateReferenceSystem source = null, target = null;
+		if(sourceCRS.getType()==CRS.WKT2PROJ4) {
+			Proj4WKTParser parser = new Proj4WKTParser(targetFactory.getRegistry());
+			source = parser.parse(sourceCRS.getName(), sourceCRS.getParam());
+		} else if(sourceCRS.getType()==CRS.PROJ4) {
+			source = targetFactory.createFromParameters(sourceCRS.getName(), sourceCRS.getParam());
+		}
+		if(targetCRS.getType()==CRS.WKT2PROJ4) {
+			Proj4WKTParser parser = new Proj4WKTParser(targetFactory.getRegistry());
+			target = parser.parse(targetCRS.getName(), targetCRS.getParam());
+		} else if(targetCRS.getType()==CRS.PROJ4) {
+			target = targetFactory.createFromParameters(targetCRS.getName(), targetCRS.getParam());
+		}
 		CoordinateTransformFactory ctf = new CoordinateTransformFactory();
 		CoordinateTransform transform = ctf.createTransform(source, target);
 		return new Proj4Converter(transform);

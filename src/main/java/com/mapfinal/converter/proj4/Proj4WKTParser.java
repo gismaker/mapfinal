@@ -219,10 +219,10 @@ public class Proj4WKTParser {
 			return new CRS(crsName, param);
 		} else {
 			String[] args = parseProj(lisp.getObjs());
-			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, args, CRS.PROJ4);
+			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, args, CRS.WKT2PROJ4);
 		}
 	}
-
+	
 	public CoordinateReferenceSystem parse(String name, Map<String, Object> wkt) {
 		if (wkt == null)
 			return null;
@@ -232,6 +232,12 @@ public class Proj4WKTParser {
 //			System.out.println(str);
 //		}
 //		System.out.println("-----------------------------");
+		return parse(name,args);
+	}
+
+	public CoordinateReferenceSystem parse(String name, String[] args) {
+		if (args == null || args.length < 1)
+			return null;
 		Map params = createParameterMap(args);
 		Proj4Keyword.checkUnsupported(params.keySet());
 		DatumParameters datumParam = new DatumParameters();

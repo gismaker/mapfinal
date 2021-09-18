@@ -10,6 +10,7 @@ public class CRS {
 
 	public static final String PROJ4 = "proj4";
 	public static final String OGRCS = "ogrcs";
+	public static final String WKT2PROJ4 = "wkt2proj4";
 	
 	private String name;
 	private String type = PROJ4;
