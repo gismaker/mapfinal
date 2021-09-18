@@ -334,7 +334,7 @@ public class WKTParser {
 
 	public ParamMap output() {
 		//System.out.println(text);
-		System.out.println("--------start-----------");
+		//System.out.println("--------start-----------");
 		while (this.place < this.text.length()) {
 			this.readCharicter();
 		}
@@ -342,7 +342,7 @@ public class WKTParser {
 			//currentObject.print();
 			//System.out.println("--------current-----------");
 			//stack.print();
-			System.out.println("--------stack-----------");
+			//System.out.println("--------stack-----------");
 			ParamMap pm = obj2Map(stack);
 			//pm.print();
 			//System.out.println("---------param----------");

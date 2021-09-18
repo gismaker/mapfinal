@@ -462,7 +462,7 @@ public class Proj4WKTParser {
 		s = (String) params.get(Proj4Keyword.units);
 		if (s != null) {
 			Unit unit = Units.findUnits(s);
-			System.out.println("unit: " + unit.name);
+			//System.out.println("unit: " + unit.name);
 			// TODO: report unknown units name as error
 			if (unit != null) {
 				projection.setFromMetres(1.0 / unit.value);
