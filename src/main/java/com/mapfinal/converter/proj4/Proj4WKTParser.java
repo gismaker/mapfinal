@@ -38,7 +38,7 @@ public class Proj4WKTParser {
 	public static final Datum china_2000  = new Datum("china_2000", 0, 0, 0, Ellipsoid.GRS80, "china_2000");
 	
 	public static final Datum[] datumArrays = {
-			ch1903,osni52,rassadiran,s_jtsk,beduaram,gunung_segara,rnb72
+			ch1903,osni52,rassadiran,s_jtsk,beduaram,gunung_segara,rnb72,china_2000
 	};
 	
 	public Proj4WKTParser(Registry registry) {
