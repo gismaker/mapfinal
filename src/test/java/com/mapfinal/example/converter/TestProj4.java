@@ -6,10 +6,12 @@ import org.osgeo.proj4j.CoordinateTransform;
 import org.osgeo.proj4j.CoordinateTransformFactory;
 import org.osgeo.proj4j.ProjCoordinate;
 
+import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.CRS;
 import com.mapfinal.converter.ConverterManager;
 import com.mapfinal.converter.proj4.Proj4WKTParser;
 import com.mapfinal.converter.proj4.WKTParser;
+import com.mapfinal.kit.Prop;
 
 /**
  * 测试GEOGCS或PROJCS转proj4
@@ -49,6 +51,17 @@ public class TestProj4 {
 		CRSFactory targetFactory = new CRSFactory();
 		Proj4WKTParser parser = new Proj4WKTParser(targetFactory.getRegistry());
 		CoordinateReferenceSystem wkt = parser.parse(lisp.get("name"), lisp.getObjs());
+		
+		System.out.println(wkt.getParameterString());
+		
+		String pcs = "PCS Name = CGCS2000_3_Degree_GK_Zone_41";
+		pcs = pcs.substring(pcs.indexOf("=") + 1).trim();
+		System.out.println("pcs: "+ pcs);
+		Prop prop = new Prop("epsg.txt");
+		String projcs = prop.get(pcs);
+		System.out.println("projcs: " + projcs);
+		
+		
 		
 		CoordinateReferenceSystem mecator = targetFactory.createFromName("epsg:3857");
 		

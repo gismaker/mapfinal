@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import org.osgeo.proj4j.*;
 import org.osgeo.proj4j.datum.Datum;
 import org.osgeo.proj4j.datum.Ellipsoid;
+import org.osgeo.proj4j.io.Proj4FileReader;
 import org.osgeo.proj4j.parser.DatumParameters;
 import org.osgeo.proj4j.parser.Proj4Keyword;
 import org.osgeo.proj4j.proj.Projection;
@@ -208,8 +209,17 @@ public class Proj4WKTParser {
 	public CRS parse(String name, String wkt) {
 		if(StringKit.isBlank(wkt)) return null;
 		WKTParser.ParamMap lisp = WKTParser.parseString(wkt);
-		String[] args = parseProj(lisp.getObjs());
-		return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, args, CRS.PROJ4);
+		if(lisp.get("type").equals("proj4")) {
+			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, new String[] {wkt});
+		} else if(lisp.get("type").equals("epsg")) {
+			String crsName = lisp.get("name");
+			Proj4FileReader proj4FileReader = new Proj4FileReader();
+			String[] param = proj4FileReader.getParameters(crsName);
+			return new CRS(crsName, param);
+		} else {
+			String[] args = parseProj(lisp.getObjs());
+			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, args, CRS.PROJ4);
+		}
 	}
 
 	public CoordinateReferenceSystem parse(String name, Map<String, Object> wkt) {

@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import com.mapfinal.kit.Prop;
+import com.mapfinal.kit.StringKit;
+
 public class WKTParser {
 
 	private int NEUTRAL = 1;
@@ -43,7 +46,7 @@ public class WKTParser {
 			// test of spetial case, due to this being a very common and often malformed
 			if (parser.checkMercator(out)) {
 				out.setName("EPSG:3857");
-				out.setType("proj4");
+				out.setType("epsg");
 				return out;
 			}
 			Object maybeProjStr = parser.checkProjStr(out);
@@ -52,6 +55,12 @@ public class WKTParser {
 				out.setName(maybeProjStr.toString());
 				out.setLevel(1);
 				out.setType("proj4");
+				return out;
+			}
+			String epsg = parser.checkEPSG(out);
+			if(StringKit.isNotBlank(epsg)) {
+				out.setName("EPSG:" + epsg);
+				out.setType("epsg");
 				return out;
 			}
 			return out;
@@ -102,6 +111,16 @@ public class WKTParser {
 			}
 		}
 		return false;
+	}
+	public String checkEPSG(ParamMap item) {
+		Object epsg = match(item, "epsg");
+		if (epsg==null) {
+			return null;
+		}
+		if(epsg instanceof String) {
+			return epsg.toString();
+		}
+		return null;
 	}
 	public Object checkProjStr(ParamMap item) {
 		Object ext = match(item, "extension");
@@ -317,12 +336,12 @@ public class WKTParser {
 		}
 		if (this.state == ENDED) {
 			//currentObject.print();
-			//System.out.println("-------------------");
+			//System.out.println("--------current-----------");
 			//stack.print();
-			//System.out.println("-------------------");
+			//System.out.println("--------stack-----------");
 			ParamMap pm = obj2Map(stack);
 			//pm.print();
-			//System.out.println("-------------------");
+			//System.out.println("---------param----------");
 			cleanWKT(pm);
 			//pm.print();
 			return pm;
@@ -496,8 +515,23 @@ public class WKTParser {
 		if(pobj.getLevel()!=0) return null;
 		ParamMap pm = new ParamMap(0, pobj.getStr(0));
 		pm.setLevel(pobj.getLevel());
+		
+		//PROJCS or GEOGCS
 		pm.put("type", pobj.getStr(0));
-		pm.put("name", pobj.getStr(1));
+		
+		String s0 = pobj.getStr(1);
+		int dhxs0 = s0.indexOf("=");
+		if(dhxs0 > 0) {
+			s0 = s0.substring(dhxs0 + 1).trim();
+		}
+		pm.put("name", s0);
+		if(pobj.getStr(0).equalsIgnoreCase("PROJCS")) {
+			pm.put("projcs", s0);
+			Prop prop = new Prop("epsg.txt");
+			String code = prop.get(s0);
+			if(StringKit.isNotBlank(code)) pm.put("epsg", code);
+		}
+		
 		for (ParamObject sub : pobj.getSubObjs()) {
 			//String key = sub.getStr(0);
 			//ParamMap npm = new ParamMap(sub.getLevel(), key);
@@ -518,7 +552,12 @@ public class WKTParser {
 				sExpr(po.getObject(0), npm);
 				return;
 			}
-			pm.put(key, po.getStr(0));
+			String s0 = po.getStr(0);
+			int dhxs0 = s0.indexOf("=");
+			if(dhxs0 > 0) {
+				s0 = s0.substring(dhxs0 + 1).trim();
+			}
+			pm.put(key, s0);
 			return;
 		}
 //		if (!v.length) {
@@ -549,7 +588,10 @@ public class WKTParser {
 		case "SPHEROID":
 		case "ELLIPSOID":
 			String t0 = po.getStr(0);
-			t0 = t0.replace("Ellipsoid", "").replace("ellipsoid", "").replace("ELLIPSOID", "").replace("=", "");
+			int dhxt0 = t0.indexOf("=");
+			if(dhxt0 > 0) {
+				t0 = t0.substring(dhxt0 + 1).trim();
+			}
 			t0 = t0.trim();
 			npm.put("name", t0);
 			npm.put("a", po.getStr(1));
@@ -563,6 +605,15 @@ public class WKTParser {
 		case "GEOGCS":
 		case "GEOCCS":
 		case "PROJCS":
+			//v[0] = ["name", v[0]];
+//			String prj0 = po.getStr(0);
+//			int dhx = prj0.indexOf("=");
+//			if(dhx > 0) {
+//				prj0 = prj0.substring(dhx + 1);
+//			}
+//			prj0 = prj0.trim();
+//			npm.put("PROJCS", prj0);
+//			break;
 		case "LOCAL_CS":
 		case "GEODCRS":
 		case "GEODETICCRS":
@@ -581,7 +632,10 @@ public class WKTParser {
 		case "DATUM":
 			//v[0] = ["name", v[0]];
 			String datum0 = po.getStr(0);
-			datum0 = datum0.replace("datum", "").replace("Datum", "").replace("DATUM", "").replace("=", "");
+			int dhxd = datum0.indexOf("=");
+			if(dhxd > 0) {
+				datum0 = datum0.substring(dhxd + 1);
+			}
 			datum0 = datum0.trim();
 			npm.put("name", datum0);
 			//mapit(pm, key, po);
@@ -597,7 +651,12 @@ public class WKTParser {
 			for (int i = 1; i< po.getObjs().size(); i++) {
 				s += po.getStr(i);
 			}
-			npm.put(po.getStr(0), s);
+			String s0 = po.getStr(0);
+			int dhxs0 = s0.indexOf("=");
+			if(dhxs0 > 0) {
+				s0 = s0.substring(dhxs0 + 1).trim();
+			}
+			npm.put(s0, s);
 			//mapit(pm, key, po);
 		}
 		if(po.getSubObjs()!=null) {
