@@ -209,6 +209,7 @@ public class Proj4WKTParser {
 	public CRS parse(String name, String wkt) {
 		if(StringKit.isBlank(wkt)) return null;
 		WKTParser.ParamMap lisp = WKTParser.parseString(wkt);
+		lisp.print();
 		if(lisp.get("type").equals("proj4")) {
 			return new CRS(StringKit.isBlank(name) ? lisp.get("name") : name, new String[] {wkt});
 		} else if(lisp.get("type").equals("epsg")) {
