@@ -203,7 +203,7 @@ public class GeoKit {
 	 * @return
 	 */
 	public static Point createPoint(Coordinate coord) {
-		Point point = geometryFactory.createPoint(coord);
+		Point point = getGeometryFactory().createPoint(coord);
 		return point;
 	}
 
@@ -216,7 +216,7 @@ public class GeoKit {
 	public static Point createPointByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("POINT"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		Point point = (Point) reader.read(wkt);
 		return point;
 	}
@@ -229,18 +229,18 @@ public class GeoKit {
 	public static MultiPoint createMultiPointByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("MULTIPOINT"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		MultiPoint mpoint = (MultiPoint) reader.read(wkt);
 		return mpoint;
 	}
 	
 	public static MultiPoint createMultiPoint(Point[] points) {
-		MultiPoint ms = geometryFactory.createMultiPoint(points);
+		MultiPoint ms = getGeometryFactory().createMultiPoint(points);
 		return ms;
 	}
 	
 	public static MultiPoint createMultiPoint(Coordinate[] coords) {
-		MultiPoint ms = geometryFactory.createMultiPointFromCoords(coords);
+		MultiPoint ms = getGeometryFactory().createMultiPointFromCoords(coords);
 		return ms;
 	}
 
@@ -251,13 +251,13 @@ public class GeoKit {
 	 * @return
 	 */
 	public static LineString createLine(Coordinate[] coords) {
-		LineString line = geometryFactory.createLineString(coords);
+		LineString line = getGeometryFactory().createLineString(coords);
 		return line;
 	}
 
 	public static LineString createLine(double a, double b, double c, double d) {
 		Coordinate[] coords = new Coordinate[] { new Coordinate(a, b), new Coordinate(c, d) };
-		LineString line = geometryFactory.createLineString(coords);
+		LineString line = getGeometryFactory().createLineString(coords);
 		return line;
 	}
 
@@ -268,7 +268,7 @@ public class GeoKit {
 	 */
 	public static LineString createLine(List<Coordinate> points) {
 		Coordinate[] coords = (Coordinate[]) points.toArray(new Coordinate[points.size()]);
-		LineString line = geometryFactory.createLineString(coords);
+		LineString line = getGeometryFactory().createLineString(coords);
 		return line;
 	}
 
@@ -281,7 +281,7 @@ public class GeoKit {
 	public static LineString createLineByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("LINESTRING"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		LineString line = (LineString) reader.read(wkt);
 		return line;
 	}
@@ -292,7 +292,7 @@ public class GeoKit {
 	 * @return
 	 */
 	public static MultiLineString createMultiLine(LineString[] lineStrings) {
-		MultiLineString ms = geometryFactory.createMultiLineString(lineStrings);
+		MultiLineString ms = getGeometryFactory().createMultiLineString(lineStrings);
 		return ms;
 	}
 
@@ -305,7 +305,7 @@ public class GeoKit {
 	public static MultiLineString createMultiLineByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("MULTILINESTRING"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		MultiLineString line = (MultiLineString) reader.read(wkt);
 		return line;
 	}
@@ -319,19 +319,19 @@ public class GeoKit {
 	public static Polygon createPolygonByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("POLYGON"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		Polygon polygon = (Polygon) reader.read(wkt);
 		return polygon;
 	}
 	
 	
 	public static Polygon createPolygon(Coordinate[] coords) {
-		Polygon polygon = geometryFactory.createPolygon(coords);
+		Polygon polygon = getGeometryFactory().createPolygon(coords);
 		return polygon;
 	}
 	
 	public static MultiPolygon createMultiPolygon(Polygon[] polygons) {
-		MultiPolygon multiPolygon = geometryFactory.createMultiPolygon(polygons);
+		MultiPolygon multiPolygon = getGeometryFactory().createMultiPolygon(polygons);
 		return multiPolygon;
 	}
 
@@ -344,7 +344,7 @@ public class GeoKit {
 	public static MultiPolygon createMultiPolygonByWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt) || !wkt.startsWith("MULTIPOLYGON"))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		MultiPolygon mpolygon = (MultiPolygon) reader.read(wkt);
 		return mpolygon;
 	}
@@ -352,14 +352,14 @@ public class GeoKit {
 	public static Geometry readWKT(String wkt) throws ParseException {
 		if (StringKit.isBlank(wkt))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		return reader.read(wkt);
 	}
 
 	public static Geometry parseWKT(String wkt) {
 		if (StringKit.isBlank(wkt))
 			return null;
-		WKTReader reader = new WKTReader(geometryFactory);
+		WKTReader reader = new WKTReader(getGeometryFactory());
 		try {
 			return reader.read(wkt);
 		} catch (ParseException e) {
@@ -375,7 +375,7 @@ public class GeoKit {
 	 * @throws ParseException
 	 */
 	public static GeometryCollection createGeometryCollect(Geometry[] geometries) {
-		return geometryFactory.createGeometryCollection(geometries);
+		return getGeometryFactory().createGeometryCollection(geometries);
 	}
 
 	/**
