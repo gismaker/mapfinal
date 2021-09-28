@@ -44,11 +44,17 @@ public class FeatureClass<K> implements Data, Cloneable {
 
 	public FeatureClass() {
 		// TODO Auto-generated constructor stub
+		this.features = new MapCacheImpl<K, Feature<K>>();
+	}
+	
+	public FeatureClass(int size) {
+		// TODO Auto-generated constructor stub
+		this.features = new MapCacheImpl<K, Feature<K>>(size);
 	}
 
 	public FeatureClass(List<Field> fields) {
 		this.fields = fields;
-		features = new MapCacheImpl<K, Feature<K>>();
+		this.features = new MapCacheImpl<K, Feature<K>>();
 	}
 	
 	

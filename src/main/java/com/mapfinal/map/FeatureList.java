@@ -43,11 +43,17 @@ public class FeatureList<K> implements Data, Cloneable {
 
 	public FeatureList() {
 		// TODO Auto-generated constructor stub
+		this.features = new ArrayList<Feature<K>>();
+	}
+	
+	public FeatureList(int size) {
+		// TODO Auto-generated constructor stub
+		this.features = new ArrayList<Feature<K>>(size);
 	}
 
 	public FeatureList(List<Field> fields) {
 		this.fields = fields;
-		features = new ArrayList<Feature<K>>();
+		this.features = new ArrayList<Feature<K>>();
 	}
 	
 	

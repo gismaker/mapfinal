@@ -14,6 +14,10 @@ public class MapCacheImpl<K, V extends MapfinalObject> implements Cache<K, V> {
 	public MapCacheImpl() {
 		this.cache = new ConcurrentHashMap<>();
 	}
+	
+	public MapCacheImpl(int size) {
+		this.cache = new ConcurrentHashMap<>(size);
+	}
 
 	@Override
 	public V get(K key) {

@@ -112,13 +112,23 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	}
 	
 	
-	public FeatureList parseFeatureCollection(JSONObject featureCollection) {
+	public FeatureList<String> parseFeatureCollection(JSONObject featureCollection) {
 		JSONArray features = featureCollection.getJSONArray("features");
 		if(features!=null && features.size() > 0) {
-			FeatureList featureList = new FeatureList();
+			FeatureList<String> featureList = new FeatureList<String>(features.size());
 			for (int i=0; i<features.size(); i++) {
-				Feature feature = parseFeature(features.getJSONObject(i));
+				Feature<String> feature = parseFeature(features.getJSONObject(i));
 				featureList.addFeature(feature);
+			}
+			if(featureCollection.containsKey("crs")) {
+				if("name".equals(featureCollection.getJSONObject("crs").getString("type"))) {
+					JSONObject crs = featureCollection.getJSONObject("crs");
+					String crsName = crs.getJSONObject("properties").getString("name");
+					if(StringKit.isNotBlank(crsName) && crsName.startsWith("urn:ogc:def:crs:EPSG::")) {
+						String epsg = "EPSG:" + crsName.substring(crsName.indexOf("::")+2);
+						featureList.setSpatialReference(new SpatialReference(epsg));
+					}
+				}
 			}
 			return featureList;
 		}
@@ -126,21 +136,23 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	}
 	
 
-	public Feature parseFeature(JSONObject feature) {
+	public Feature<String> parseFeature(JSONObject feature) {
 		Map<String, Object> properties = (Map) feature.get("properties");
 		Geometry geometry = parseGeometry(feature.getJSONObject("geometry"));
-		return new Feature(geometry, properties);
+		Feature<String> result = new Feature<String>(geometry, properties);
+		result.setId(feature.getString("id"));
+		return result;
 	}
 
-	public FeatureClass<Long> parseFeatureClass(JSONArray featureCollection) {
+	public FeatureClass<String> parseFeatureClass(JSONArray featureCollection) {
 		if (featureCollection == null)
 			return null;
 		int len = featureCollection.size();
-		FeatureClass<Long> features = new FeatureClass<Long>();
+		FeatureClass<String> features = new FeatureClass<String>(len);
 		for (int i = 0; i < len; i++) {
 			JSONObject fjson = featureCollection.getJSONObject(i);
-			Feature feature = parseFeature(fjson);
-			feature.setId(Long.valueOf(i));
+			Feature<String> feature = parseFeature(fjson);
+			feature.setId(StringKit.isBlank(feature.getId()) ? String.valueOf(i) : feature.getId());
 			features.addFeature(feature);
 		}
 		return features;
