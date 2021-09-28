@@ -28,15 +28,15 @@ public class Feature<K> implements Graphic, JsonStore {
 	/**
 	 * 图形对象
 	 */
-	protected Geometry geometry;
+	protected Geometry geometry = null;
 	/**
 	 * 属性信息
 	 */
-	protected Map<String, Object> attributes;
+	protected Map<String, Object> attributes = null;
 	/**
 	 * 包围盒
 	 */
-	protected Envelope envelope;
+	protected Envelope envelope = null;
 	/**
 	 * 索引对象
 	 */
@@ -44,7 +44,7 @@ public class Feature<K> implements Graphic, JsonStore {
 	/**
 	 * 符号化
 	 */
-	protected Symbol symbol;
+	protected Symbol symbol = null;
 
 	public Feature() {
 	}

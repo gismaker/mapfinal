@@ -19,15 +19,15 @@ import com.mapfinal.resource.Data;
  */
 public class FeatureList<K> implements Data, Cloneable {
 
-	private String name;
+	private String name = null;
 	/**
 	 * 字段信息
 	 */
-	private List<Field> fields;
+	private List<Field> fields = null;
 	/**
 	 * 要素集合
 	 */
-	private List<Feature<K>> features;
+	private List<Feature<K>> features = null;
 	/**
 	 * 坐标系统
 	 */
@@ -35,11 +35,11 @@ public class FeatureList<K> implements Data, Cloneable {
 	/**
 	 * 外接矩形
 	 */
-	private Envelope envelope;
+	private Envelope envelope = null;
 	/**
 	 * 几何类型
 	 */
-	private String geometryType;
+	private String geometryType = null;
 
 	public FeatureList() {
 		// TODO Auto-generated constructor stub

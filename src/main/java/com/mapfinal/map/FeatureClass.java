@@ -20,15 +20,15 @@ import com.mapfinal.resource.Data;
  */
 public class FeatureClass<K> implements Data, Cloneable {
 
-	private String name;
+	private String name = null;
 	/**
 	 * 字段信息
 	 */
-	private List<Field> fields;
+	private List<Field> fields = null;
 	/**
 	 * 要素集合
 	 */
-	private Cache<K, Feature<K>> features;
+	private Cache<K, Feature<K>> features = null;
 	/**
 	 * 坐标系统
 	 */
@@ -36,11 +36,11 @@ public class FeatureClass<K> implements Data, Cloneable {
 	/**
 	 * 外接矩形
 	 */
-	private Envelope envelope;
+	private Envelope envelope = null;
 	/**
 	 * 几何类型
 	 */
-	private String geometryType;
+	private String geometryType = null;
 
 	public FeatureClass() {
 		// TODO Auto-generated constructor stub
