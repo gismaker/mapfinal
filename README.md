@@ -9,11 +9,6 @@ mapfinal是基于 Java 语言的极速GIS基础开发框架，其核心设计目
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/215804_30644d46_136253.png "mapfinal框架2.png")
 
 
-#### 渲染流程
----------------------------------
-
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0218/215813_8ec7bd91_136253.png "mapfinal渲染流程.png")
-
 #### 使用说明
 
 1. 源码加入Eclipse，运行窗口程序src/test/java/com.mapfinal.platform.develop.frame.MapFinalFrame
