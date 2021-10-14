@@ -55,6 +55,8 @@ public class JavaSwingPanel extends JPanel {
         //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.file);
         String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
+        tileLayer.setMaxZoom(12);
+        tileLayer.setLimitView(false);
         tileLayer.addTo(Mapfinal.me().getMap());
         
       //shp

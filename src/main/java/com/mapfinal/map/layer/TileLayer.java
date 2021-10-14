@@ -18,6 +18,9 @@ public class TileLayer extends AbstractLayer {
 	private TileDispatcher dispatcher;
 	// 资源
 	private TileResource resource;
+	
+	//不限制显示
+	private boolean limitView = true;
 
 	public TileLayer(String name, String url, Resource.FileType fileType) {
 		// TODO Auto-generated constructor stub
@@ -25,7 +28,7 @@ public class TileLayer extends AbstractLayer {
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
-		System.out.println("FeatureDispatcher: " + resource.getName());
+		//System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}
@@ -35,7 +38,7 @@ public class TileLayer extends AbstractLayer {
 		setName(resource.getName());
 		setTitle(resource.getName());
 		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
-		System.out.println("FeatureDispatcher: " + resource.getName());
+		//System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}
@@ -52,7 +55,19 @@ public class TileLayer extends AbstractLayer {
 		if(!isVisible()) return;
 		MapContext context = event.get("map");
 		int zoom = (int) context.getZoom();
-		if(zoom < getMinZoom() || zoom > getMaxZoom()) return;
+		if(zoom < getMinZoom() || zoom > getMaxZoom()) {
+			if(isLimitView()) {
+				return;
+			}
+			Event e = event.clone().set("tile_renderCacheLayer", true);
+			if(zoom > getMaxZoom()) {
+				e.set("zoom", getMaxZoom());
+			}
+			if(zoom < getMinZoom()) {
+				e.set("zoom", getMinZoom());
+			}
+			dispatcher.draw(e, engine, getRenderer());
+		};
 		//System.out.println("feature layer render.");
 		if(dispatcher!=null) {
 			Event e = event.clone().set("tile_renderCacheLayer", true);
@@ -86,6 +101,14 @@ public class TileLayer extends AbstractLayer {
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isLimitView() {
+		return limitView;
+	}
+
+	public void setLimitView(boolean limitView) {
+		this.limitView = limitView;
 	}
 	
 }

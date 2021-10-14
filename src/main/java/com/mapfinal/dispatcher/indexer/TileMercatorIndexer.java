@@ -33,11 +33,11 @@ public class TileMercatorIndexer implements SpatialIndexer {
 		}
 		MapContext context = event.get("map");
 		ScenePoint spt = context.getCenterPoint();
-		System.out.println("sceneCenter: " + spt.toString());
-		System.out.println("envelope: " + env.toString());
+		//System.out.println("sceneCenter: " + spt.toString());
+		//System.out.println("envelope: " + env.toString());
 		int tmsType =  event.get("type", Tile.TMS_LT);
 		String name = event.get("name");
-		int decimalZoom = event.get("zoom",(int) context.getZoom());
+		int decimalZoom = (int) Math.floor(event.get("zoom", context.getZoom()));
 		if(decimalZoom==0) {
 			Tile tile = new Tile(name);
 			SpatialIndexObject sio = new SpatialIndexObject(tile.getId(), "image", "tile", tile.getEnvelope());
@@ -139,7 +139,7 @@ public class TileMercatorIndexer implements SpatialIndexer {
                 Tile tile = new Tile(name, realX, realY, decimalZoom, tileEnv);
                 SpatialIndexObject sio = new SpatialIndexObject(tile.getId(), "image", "tile", tileEnv);
     			sio.setOption("tile", tile);
-    			System.out.println("[TileDispatcher] query tile: " + tile.getId() + ", " + env.toString());
+    			//System.out.println("[TileDispatcher] query tile: " + tile.getId() + ", " + env.toString());
     			visitor.visitItem(sio);
             }
         }

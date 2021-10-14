@@ -27,7 +27,7 @@ public class TileDispatcher extends Dispatcher {
 		// TODO Auto-generated method stub
 		TileResourceDispatcher tro = (TileResourceDispatcher) getResource();
 		GeoImage feature = (GeoImage) tro.read(sio);
-		System.out.println("geoimage: " + feature.getEnvelope().toString());
+		//System.out.println("geoimage: " + feature.getEnvelope().toString());
 		if(feature!=null) {
 			engine.renderImageFeature(event, null, feature);
 			//feature.destroy();
