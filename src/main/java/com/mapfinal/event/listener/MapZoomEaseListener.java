@@ -44,6 +44,11 @@ public class MapZoomEaseListener implements EventListener {
 //				float hzoom = context.getZoom();
 //				hzoom += scaleFactor - 1;
 //				context.setZoom(hzoom);
+				if(scaleFactor < 1.0) {
+					scaleFactor *= -1;
+				} else {
+					scaleFactor = 2 - scaleFactor;
+				}
 				startMove(event, scaleFactor, inertiaDeceleration, easeLinearity);
 			}
 			//System.out.println("[GeoMap.onEvent] current zoom: " + context.getZoom());
