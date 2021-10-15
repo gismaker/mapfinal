@@ -366,7 +366,7 @@ public class MapContext implements Cloneable {
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
 		this.zoom = this.zoom < minZoom ? minZoom : this.zoom;
-		this.zoom = this.zoom > maxZoom ? maxZoom : this.zoom;
+		this.zoom = this.zoom > maxZoom ? (maxZoom - zoomDelta) : this.zoom;
 		ScenePoint ct = getSceneCRS().latLngToPoint(center, this.zoom);
 		setCenterPoint(ct);
 		resetSceneEnvelope();

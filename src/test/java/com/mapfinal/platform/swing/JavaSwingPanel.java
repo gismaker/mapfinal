@@ -115,12 +115,13 @@ public class JavaSwingPanel extends JPanel {
 //        bundleLayer.addTo(Mapfinal.me().getMap());
         
       //bundle02
-//      String bundle = "/Users/yangyong/data/atlas/qinghai";
-//      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
-//      bundleLayer.setMaxZoom(19);
-//      bundleLayer.addTo(Mapfinal.me().getMap());
-//      
-//      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
+      String bundle = "/Users/yangyong/data/atlas/qinghai";
+      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+      bundleLayer.setMaxZoom(19);
+      bundleLayer.setLimitView(false);
+      bundleLayer.addTo(Mapfinal.me().getMap());
+      
+      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
 //        String bundle = "/Users/yangyong/data/atlas/new";
 //      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
@@ -130,8 +131,8 @@ public class JavaSwingPanel extends JPanel {
 //    Mapfinal.map().setCenter(new Latlng(42.946,89.183));
 //    Mapfinal.map().setZoom(17);
         
-        Mapfinal.map().setCenter(new Latlng(39.85,116.3));
-        Mapfinal.map().setZoom(11);
+//        Mapfinal.map().setCenter(new Latlng(39.85,116.3));
+//        Mapfinal.map().setZoom(11);
         
         // polyline
 //        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);

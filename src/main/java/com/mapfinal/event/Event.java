@@ -101,6 +101,10 @@ public class Event implements Cloneable, Serializable {
 		return res==null ? defaultValue : (M) res;
 	}
 	
+	public void remove(String name) {
+		data.remove(name);
+	}
+	
 	public Map<String, Object> getData() {
 		return data;
 	}

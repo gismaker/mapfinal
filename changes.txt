@@ -1,4 +1,14 @@
 -----------------------------
+mapfinal-0.3.4:
+
+新增：tilelayer放大超过最大级别后，仍显示最大级别的图层
+新增：更改MapfinalFactory为Platform实现多平台适配
+新增：实现将地图绘制到图片上然后保存图片，参考BufferedImageMainTest。
+优化：GeoKit初始化优化
+优化：geojson转换优化，可以转换Geometry和GeometryCollection
+优化：坐标转换优化，增强wkt转proj4的能力。
+
+-----------------------------
 mapfinal-0.3.3:
 
 新增：移动平滑动画效果（惯性移动）

@@ -16,6 +16,9 @@ public class ArcGISBundleLayer extends AbstractLayer {
 	private TileDispatcher dispatcher;
 	// 资源
 	private BundleResource resource;
+	
+	//不限制显示
+	private boolean limitView = true;
 
 	public ArcGISBundleLayer(String name, String url) {
 		// TODO Auto-generated constructor stub
@@ -57,10 +60,20 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		if(!isVisible()) return;
 		if(!event.isRender()) return;
 		MapContext context = event.get("map");
-		int zoom = (int) context.getZoom();
-		if(zoom < getMinZoom() || zoom > getMaxZoom()) return;
-		//System.out.println("feature layer render.");
-		if(dispatcher!=null) {
+		float zoom = context.getZoom();
+		if(zoom < getMinZoom() || zoom > getMaxZoom()) {
+			if(isLimitView()) {
+				return;
+			}
+			if(zoom > getMaxZoom()) {
+				event.set("zoom", getMaxZoom());
+			}
+			if(zoom < getMinZoom()) {
+				event.set("zoom", getMinZoom());
+			}
+			dispatcher.draw(event, engine, getRenderer());
+			event.remove("zoom");
+		} else if(dispatcher!=null) {
 			dispatcher.draw(event, engine, getRenderer());
 		}
 	}
@@ -91,5 +104,13 @@ public class ArcGISBundleLayer extends AbstractLayer {
 	public Envelope getEnvelope() {
 		// TODO Auto-generated method stub
 		return this.resource.getEnvelope();
+	}
+
+	public boolean isLimitView() {
+		return limitView;
+	}
+
+	public void setLimitView(boolean limitView) {
+		this.limitView = limitView;
 	}
 }

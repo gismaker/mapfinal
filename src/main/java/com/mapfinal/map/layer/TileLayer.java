@@ -54,24 +54,27 @@ public class TileLayer extends AbstractLayer {
 		if(!isDrawable()) return;
 		if(!isVisible()) return;
 		MapContext context = event.get("map");
-		int zoom = (int) context.getZoom();
+		float zoom = context.getZoom();
 		if(zoom < getMinZoom() || zoom > getMaxZoom()) {
 			if(isLimitView()) {
 				return;
 			}
-			Event e = event.clone().set("tile_renderCacheLayer", true);
+			event.set("tile_renderCacheLayer", true);
 			if(zoom > getMaxZoom()) {
-				e.set("zoom", getMaxZoom());
+				event.set("zoom", getMaxZoom());
 			}
 			if(zoom < getMinZoom()) {
-				e.set("zoom", getMinZoom());
+				event.set("zoom", getMinZoom());
 			}
-			dispatcher.draw(e, engine, getRenderer());
-		};
-		//System.out.println("feature layer render.");
-		if(dispatcher!=null) {
-			Event e = event.clone().set("tile_renderCacheLayer", true);
-			dispatcher.draw(e, engine, getRenderer());
+			if(dispatcher!=null) {
+				dispatcher.draw(event, engine, getRenderer());
+			}
+			event.remove("zoom");
+			event.remove("tile_renderCacheLayer");
+		} else if(dispatcher!=null) {
+			event.set("tile_renderCacheLayer", true);
+			dispatcher.draw(event, engine, getRenderer());
+			event.remove("tile_renderCacheLayer");
 		}
 	}
 

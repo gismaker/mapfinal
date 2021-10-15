@@ -270,7 +270,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 	}
 
 	public byte[] readBundle(String bundlesDir, int level, int row, int col) {
-		System.out.println("level:" + level + ", row:" + row + ", col:" + col);
+		//System.out.println("level:" + level + ", row:" + row + ", col:" + col);
 		int size = 128;
 		byte[] result = null;
 		RandomAccessFile isBundle = null;
@@ -305,7 +305,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 			String bundlxFileName = bundleBase + ".bundlx";
 			String bundleFileName = bundleBase + ".bundle";
 			//System.out.println("col:" + col + ", cg:" + cGroup + ", row:" + row + ", rg:" + rGroup + ", file:" + bundleBase);
-			System.out.println("file:" + bundleFileName);
+			//System.out.println("file:" + bundleFileName);
 			// 行列号是整个范围内的，在某个文件中需要先减去前面文件所占有的行列号（都是128的整数）这样就得到在文件中的真是行列号
 			isBundlx = new RandomAccessFile(bundlxFileName, "r");
 			int index = size * (col - cGroup) + (row - rGroup);// 4896;//
