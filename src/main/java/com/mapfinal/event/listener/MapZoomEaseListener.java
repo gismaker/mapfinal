@@ -61,11 +61,9 @@ public class MapZoomEaseListener implements EventListener {
 	
 	// 开始惯性动画
 		public void startMove(Event event, float offset, double decelerationDuration, float ease) {
+			stopMove();
 			if (timer == null) {
 				timer = new Timer();
-			} else {
-				task.setZoom(event, offset);
-				return;
 			}
 			task = null;
 			task = new ZoomTask(event, offset, decelerationDuration, ease);
@@ -122,9 +120,9 @@ public class MapZoomEaseListener implements EventListener {
 
 		public void complete() {
 			cancel();
-			float hzoom = (float) (_firstZoom + _offset);
-			context.setZoom(hzoom);
-			EventKit.sendEvent("redraw");
+//			float hzoom = (float) (_firstZoom + _offset);
+//			context.setZoom(hzoom);
+//			EventKit.sendEvent("redraw");
 		}
 
 		public double easeOut(double t) {
@@ -140,7 +138,7 @@ public class MapZoomEaseListener implements EventListener {
 				_startTime = System.currentTimeMillis();
 			}
 			long elapsed = System.currentTimeMillis() - this._startTime;
-			double duration = this._duration * 1000;
+			double duration = this._duration * 800;
 			//System.out.println("time: " + elapsed + ", " + duration);
 			
 			if(duration==Double.NaN) {
@@ -148,7 +146,8 @@ public class MapZoomEaseListener implements EventListener {
 			} else if (elapsed < duration) {
 				this.runFrame(this.easeOut(elapsed / duration));
 			} else {
-				this.runFrame(1);
+				//this.runFrame(1);
+				this.complete();
 			}
 		}
 	}
