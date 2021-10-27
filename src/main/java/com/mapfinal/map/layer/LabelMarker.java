@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.Envelope;
 import com.mapfinal.event.Event;
 import com.mapfinal.event.EventListener;
 import com.mapfinal.map.AbstractLayer;
+import com.mapfinal.map.MapContext;
 import com.mapfinal.render.Label;
 import com.mapfinal.render.RenderEngine;
 
@@ -37,8 +38,11 @@ public class LabelMarker extends AbstractLayer {
 		if(!isVisible()) return;
 		if(!event.isRender()) return;
 		if(labels==null) return;
+		MapContext context = event.get("map");
 		for (Label label : labels) {
-			engine.renderLabel(event, label);;
+			if(context.getLabelEngine().renderable(context, engine, label)) {
+				engine.renderLabel(event, label);
+			}
 		}
 	}
 	

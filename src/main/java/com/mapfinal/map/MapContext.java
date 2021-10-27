@@ -6,7 +6,7 @@ import com.mapfinal.converter.scene.SceneEPSG3857CRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.render.LabelEngine;
-import com.mapfinal.render.LabelSTRTreeEngine;
+import com.mapfinal.render.LabelIndexerEngine;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -105,7 +105,7 @@ public class MapContext implements Cloneable {
 		centerPoint = getSceneCRS().latLngToPoint(center, this.zoom);
 		resetSceneEnvelope();
 		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), zoom);
-		setLabelEngine(new LabelSTRTreeEngine());
+		setLabelEngine(new LabelIndexerEngine());
 	}
 //	
 //	public MapContext(MapContext context) {

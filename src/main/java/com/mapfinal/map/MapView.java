@@ -50,6 +50,7 @@ public class MapView extends LayerGroup {
 //		if (backgroundRenderer != null) {
 //			backgroundRenderer.draw(event, engine);
 //		}
+		context.getLabelEngine().clear();
 		super.draw(event, engine);
 	}
 	
@@ -63,6 +64,7 @@ public class MapView extends LayerGroup {
 		Latlng center = context.mouseCoordinate(x, y);
 		pickContext.setCenter(center);
 		pickContext.resize(event.get("width"), event.get("height"));
+		context.getLabelEngine().clear();
 		super.pick(event, engine);
 	}
 

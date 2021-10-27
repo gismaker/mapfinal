@@ -150,6 +150,18 @@ public class JavaSwingPanel extends JPanel {
         PointLayer pointLayer = new PointLayer(new Latlng(39.85,116.3), null);
         pointLayer.addTo(Mapfinal.me().getMap());
         
+        LabelSymbol labelSymbol2 = new LabelSymbol();
+        labelSymbol2.setOffsetX(15);
+        //labelSymbol.setPadding(25);
+        labelSymbol2.setBackground(true);
+        labelSymbol2.setFillColor("#0000FF");
+        labelSymbol2.setBorder(true);
+        labelSymbol2.setBorderColor("#FF0000");
+        Label label2 = new Label("再次测试", new Latlng(39.85,116.3), labelSymbol2);
+        LabelMarker lm2 = new LabelMarker();
+        lm2.addLabel(label2);
+        lm2.addTo(Mapfinal.me().getMap());
+        
         Mapfinal.map().setCenter(new Latlng(39.85,116.3));
         Mapfinal.map().setZoom(13);
         
