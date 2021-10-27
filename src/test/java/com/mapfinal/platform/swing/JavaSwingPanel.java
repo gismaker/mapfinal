@@ -27,11 +27,14 @@ import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.layer.ArcGISBundleLayer;
 import com.mapfinal.map.layer.ImageOverlay;
+import com.mapfinal.map.layer.LabelMarker;
 import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.PointLayer;
 import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
+import com.mapfinal.render.Label;
+import com.mapfinal.render.style.LabelSymbol;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.image.LocalImage;
 import com.mapfinal.resource.shapefile.ShapefileLayer;
@@ -55,7 +58,7 @@ public class JavaSwingPanel extends JPanel {
         //TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.file);
         String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
-        tileLayer.setMaxZoom(12);
+        tileLayer.setMaxZoom(17);
         tileLayer.setLimitView(false);
         tileLayer.addTo(Mapfinal.me().getMap());
         
@@ -115,13 +118,13 @@ public class JavaSwingPanel extends JPanel {
 //        bundleLayer.addTo(Mapfinal.me().getMap());
         
       //bundle02
-      String bundle = "/Users/yangyong/data/atlas/qinghai";
-      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
-      bundleLayer.setMaxZoom(19);
-      bundleLayer.setLimitView(false);
-      bundleLayer.addTo(Mapfinal.me().getMap());
-      
-      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
+//      String bundle = "/Users/yangyong/data/atlas/qinghai";
+//      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
+//      bundleLayer.setMaxZoom(19);
+//      bundleLayer.setLimitView(false);
+//      bundleLayer.addTo(Mapfinal.me().getMap());
+//      
+//      Mapfinal.map().fitBounds(bundleLayer.getEnvelope());
         
 //        String bundle = "/Users/yangyong/data/atlas/new";
 //      ArcGISBundleLayer bundleLayer = new ArcGISBundleLayer("bundle0", bundle);
@@ -131,8 +134,24 @@ public class JavaSwingPanel extends JPanel {
 //    Mapfinal.map().setCenter(new Latlng(42.946,89.183));
 //    Mapfinal.map().setZoom(17);
         
-//        Mapfinal.map().setCenter(new Latlng(39.85,116.3));
-//        Mapfinal.map().setZoom(11);
+        //label
+        LabelSymbol labelSymbol = new LabelSymbol();
+        labelSymbol.setOffsetX(5);
+        //labelSymbol.setPadding(25);
+        labelSymbol.setBackground(true);
+        labelSymbol.setFillColor("#0000FF");
+        labelSymbol.setBorder(true);
+        labelSymbol.setBorderColor("#FF0000");
+        Label label = new Label("测试", new Latlng(39.85,116.3), labelSymbol);
+        LabelMarker lm = new LabelMarker();
+        lm.addLabel(label);
+        lm.addTo(Mapfinal.me().getMap());
+        
+        PointLayer pointLayer = new PointLayer(new Latlng(39.85,116.3), null);
+        pointLayer.addTo(Mapfinal.me().getMap());
+        
+        Mapfinal.map().setCenter(new Latlng(39.85,116.3));
+        Mapfinal.map().setZoom(13);
         
         // polyline
 //        PolylineLayer polyline = new PolylineLayer(new Coordinate[]{new Coordinate(0, 0), new Coordinate(50, 10)}, null);

@@ -3,6 +3,7 @@ package com.mapfinal.platform.bufferedimage;
 import java.awt.Graphics;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.SceneGraph;
 
 public class BufferedImageScene extends SceneGraph {
@@ -14,6 +15,12 @@ public class BufferedImageScene extends SceneGraph {
 	public BufferedImageScene() {
 		super();
 		engine = new BufferedImageRenderEngine();
+	}
+	
+	@Override
+	public RenderEngine getRenderEngine() {
+		// TODO Auto-generated method stub
+		return engine;
 	}
 	
 	public void draw(Graphics g, int width, int height) {

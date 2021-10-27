@@ -24,6 +24,7 @@ public abstract class SceneGraph {
 		sceneRoot = new SceneGroupNode();
 	}
 	
+	public abstract RenderEngine getRenderEngine();
 	protected abstract void update();
 	
 	public void addNode(SceneNode node) {

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.mapfinal.event.Event;
+import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.SceneGraph;
 
 public class GraphicsScene extends SceneGraph {
@@ -19,6 +20,12 @@ public class GraphicsScene extends SceneGraph {
 		super();
 		engine = new GraphicsJPanelRenderEngine(panel);
 		pickEngine = new GraphicsPickRenderEngine(100, 100);
+	}
+	
+	@Override
+	public RenderEngine getRenderEngine() {
+		// TODO Auto-generated method stub
+		return engine;
 	}
 	
 	public void draw(Graphics g, int width, int height) {

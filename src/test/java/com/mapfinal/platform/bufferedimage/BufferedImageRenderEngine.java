@@ -2,6 +2,8 @@ package com.mapfinal.platform.bufferedimage;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -22,12 +24,16 @@ import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
+import com.mapfinal.geometry.ScreenPoint;
+import com.mapfinal.geometry.ScreenRect;
 import com.mapfinal.kit.ColorKit;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
+import com.mapfinal.render.Label;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.style.FillSymbol;
+import com.mapfinal.render.style.LabelSymbol;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.MarkerSymbol;
 import com.mapfinal.render.style.PictureMarkerSymbol;
@@ -308,6 +314,25 @@ public class BufferedImageRenderEngine implements RenderEngine {
 		g2d.setColor(ColorUtil.intToColor(color));
 		return g2d;
 	}
+	
+	private Graphics2D getGraphics2D(LabelSymbol symbol) {
+		if (symbol == null || !(symbol instanceof LabelSymbol)) {
+			symbol = new LabelSymbol();
+		}
+		Graphics2D g2d = getGraphics2D();
+		int style = Font.PLAIN;
+		if("BOLD".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.BOLD;
+		} else if("ITALIC".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.ITALIC;
+		} else if("BOLD_ITALIC".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.BOLD + Font.ITALIC;
+		}
+		Font font = new Font(symbol.getFontFamily(), style, symbol.getFontSize());
+		g2d.setFont(font);
+		g2d.setColor(ColorUtil.colorFromHexValue(symbol.getFontColor()));
+		return g2d;
+	}
 
 	@Override
 	public void renderPoint(MarkerSymbol symbol, Coordinate coordinate) {
@@ -460,6 +485,81 @@ public class BufferedImageRenderEngine implements RenderEngine {
 			g2d.fillPolygon(polygon);
 		}
 		*/
+	}
+	
+	@Override
+	public void renderLabel(Event event, Label label) {
+		// TODO Auto-generated method stub
+		renderLabel(event, label.getText(), label.getPosition(), label.getSymbol());
+	}
+	
+	@Override
+	public void renderLabel(Event event, String text, Latlng center, LabelSymbol symbol) {
+		MapContext context = event.get("map");
+		double zoom = context.getZoom();
+		ScenePoint sp = context.latLngToPoint(center, zoom);
+		Graphics2D g2d = getGraphics2D(symbol);
+		if(symbol.isBackground() || symbol.isBorder()) {
+			int x = sp.getSx() + symbol.getOffsetX();
+			int y = sp.getSy() + symbol.getOffsetY();
+			ScreenPoint tp = getLableBox(text, symbol);
+			int w = Math.round(tp.x + symbol.getPadding() * 2);
+			int h = Math.round(tp.y + symbol.getPadding() * 2);
+			if(symbol.isBackground()) {
+				g2d.setColor(ColorUtil.colorFromHexValue(symbol.getFillColor()));
+				g2d.fillRect(x,y-h,w,h);//画着色块
+			}
+			if(symbol.isBorder()) {
+				g2d.setColor(ColorUtil.colorFromHexValue(symbol.getBorderColor()));
+				g2d.drawRect(x,y-h,w,h);//画线框
+			}
+		}
+		int px = sp.getSx() + symbol.getOffsetX() + symbol.getPadding();
+		int py = sp.getSy() + symbol.getOffsetY() - symbol.getPadding();
+		g2d.drawString(text, px, py);
+	}
+	
+	@Override
+	public ScreenPoint getLableBox(Label label) {
+		// TODO Auto-generated method stub
+		return getLableBox(label.getText(), label.getSymbol());
+	}
+	
+	public ScreenPoint getLableBox(String text, LabelSymbol symbol) {
+		// TODO Auto-generated method stub
+		int style = Font.PLAIN;
+		if("BOLD".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.BOLD;
+		} else if("ITALIC".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.ITALIC;
+		} else if("BOLD_ITALIC".equalsIgnoreCase(symbol.getFontStyle())) {
+			style = Font.BOLD + Font.ITALIC;
+		}
+		Font font = new Font(symbol.getFontFamily(), style, symbol.getFontSize());
+	
+		FontMetrics fm = getGraphics().getFontMetrics(font);
+		int width = fm.stringWidth(text);
+		int height = fm.getAscent();
+		return new ScreenPoint(width, height);
+	}
+	
+	public ScreenRect getRect(MapContext context, String text, Latlng center, LabelSymbol symbol) {
+		ScenePoint p1 = context.latLngToPoint(center);
+		
+		ScreenPoint lp = getLableBox(text, symbol);
+		float sw = lp.getX();
+		float sh = lp.getY();
+		
+		int fx = symbol!=null ? symbol.getOffsetX() : 0;
+		int fy = symbol!=null ? symbol.getOffsetY() : 0;
+		
+		int padding = symbol!=null ? symbol.getPadding() : 0;
+		
+		ScreenPoint sp1 = new ScreenPoint(p1.getSx() + fx - padding, p1.getSy() + fy + padding);
+		ScreenPoint sp2 = new ScreenPoint(p1.getSx() + fx + padding + sw, p1.getSy() + fy + padding);
+		ScreenPoint sp3 = new ScreenPoint(p1.getSx() + fx + padding + sw, p1.getSy() + fy - padding - sh);
+		ScreenPoint sp4 = new ScreenPoint(p1.getSx() + fx - padding, p1.getSy() + fy - padding - sh);
+		return new ScreenRect(sp1, sp2, sp3, sp4);
 	}
 
 	@Override

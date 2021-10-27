@@ -5,10 +5,12 @@ import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.Feature;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.style.FillSymbol;
+import com.mapfinal.render.style.LabelSymbol;
 import com.mapfinal.render.style.LineSymbol;
 import com.mapfinal.render.style.MarkerSymbol;
 import com.mapfinal.render.style.SimpleFillSymbol;
@@ -44,7 +46,7 @@ public interface RenderEngine {
 	 * @param renderer
 	 * @param feature
 	 */
-	void renderFeature(Event event, Symbol symbol, Feature feature);
+	void renderFeature(Event event, Symbol symbol, Feature<?> feature);
 	
 	/**
 	 * 渲染图片要素
@@ -52,7 +54,7 @@ public interface RenderEngine {
 	 * @param renderer
 	 * @param feature
 	 */
-	void renderImageFeature(Event event, Symbol symbol, GeoImage feature);
+	void renderImageFeature(Event event, Symbol symbol, GeoImage<?> feature);
 	
 	/**
 	 * 渲染图片
@@ -61,7 +63,7 @@ public interface RenderEngine {
 	 * @param image
 	 * @param opacity
 	 */
-	void renderImage(Event event, Latlng latlng, Image image, float opacity);
+	void renderImage(Event event, Latlng latlng, Image<?> image, float opacity);
 	/**
 	 * 渲染图片
 	 * @param event
@@ -69,9 +71,7 @@ public interface RenderEngine {
 	 * @param image
 	 * @param opacity
 	 */
-	void renderImage(Event event, LatlngBounds latlngBounds, Image image, float opacity);
-	
-	
+	void renderImage(Event event, LatlngBounds latlngBounds, Image<?> image, float opacity);
 	
 	/*
 	void renderTextOnPath();
@@ -318,6 +318,26 @@ public interface RenderEngine {
 	 * @param coordinate
 	 */
 	void renderPoint(MarkerSymbol symbol, Coordinate coordinate);
+	
+	/**
+	 * 渲染文本
+	 * @param label
+	 */
+	void renderLabel(Event event, Label label);
+	/**
+	 * 渲染文本
+	 * @param event
+	 * @param text
+	 * @param center
+	 * @param symbol
+	 */
+	void renderLabel(Event event, String text, Latlng center, LabelSymbol symbol);
+	/**
+	 * 获取文本的宽高
+	 * @param label
+	 * @return
+	 */
+	ScreenPoint getLableBox(Label label);
 	/**
 	 * 刷新
 	 */

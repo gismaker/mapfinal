@@ -5,6 +5,8 @@ import com.mapfinal.converter.scene.SceneCRS;
 import com.mapfinal.converter.scene.SceneEPSG3857CRS;
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.geometry.Latlng;
+import com.mapfinal.render.LabelEngine;
+import com.mapfinal.render.LabelSTRTreeEngine;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -93,6 +95,8 @@ public class MapContext implements Cloneable {
 	
 	private boolean isMainThread = false;
 	
+	private LabelEngine labelEngine;
+	
 	public MapContext() {
 		// TODO Auto-generated constructor stub
 		sceneCRS = new SceneEPSG3857CRS();
@@ -101,6 +105,7 @@ public class MapContext implements Cloneable {
 		centerPoint = getSceneCRS().latLngToPoint(center, this.zoom);
 		resetSceneEnvelope();
 		sceneSize = getSceneCRS().latLngToPoint(new Latlng(-90, 180), zoom);
+		setLabelEngine(new LabelSTRTreeEngine());
 	}
 //	
 //	public MapContext(MapContext context) {
@@ -610,5 +615,13 @@ public class MapContext implements Cloneable {
 
 	public void setMainThread(boolean isMainThread) {
 		this.isMainThread = isMainThread;
+	}
+
+	public LabelEngine getLabelEngine() {
+		return labelEngine;
+	}
+
+	public void setLabelEngine(LabelEngine labelEngine) {
+		this.labelEngine = labelEngine;
 	}
 }
