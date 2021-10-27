@@ -21,6 +21,7 @@ public class LabelIndexerEngine implements LabelEngine {
 	private SimpleIndexer indexer = null;
 	
 	public LabelIndexerEngine() {
+		indexer = new SimpleIndexer();
 	}
 
 	public boolean renderable(MapContext context, RenderEngine engine, Label label) {
@@ -35,9 +36,6 @@ public class LabelIndexerEngine implements LabelEngine {
 				sp.getSx() + pt.x + fx + padding * 2, 
 				sp.getSy() + fy - pt.y - padding * 2, 
 				sp.getSy() + fy);
-		if(indexer==null) {
-			indexer = new SimpleIndexer();
-		}
 		List<SpatialIndexObject> sis = indexer.query(null, env);
 		if(sis==null || sis.size() < 1) {
 			indexer.insert(env, new SpatialIndexObject(label.getText(), "label", "label", env));
@@ -48,6 +46,6 @@ public class LabelIndexerEngine implements LabelEngine {
 	}
 	
 	public void clear() {
-		indexer = null;
+		indexer.clear();
 	}
 }

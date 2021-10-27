@@ -47,5 +47,9 @@ public class SimpleIndexer implements SpatialIndexer {
 			}
 		}
 	}
+	
+	public void clear() {
+		this.sios.clear();
+	}
 
 }
