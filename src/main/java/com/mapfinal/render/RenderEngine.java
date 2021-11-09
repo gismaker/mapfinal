@@ -337,7 +337,7 @@ public interface RenderEngine {
 	 * @param label
 	 * @return
 	 */
-	ScreenPoint getLableBox(Label label);
+	ScreenPoint getLabelBox(Label label);
 	/**
 	 * 刷新
 	 */

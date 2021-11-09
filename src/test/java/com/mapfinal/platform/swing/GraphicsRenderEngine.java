@@ -506,7 +506,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 		if(symbol.isBackground() || symbol.isBorder()) {
 			int x = sp.getSx() + symbol.getOffsetX();
 			int y = sp.getSy() + symbol.getOffsetY();
-			ScreenPoint tp = getLableBox(text, symbol);
+			ScreenPoint tp = getLabelBox(text, symbol);
 			int w = Math.round(tp.x + symbol.getPadding() * 2);
 			int h = Math.round(tp.y + symbol.getPadding() * 2);
 			if(symbol.isBackground()) {
@@ -524,12 +524,12 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 	}
 	
 	@Override
-	public ScreenPoint getLableBox(Label label) {
+	public ScreenPoint getLabelBox(Label label) {
 		// TODO Auto-generated method stub
-		return getLableBox(label.getText(), label.getSymbol());
+		return getLabelBox(label.getText(), label.getSymbol());
 	}
 	
-	public ScreenPoint getLableBox(String text, LabelSymbol symbol) {
+	public ScreenPoint getLabelBox(String text, LabelSymbol symbol) {
 		// TODO Auto-generated method stub
 		int style = Font.PLAIN;
 		if("BOLD".equalsIgnoreCase(symbol.getFontStyle())) {
@@ -550,7 +550,7 @@ public abstract class GraphicsRenderEngine implements RenderEngine {
 	public ScreenRect getRect(MapContext context, String text, Latlng center, LabelSymbol symbol) {
 		ScenePoint p1 = context.latLngToPoint(center);
 		
-		ScreenPoint lp = getLableBox(text, symbol);
+		ScreenPoint lp = getLabelBox(text, symbol);
 		float sw = lp.getX();
 		float sh = lp.getY();
 		

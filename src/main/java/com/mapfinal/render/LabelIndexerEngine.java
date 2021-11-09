@@ -27,7 +27,7 @@ public class LabelIndexerEngine implements LabelEngine {
 	public boolean renderable(MapContext context, RenderEngine engine, Label label) {
 		double zoom = context.getZoom();
 		ScenePoint sp = context.latLngToPoint(label.getPosition(), zoom);
-		ScreenPoint pt = engine.getLableBox(label);
+		ScreenPoint pt = engine.getLabelBox(label);
 		int fx = label.getSymbol()!=null ? label.getSymbol().getOffsetX() : 0;
 		int fy = label.getSymbol()!=null ? label.getSymbol().getOffsetY() : 0;
 		int padding = label.getSymbol()!=null ? label.getSymbol().getPadding() : 0;

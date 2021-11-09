@@ -30,7 +30,7 @@ public class Label {
 		ScenePoint p1 = context.latLngToPoint(position);
 		
 		RenderEngine engine = Mapfinal.me().getScene().getRenderEngine();
-		ScreenPoint lp = engine.getLableBox(this);
+		ScreenPoint lp = engine.getLabelBox(this);
 		float sw = lp.getX();
 		float sh = lp.getY();
 		
@@ -53,7 +53,7 @@ public class Label {
 			ScenePoint p1 = context.latLngToPoint(position);
 			
 			RenderEngine engine = Mapfinal.me().getScene().getRenderEngine();
-			ScreenPoint lp = engine.getLableBox(this);
+			ScreenPoint lp = engine.getLabelBox(this);
 			
 			int fx = getSymbol()!=null ? getSymbol().getOffsetX() : 0;
 			int fy = getSymbol()!=null ? getSymbol().getOffsetY() : 0;
