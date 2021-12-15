@@ -9,13 +9,11 @@ import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
-import com.mapfinal.event.EventListener;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
 import com.mapfinal.map.MapContext;
-import com.mapfinal.render.RenderEngine;
 
 public abstract class GeometryLayer extends AbstractLayer {
 
@@ -49,18 +47,6 @@ public abstract class GeometryLayer extends AbstractLayer {
 			}
 		}
 		return false;
-	}
-	
-	public void addClick(EventListener listener) {
-		addListener(getEventAction("click"), listener);
-	}
-	
-	public void removeClick(EventListener listener) {
-		removeListener(getEventAction("click"), listener);
-	}
-	
-	public void clearClick() {
-		clearListener(getEventAction("click"));
 	}
 
 	public Geometry getGeometry() {

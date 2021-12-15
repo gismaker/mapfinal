@@ -106,6 +106,18 @@ public abstract class AbstractLayer implements Layer {
 	public String getEventAction(String eventName) {
 		return "Layer:" + getClass().getSimpleName() + ":" + eventName;
 	}
+	
+	public void addClick(EventListener listener) {
+		addListener(getEventAction("click"), listener);
+	}
+	
+	public void removeClick(EventListener listener) {
+		removeListener(getEventAction("click"), listener);
+	}
+	
+	public void clearClick() {
+		clearListener(getEventAction("click"));
+	}
 
 	@Override
 	public void removeListener(String eventAction, EventListener listener) {
