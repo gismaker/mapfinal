@@ -113,6 +113,13 @@ public class FeatureLayer extends AbstractLayer {
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
 		if (dispatcher != null) {
+			if(event.isAction("picked")) {
+				String idName = event.get("picked_name");
+				if(getName().equals(idName)) {
+					sendEvent(getEventAction("click"), event.set("picked_object", this));
+					return true;
+				}
+			}
 			boolean flag = dispatcher.handleEvent(event);
 			if (flag) {
 				sendEvent("featureSelected", event);

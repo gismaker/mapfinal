@@ -68,7 +68,6 @@ public class PointLayer extends GeometryLayer {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
-		super.handleEvent(event);
 		if(geometry==null) return false;
 		if(event.isAction("picked")) {
 			String idName = event.get("picked_name");
@@ -78,6 +77,7 @@ public class PointLayer extends GeometryLayer {
 				return true;
 			}
 		}
+		super.handleEvent(event);
 		return false;		
 	}
 	

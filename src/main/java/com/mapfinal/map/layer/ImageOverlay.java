@@ -2,9 +2,14 @@ package com.mapfinal.map.layer;
 
 import org.locationtech.jts.geom.Envelope;
 
+import com.mapfinal.converter.scene.ScenePoint;
 import com.mapfinal.event.Event;
+import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.LatlngBounds;
+import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
+import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.resource.image.Image;
 
@@ -47,6 +52,16 @@ public class ImageOverlay extends AbstractLayer {
 	@Override
 	public boolean handleEvent(Event event) {
 		// TODO Auto-generated method stub
+		if(bounds==null) return false;
+		if(event.isAction("mouseClick")) {
+			MapContext context = event.get("map");
+			//用户点击的像素坐标
+			ScreenPoint sp = event.get("screenPoint");
+			Latlng p1 = context.pointToLatLng(ScenePoint.by(sp));
+			if(bounds.contains(p1)) {
+				return sendEvent(Event.by(getEventAction("click"), "layer", this));
+			}
+		}
 		return false;
 	}
 	
