@@ -1,5 +1,8 @@
 package com.mapfinal.dispatcher;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.index.ItemVisitor;
@@ -13,15 +16,24 @@ import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
+import com.mapfinal.render.pick.PickManager;
 import com.mapfinal.render.style.Symbol;
 import com.mapfinal.resource.ResourceDispatcher;
 
 public class FeatureDispatcher extends Dispatcher {
 	private Event event;
 	private RenderEngine engine;
+	private Map<String, Feature> pickFeatures;
 	
 	public FeatureDispatcher(SpatialIndexer indexer, ResourceDispatcher resource) {
 		super(indexer, resource);
+	}
+	
+	public Feature getPickFeature(String featurePickName) {
+		if(pickFeatures!=null) {
+			return pickFeatures.get(featurePickName);
+		}
+		return null;
 	}
 	
 	@Override
@@ -39,9 +51,24 @@ public class FeatureDispatcher extends Dispatcher {
 		if(feature!=null) {
 			//System.out.println("[FeatureDispatcher] resultAction render id: " + id);
 			Renderer renderer = event.get("renderer");
+			int colorOrg = 0;
+			if(renderer!=null && renderer.isPickMode()) {
+				String name = event.get("layerName");
+				String featureName = name + "@" + feature.getId().toString();
+				int color = PickManager.me().getRenderColor(featureName);
+				colorOrg = renderer.getPickColor();
+				renderer.setPickMode(color, true);
+				if(pickFeatures==null) {
+					pickFeatures = new HashMap<String, Feature>();
+				}
+				pickFeatures.put(featureName, feature);
+			}
 			Symbol symbol = renderer==null ? null : renderer.getSymbol(feature);
 			//QueryParameter query = event.get("queryParameter");
 			engine.renderFeature(event, symbol, feature);
+			if(renderer!=null && renderer.isPickMode()) {
+				renderer.setPickMode(colorOrg, true);
+			}
 		}
 	}
 	

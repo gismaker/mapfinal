@@ -39,6 +39,10 @@ public class SimpleRenderer implements Renderer {
 		this.pickColor = color;
 		this.pickMode = pickMode;
 	}
+	
+	public boolean isPickMode() {
+		return this.pickMode;
+	}
 
 	public Symbol getSymbol() {
 		return symbol;
@@ -90,5 +94,11 @@ public class SimpleRenderer implements Renderer {
 	public Symbol getSymbol(Geometry geometry, Map<String, Object> attributes) {
 		// TODO Auto-generated method stub
 		return getSymbol();
+	}
+
+	@Override
+	public int getPickColor() {
+		// TODO Auto-generated method stub
+		return this.pickColor;
 	}
 }

@@ -33,6 +33,10 @@ public interface Renderer {
 	public static final String EVENT_CANCELDRAW = "render:cancelDraw";
 	
 	public void setPickMode(int color, boolean pickMode);
+	
+	public boolean isPickMode();
+	
+	public int getPickColor();
 
 	public Symbol getSymbol(Feature feature);
 	

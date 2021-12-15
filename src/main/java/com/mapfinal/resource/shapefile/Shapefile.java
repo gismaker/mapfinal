@@ -20,6 +20,7 @@ import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.QueryParameter;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.geometry.GeoKit;
+import com.mapfinal.kit.ExchangeUtil;
 import com.mapfinal.kit.FileKit;
 import com.mapfinal.kit.StringKit;
 import com.mapfinal.map.FeatureClass;
@@ -49,7 +50,7 @@ public class Shapefile extends FeatureResource<Long> {
 	 * dbf
 	 */
 	private MapRecordSet recordSet;
-	private String charsetName = "utf-8";
+	private String charsetName = null;//"utf-8";
 	
 	private boolean binit = false;
 	
@@ -175,9 +176,18 @@ public class Shapefile extends FeatureResource<Long> {
 	 * @throws IOException
 	 */
 	protected boolean readDBF(String dbfFile) throws IOException { /* 已测试 */
-		this.recordSet = new MapRecordSet();
+		if(this.recordSet==null) this.recordSet = new MapRecordSet();
+		if(StringKit.isBlank(charsetName)) {
+			charsetName = getCharset(dbfFile);
+		}
 		this.recordSet.setCharsetName(charsetName);
 		return recordSet.openDBF(dbfFile);
+	}
+	
+	protected String getCharset(String dbfFile) {
+		ExchangeUtil s = new ExchangeUtil();
+		String charset = ExchangeUtil.javaname[s.detectEncoding(new File(dbfFile))];
+		return charset;
 	}
 
 	@Override
@@ -528,4 +538,6 @@ public class Shapefile extends FeatureResource<Long> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 }

@@ -6,6 +6,7 @@ import com.mapfinal.event.Event;
 import com.mapfinal.geometry.Latlng;
 import com.mapfinal.geometry.ScreenPoint;
 import com.mapfinal.map.AbstractLayer;
+import com.mapfinal.map.Feature;
 import com.mapfinal.map.MapContext;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.Renderer;
@@ -104,6 +105,7 @@ public class FeatureLayer extends AbstractLayer {
 				renderer.setPickMode(color, true);
 			}
 			event.set("renderer", renderer);
+			event.set("layerName", getName());
 			dispatcher.draw(event, engine, getRenderer());
 			renderer.setPickMode(color, false);
 		}
@@ -115,6 +117,11 @@ public class FeatureLayer extends AbstractLayer {
 		if (dispatcher != null) {
 			if(event.isAction("picked")) {
 				String idName = event.get("picked_name");
+				Feature feature = dispatcher.getPickFeature(idName);
+				if(feature!=null) {
+					sendEvent(getEventAction("click"), event.set("picked_object", feature));
+					return true;
+				}
 				if(getName().equals(idName)) {
 					sendEvent(getEventAction("click"), event.set("picked_object", this));
 					return true;
