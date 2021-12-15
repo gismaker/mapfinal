@@ -72,7 +72,7 @@ public class SimpleRenderer implements Renderer {
 			}
 			//
 			String gtype = feature.getGeometry().getGeometryType();
-			GeomType type = GeomType.valueOf(gtype);
+			GeomType type = GeomType.valueOf(gtype.toUpperCase());
 			if(type == GeomType.MULTIPOLYGON || type==GeomType.POLYGON) {
 				return SimpleFillSymbol.create(pickColor, pickColor);
 			} else if(type == GeomType.MULTILINESTRING || type==GeomType.LINERING
