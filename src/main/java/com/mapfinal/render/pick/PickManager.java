@@ -35,6 +35,7 @@ public class PickManager {
 	 */
 	public int getRenderColor(String id) {
 		setColor(getColor() + 1);
+		System.out.println("pick, color: " + color + ", id: " +  id);
 		pickEntities.put(color, id);
 		return color;
 	}

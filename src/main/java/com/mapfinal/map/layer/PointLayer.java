@@ -13,6 +13,7 @@ import com.mapfinal.kit.StringKit;
 import com.mapfinal.render.RenderEngine;
 import com.mapfinal.render.pick.PickManager;
 import com.mapfinal.render.style.MarkerSymbol;
+import com.mapfinal.render.style.SimpleMarkerSymbol;
 
 public class PointLayer extends GeometryLayer {
 	
@@ -72,6 +73,7 @@ public class PointLayer extends GeometryLayer {
 		if(event.isAction("picked")) {
 			String idName = event.get("picked_name");
 			if(getName().equals(idName)) {
+				System.out.println("pointLayer: picked " + idName);
 				sendEvent(getEventAction("click"), event.set("picked_object", this));
 				return true;
 			}

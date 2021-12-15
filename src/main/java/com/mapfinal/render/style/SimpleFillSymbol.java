@@ -47,7 +47,7 @@ public class SimpleFillSymbol extends FillSymbol {
 	private int alpha = 255;
 	private int color = 0;
 	private SimpleFillSymbol.STYLE style = STYLE.SOLID;
-	private LineSymbol outline;
+	private SimpleLineSymbol outline;
 
 	public SimpleFillSymbol(int color) {
 		// TODO Auto-generated constructor stub
@@ -62,10 +62,12 @@ public class SimpleFillSymbol extends FillSymbol {
 
 	public SimpleFillSymbol(SimpleFillSymbol symbol) {
 		// TODO Auto-generated constructor stub
-		this.alpha = symbol.getAlpha();
-		this.color = symbol.getColor();
-		this.style = symbol.style;
-		this.outline = symbol.outline;
+		if(symbol!=null) {
+			this.alpha = symbol.getAlpha();
+			this.color = symbol.getColor();
+			this.style = symbol.style;
+			this.outline = new SimpleLineSymbol(symbol.outline);
+		}
 	}
 
 	@Override
@@ -101,7 +103,7 @@ public class SimpleFillSymbol extends FillSymbol {
 	@Override
 	public void setOutline(LineSymbol outline) {
 		// TODO Auto-generated method stub
-		this.outline = outline;
+		this.outline = (SimpleLineSymbol) outline;
 	}
 
 	public SimpleFillSymbol.STYLE getStyle() {

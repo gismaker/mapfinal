@@ -55,11 +55,13 @@ public class SimpleLineSymbol extends LineSymbol {
 	}
 
 	public SimpleLineSymbol(SimpleLineSymbol symbol) {
-		this.color = symbol.getColor();
-		this.width = symbol.getWidth();
-		this.style = symbol.getStyle();
-		this.outline = symbol.getOutline();
-		this.alpha = symbol.alpha;
+		if(symbol!=null) {
+			this.color = symbol.getColor();
+			this.width = symbol.getWidth();
+			this.style = symbol.getStyle();
+			this.outline = new SimpleLineSymbol(symbol.getOutline());
+			this.alpha = symbol.alpha;
+		}
 	}
 	
 	@Override

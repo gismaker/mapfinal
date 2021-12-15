@@ -35,6 +35,9 @@ import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.render.Label;
 import com.mapfinal.render.style.LabelSymbol;
+import com.mapfinal.render.style.MarkerSymbol;
+import com.mapfinal.render.style.SimpleFillSymbol;
+import com.mapfinal.render.style.SimpleMarkerSymbol;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.image.LocalImage;
 import com.mapfinal.resource.shapefile.ShapefileLayer;
@@ -147,8 +150,18 @@ public class JavaSwingPanel extends JPanel {
         lm.addLabel(label);
         lm.addTo(Mapfinal.me().getMap());
         
-        PointLayer pointLayer = new PointLayer(new Latlng(39.85,116.3), null);
+        SimpleMarkerSymbol symbolpt = SimpleMarkerSymbol.DEFAULT();
+        symbolpt.setFill(new SimpleFillSymbol(ColorUtil.colorToInt(new Color(0, 255, 0))));
+        PointLayer pointLayer = new PointLayer(new Latlng(39.85,116.3), symbolpt);
         pointLayer.addTo(Mapfinal.me().getMap());
+        pointLayer.addClick(new EventListener() {
+			@Override
+			public boolean onEvent(Event event) {
+				// TODO Auto-generated method stub
+				System.out.println(event.getAction());
+				return false;
+			}
+		});
         
         LabelSymbol labelSymbol2 = new LabelSymbol();
         labelSymbol2.setOffsetX(15);

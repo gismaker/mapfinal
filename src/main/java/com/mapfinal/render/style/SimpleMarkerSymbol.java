@@ -6,7 +6,7 @@ import com.mapfinal.Mapfinal;
 
 public class SimpleMarkerSymbol extends MarkerSymbol {
 
-	private FillSymbol fill;
+	private SimpleFillSymbol fill;
 	private MarkerSymbol.STYLE style = STYLE.CIRCLE;
 
 	public SimpleMarkerSymbol(int color) {
@@ -14,7 +14,7 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 		this.fill = new SimpleFillSymbol(color);
 	}
 	
-	public SimpleMarkerSymbol(FillSymbol fill) {
+	public SimpleMarkerSymbol(SimpleFillSymbol fill) {
 		// TODO Auto-generated constructor stub
 		this.fill = fill;
 	}
@@ -22,11 +22,13 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 	public SimpleMarkerSymbol(SimpleMarkerSymbol symbol) {
 		// TODO Auto-generated constructor stub
 		super(symbol);
-		this.fill = symbol.getFill();
-		this.style = symbol.getStyle();
+		if(symbol!=null) {
+			this.fill = new SimpleFillSymbol(symbol.getFill());
+			this.style = symbol.getStyle();
+		}
 	}
 	
-	public SimpleMarkerSymbol(FillSymbol fill, float width, float height) {
+	public SimpleMarkerSymbol(SimpleFillSymbol fill, float width, float height) {
 		// TODO Auto-generated constructor stub
 		this.fill = fill;
 		setWidth(width);
@@ -45,11 +47,11 @@ public class SimpleMarkerSymbol extends MarkerSymbol {
 		return (JSONObject) JSON.toJSON(this);
 	}
 
-	public FillSymbol getFill() {
+	public SimpleFillSymbol getFill() {
 		return fill;
 	}
 
-	public void setFill(FillSymbol fill) {
+	public void setFill(SimpleFillSymbol fill) {
 		this.fill = fill;
 	}
 

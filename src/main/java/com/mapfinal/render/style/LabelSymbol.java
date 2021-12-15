@@ -1,6 +1,7 @@
 package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.kit.ColorKit;
 
 /**
  * 文本标注
@@ -32,6 +33,17 @@ public class LabelSymbol implements Symbol {
 	
 	private float minZoom = 0;
 	private float maxZoom = 0;
+	
+	@Override
+	public LabelSymbol getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		LabelSymbol symbol = new LabelSymbol();
+		String hcolor = ColorKit.convertToHex(color);
+		symbol.setFillColor(hcolor);
+		symbol.setFontColor(hcolor);
+		symbol.setBorderColor(hcolor);
+		return symbol;
+	}
 	
 	public int getFontSize() {
 		return fontSize;
@@ -133,5 +145,6 @@ public class LabelSymbol implements Symbol {
 	public void setOffsetY(int offsetY) {
 		this.offsetY = offsetY;
 	}
+	
 	
 }

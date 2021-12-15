@@ -60,6 +60,10 @@ public abstract class MarkerSymbol implements Symbol {
 		return new SimpleMarkerSymbol(ColorKit.RED);
 	}
 	
+	public static SimpleMarkerSymbol create(int color) {
+		return new SimpleMarkerSymbol(color);
+	}
+	
 	public MarkerSymbol() {
 	}
 	

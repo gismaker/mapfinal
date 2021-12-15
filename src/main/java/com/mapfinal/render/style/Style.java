@@ -1,6 +1,7 @@
 package com.mapfinal.render.style;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mapfinal.kit.ColorKit;
 
 public class Style implements Symbol {
 
@@ -35,6 +36,16 @@ public class Style implements Symbol {
 	// When true, a mouse event on this path will trigger the same event on the
 	// map (unless L.DomEvent.stopPropagation is used).
 	private boolean bubblingMouseEvents = true;
+	
+	@Override
+	public Style getPickSymbol(int color) {
+		// TODO Auto-generated method stub
+		Style style = new Style();
+		String hcolor = ColorKit.convertToHex(color);
+		style.setColor(hcolor);
+		style.setFillColor(hcolor);
+		return style;
+	}
 
 	public boolean isStroke() {
 		return stroke;
@@ -156,4 +167,5 @@ public class Style implements Symbol {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

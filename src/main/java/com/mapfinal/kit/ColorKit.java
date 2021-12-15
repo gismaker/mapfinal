@@ -207,6 +207,38 @@ public class ColorKit {
         }
         throw new IllegalArgumentException("Unknown color");
     }
+    
+    /**
+	 * int 转 #FFFFFFFF
+	 * @param color
+	 * @return
+	 */
+	public static String convertToHexValue(int color) {
+		String red = intToHexValue(red(color));
+		String green = intToHexValue(green(color));
+		String blue = intToHexValue(blue(color));
+		return "#" + intToHexValue(alpha(color)) + red + green + blue;
+	}
+	
+	/**
+	 * int 转 #FFFFFF
+	 * @param color
+	 * @return
+	 */
+	public static String convertToHex(int color) {
+		String red = intToHexValue(red(color));
+		String green = intToHexValue(green(color));
+		String blue = intToHexValue(blue(color));
+		return "#" + red + green + blue;
+	}
+	
+	private static String intToHexValue(int number) {
+		String result = Integer.toHexString(number & 0xff);
+		while (result.length() < 2) {
+			result = "0" + result;
+		}
+		return result.toUpperCase();
+	}
 
     private static final HashMap<String, Integer> sColorNameMap;
     static {

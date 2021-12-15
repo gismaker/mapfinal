@@ -50,4 +50,10 @@ public abstract class FillSymbol implements Symbol {
 		fill.setOutline(new SimpleLineSymbol(ColorKit.WHITE));
 		return fill;
 	}
+	
+	public static SimpleFillSymbol create(int fillColor, int brokeColor) {
+		SimpleFillSymbol fill =  new SimpleFillSymbol(fillColor);
+		fill.setOutline(new SimpleLineSymbol(brokeColor));
+		return fill;
+	}
 }

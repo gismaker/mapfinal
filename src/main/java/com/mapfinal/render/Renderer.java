@@ -31,6 +31,8 @@ import com.mapfinal.render.style.Symbol;
 public interface Renderer {
 	
 	public static final String EVENT_CANCELDRAW = "render:cancelDraw";
+	
+	public void setPickMode(int color, boolean pickMode);
 
 	public Symbol getSymbol(Feature feature);
 	

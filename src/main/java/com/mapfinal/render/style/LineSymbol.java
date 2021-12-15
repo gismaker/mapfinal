@@ -48,4 +48,8 @@ public abstract class LineSymbol implements Symbol {
 	public static SimpleLineSymbol DEFAULT() {
 		return new SimpleLineSymbol(ColorKit.BLUE);
 	}
+	
+	public static SimpleLineSymbol create(int color) {
+		return new SimpleLineSymbol(color);
+	}
 }
