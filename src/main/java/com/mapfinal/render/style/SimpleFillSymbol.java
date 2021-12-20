@@ -131,8 +131,10 @@ public class SimpleFillSymbol extends FillSymbol {
 		// TODO Auto-generated method stub
 		SimpleFillSymbol symbol = new SimpleFillSymbol(this);
 		symbol.setColor(color);
+		symbol.setAlpha(255);
 		if(symbol.getOutline()!=null) {
 			symbol.getOutline().setColor(color);
+			symbol.getOutline().setAlpha(255);
 			symbol.getOutline().setWidth(symbol.getOutline().getWidth() + Mapfinal.platform().pickLineZommPixel());
 		}
 		return symbol;

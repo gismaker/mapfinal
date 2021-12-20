@@ -94,9 +94,11 @@ public class TextureFillSymbol extends FillSymbol {
 		// TODO Auto-generated method stub
 		TextureFillSymbol symbol = new TextureFillSymbol(this);
 		symbol.setColor(color);
+		symbol.setAlpha(255);
 		symbol.setPicked(true);
 		if(symbol.getOutline()!=null) {
 			symbol.getOutline().setColor(color);
+			symbol.getOutline().setAlpha(255);
 		}
 		return symbol;
 	}
