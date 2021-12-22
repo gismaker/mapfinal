@@ -3,9 +3,11 @@ package com.mapfinal.map;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
+import com.mapfinal.event.Event;
+
 public interface GeoImage<M> extends Graphic {
 	
-	public M getImage(); 
+	public M getImage(Event event); 
 	
 	public boolean isRectImage();
 

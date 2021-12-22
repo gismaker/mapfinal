@@ -19,6 +19,7 @@ import com.mapfinal.converter.SpatialReference;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.QueryParameter;
 import com.mapfinal.dispatcher.SpatialIndexObject;
+import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.ExchangeUtil;
 import com.mapfinal.kit.FileKit;
@@ -120,7 +121,7 @@ public class Shapefile extends FeatureResource<Long> {
 	}
 	
 	@Override
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 		if(binit) return;
 		long start = System.currentTimeMillis();
@@ -191,10 +192,10 @@ public class Shapefile extends FeatureResource<Long> {
 	}
 
 	@Override
-	public Dispatcher connection() {
+	public Dispatcher connection(Event event) {
 		// TODO Auto-generated method stub
 		try {
-			prepare();
+			prepare(event);
 			return shpRandomAccess.buildDispatcher(this, shxRandomAccess);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -488,7 +489,7 @@ public class Shapefile extends FeatureResource<Long> {
 	}
 
 	@Override
-	public FeatureClass<Long> read() {
+	public FeatureClass<Long> read(Event event) {
 		// TODO Auto-generated method stub
 		if(!binit) return null;
 		FeatureClass<Long> resultFeature = featureClass.clone();
@@ -514,7 +515,7 @@ public class Shapefile extends FeatureResource<Long> {
 	}
 
 	@Override
-	public void writer(FeatureClass<Long> data) {
+	public void writer(Event event, FeatureClass<Long> data) {
 		// TODO Auto-generated method stub
 		//undo
 	}
@@ -538,6 +539,10 @@ public class Shapefile extends FeatureResource<Long> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+	@Override
+	public void setEvent(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

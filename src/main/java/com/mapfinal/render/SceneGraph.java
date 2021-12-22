@@ -65,8 +65,7 @@ public abstract class SceneGraph {
 		isRendering = false;
 	}
 	
-	public void pick(PickRenderEngine engine, float x, float y) {
-		Event event = new Event("pick").set("width", width).set("height", height);
+	public void pick(Event event, PickRenderEngine engine, float x, float y) {
 		event.set("pick_screen_x", x);
 		event.set("pick_screen_y", y);
 		PickManager.me().start();

@@ -1,7 +1,5 @@
 package com.mapfinal.dispatcher;
 
-import org.locationtech.jts.index.ItemVisitor;
-
 import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.MapContext;
@@ -44,7 +42,7 @@ public class TileDispatcher extends Dispatcher {
 		MapContext context = event.get("map");
 		if(lastZoom==-1) lastZoom = (int) context.getZoom();
 		TileResourceDispatcher resource = (TileResourceDispatcher) getResource();
-		int izoom = (int) context.getZoom();
+		//int izoom = (int) context.getZoom();
 		event.set("type", resource.getTmsType()).set("name", resource.getName());
 //		if(izoom > 0 && renderCacheLayer){
 //			//这里有问题，不应该这么处理
@@ -66,8 +64,7 @@ public class TileDispatcher extends Dispatcher {
 //			});
 //		} 
 		query(event, context.getSceneEnvelope(), this);
-		TileResourceDispatcher tileResource = (TileResourceDispatcher) resource;
-		tileResource.setCurrentTileNumberOnScreen(this.getSioNumber());
+		resource.setCurrentTileNumberOnScreen(this.getSioNumber());
 		//System.out.println("[TileDispatcher]" + resource.getTileCache().print());
 		lastZoom = (int) context.getZoom();
 	}

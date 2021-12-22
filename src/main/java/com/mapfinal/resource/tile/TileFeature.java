@@ -7,6 +7,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.converter.SpatialReference;
+import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.Tile;
 
@@ -32,9 +33,9 @@ public class TileFeature<M> implements GeoImage<M> {
 	}
 
 	@Override
-	public M getImage() {
+	public M getImage(Event event) {
 		// TODO Auto-generated method stub
-		return data!=null ? data.getImageData() : null;
+		return data!=null ? data.getImageData(event) : null;
 	}
 
 	public SpatialReference getSpatialReference() {

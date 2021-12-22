@@ -14,6 +14,7 @@ import com.mapfinal.converter.CRS;
 import com.mapfinal.converter.ConverterManager;
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
+import com.mapfinal.event.Event;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.kit.FileKit;
 import com.mapfinal.map.Field;
@@ -120,7 +121,7 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 		return filepath;
 	}
 
-	public Dispatcher connection() {
+	public Dispatcher connection(Event event) {
 		// TODO Auto-generated method stub
 		try {
 			return shpRandomAccess.buildDispatcher(this, shxRandomAccess);
@@ -397,5 +398,11 @@ public class ShapefileRandomAccess implements ResourceDispatcher<ShapefileFeatur
 			fields.add(fld);
 		}
 		return fields;
+	}
+
+	@Override
+	public void setEvent(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

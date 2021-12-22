@@ -43,10 +43,10 @@ public class Marker extends AbstractLayer {
 		if(!isVisible()) return;
 		if(!event.isRender()) return;
 		if(image==null || center==null) return;
-		if(image.getData()==null) {
-			image.read();
+		if(image.getData(event)==null) {
+			image.read(event);
 		}
-		if(image.getData()==null) return;
+		if(image.getData(event)==null) return;
 		event.set("image:scale", scale);
 		engine.renderImage(event, center, image, getOpacity());
 		event.remove("image:scale");

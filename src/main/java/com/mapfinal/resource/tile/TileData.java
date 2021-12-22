@@ -1,5 +1,6 @@
 package com.mapfinal.resource.tile;
 
+import com.mapfinal.event.Event;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Data;
 import com.mapfinal.resource.Resource.FileType;
@@ -41,26 +42,26 @@ public class TileData<M> implements Data {
 		this.image = image;
 	}
 	
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 		if (image != null)
-			image.prepare();
+			image.prepare(event);
 	}
 
-	public void read() {
+	public void read(Event event) {
 		// TODO Auto-generated method stub
 		if (image != null)
-			image.read();
+			image.read(event);
 	}
 
-	public void writer() {
+	public void writer(Event event) {
 		// TODO Auto-generated method stub
 		if (image != null)
-			image.writer();
+			image.writer(event);
 	}
 
-	public M getImageData() {
-		return image.getData();
+	public M getImageData(Event event) {
+		return image.getData(event);
 	}
 
 	public Image<M> getImageResource() {

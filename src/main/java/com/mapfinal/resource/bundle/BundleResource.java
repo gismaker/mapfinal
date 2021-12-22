@@ -12,6 +12,7 @@ import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
+import com.mapfinal.event.Event;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.tile.TileResourceDispatcher;
@@ -56,24 +57,24 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 	}
 	
 	@Override
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public BundleFeature read() {
+	public BundleFeature read(Event event) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void writer(BundleFeature data) {
+	public void writer(Event event, BundleFeature data) {
 		// TODO Auto-generated method stub
 		data.writer();
 	}
 	
 	@Override
-	public Dispatcher connection() {
+	public Dispatcher connection(Event event) {
 		// TODO Auto-generated method stub
 		return new TileDispatcher(new TileMercatorIndexer(), this);
 	}
@@ -242,6 +243,12 @@ public class BundleResource extends TileResourceDispatcher<BundleFeature> implem
 
 	public void setStandard(boolean standard) {
 		this.standard = standard;
+	}
+
+	@Override
+	public void setEvent(Event event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

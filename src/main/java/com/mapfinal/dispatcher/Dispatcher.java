@@ -46,12 +46,14 @@ public abstract class Dispatcher implements ItemVisitor {
 	//查询
 	public List<SpatialIndexObject> query(Event event, Envelope env) {
 		setSioNumber(0);
+		resource.setEvent(event);
 		return indexer!=null ? indexer.query(event, env) : null;
 	}
 	//查询
 	public void query(Event event, Envelope env, ItemVisitor visitor) {
 		visitor = visitor==null ? this : visitor;
 		setSioNumber(0);
+		resource.setEvent(event);
 		indexer.query(event, env, visitor);
 	}
 	

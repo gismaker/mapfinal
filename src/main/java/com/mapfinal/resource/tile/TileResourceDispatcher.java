@@ -8,4 +8,5 @@ public abstract class TileResourceDispatcher<G extends Graphic> implements Resou
 	public abstract int getTmsType();
 	
 	public abstract void setCurrentTileNumberOnScreen(int numTile);
+	
 }

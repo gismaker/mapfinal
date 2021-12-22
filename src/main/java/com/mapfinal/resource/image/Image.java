@@ -1,6 +1,7 @@
 package com.mapfinal.resource.image;
 
 import com.mapfinal.Mapfinal;
+import com.mapfinal.event.Event;
 import com.mapfinal.resource.Data;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.ResourceObject;
@@ -39,27 +40,27 @@ public class Image<M> extends ResourceObject<Image<M>> implements Data {
 	}
 	
 	@Override
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public Image<M> read() {
+	public Image<M> read(Event event) {
 		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
-	public void writer(Image<M> image) {
+	public void writer(Event event, Image<M> image) {
 		// TODO Auto-generated method stub
 		if(image==null) {
-			getHandle().writeFile(image.getUrl(), image.getData());
+			getHandle().writeFile(image.getUrl(), image.getData(event));
 		}
 	}
 	
-	public void writer() {
+	public void writer(Event event) {
 		if(this.data==null) {
-			getHandle().writeFile(getUrl(), getData());
+			getHandle().writeFile(getUrl(), getData(event));
 		}
 	}
 	
@@ -67,8 +68,8 @@ public class Image<M> extends ResourceObject<Image<M>> implements Data {
 	 * 获取并读取图像
 	 * @return
 	 */
-	public M getData() {
-		read();
+	public M getData(Event event) {
+		read(event);
 		return data;
 	}
 	

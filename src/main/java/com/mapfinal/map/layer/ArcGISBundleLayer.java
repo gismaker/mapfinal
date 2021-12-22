@@ -25,7 +25,7 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		resource = new BundleResource(name, url);
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection(Event.by("init"));
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}
@@ -35,7 +35,7 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		resource = new BundleResource(name, url, standard);
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection(Event.by("init"));
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}
@@ -44,7 +44,7 @@ public class ArcGISBundleLayer extends AbstractLayer {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection(Event.by("init"));
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
 	}

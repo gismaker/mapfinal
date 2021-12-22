@@ -9,6 +9,7 @@ import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.dispatcher.TileDispatcher;
 import com.mapfinal.dispatcher.indexer.TileMercatorIndexer;
+import com.mapfinal.event.Event;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Resource;
 
@@ -24,6 +25,7 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	private SpatialReference spatialReference = SpatialReference.mercator();
 	//分布式节点， 待完善
 	private String[] subdomains;
+	private Event event;
 	
 	public TileResource(String name, String url, FileType type) {
 		this.name = name;
@@ -35,20 +37,20 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	}
 	
 	@Override
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public TileData read() {
+	public TileData read(Event event) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void writer(TileData data) {
+	public void writer(Event event, TileData data) {
 		// TODO Auto-generated method stub
-		data.writer();
+		data.writer(event);
 	}
 	
 	public TileFeature createFeature(String url, Tile tile, boolean renderOnCache) {
@@ -139,7 +141,7 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	}
 
 	@Override
-	public Dispatcher connection() {
+	public Dispatcher connection(Event event) {
 		return new TileDispatcher(new TileMercatorIndexer(), this);
 	}
 
@@ -210,6 +212,12 @@ public class TileResource extends TileResourceDispatcher<TileFeature> implements
 	public void destroy() {
 		// TODO Auto-generated method stub
 		dataCache.clear();
+	}
+
+	@Override
+	public void setEvent(Event event) {
+		// TODO Auto-generated method stub
+		this.event = event;
 	}
 
 	

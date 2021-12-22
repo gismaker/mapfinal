@@ -2,6 +2,7 @@ package com.mapfinal.resource;
 
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
+import com.mapfinal.event.Event;
 import com.mapfinal.map.Graphic;
 
 /**
@@ -21,7 +22,7 @@ public interface ResourceDispatcher<G extends Graphic> {
 	 * 连接初始化
 	 * @return
 	 */
-	Dispatcher connection();
+	Dispatcher connection(Event event);
 	/**
 	 * 按索引读取
 	 * @param obj
@@ -32,4 +33,10 @@ public interface ResourceDispatcher<G extends Graphic> {
 	 * 关闭连接
 	 */
 	void close();
+	
+	/**
+	 * 设置当前事件
+	 * @param event
+	 */
+	void setEvent(Event event);
 }

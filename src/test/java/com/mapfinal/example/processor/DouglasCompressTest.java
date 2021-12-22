@@ -23,7 +23,7 @@ public class DouglasCompressTest {
         
 		String filepath = "/Users/yangyong/data/gisdata/china_city_region.shp";
 		Shapefile shp = ShapefileManager.me().create(filepath);
-		shp.prepare();
+		shp.prepare(null);
 		ShapefileFeature feature = shp.read(new SpatialIndexObject("1", "shp", "Polygon", null));
 		for (String key : feature.getAttributes().keySet()) {
 			System.out.println(key + ": " + feature.getAttr(key).toString());

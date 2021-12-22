@@ -27,7 +27,7 @@ public class TileLayer extends AbstractLayer {
 		resource = new TileResource(name, url, fileType);
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection(Event.by("init"));
 		//System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());
@@ -37,7 +37,7 @@ public class TileLayer extends AbstractLayer {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
-		TileDispatcher dispatcher = (TileDispatcher) resource.connection();
+		TileDispatcher dispatcher = (TileDispatcher) resource.connection(Event.by("init"));
 		//System.out.println("FeatureDispatcher: " + resource.getName());
 		setDispatcher(dispatcher);
 		setSpatialReference(SpatialReference.mercator());

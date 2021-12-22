@@ -295,7 +295,7 @@ public interface RenderEngine {
         for (int i = 1; i < coordinates.size(); i++) {
 			Coordinate la = coordinates.getCoordinate(i-1);
 			ScenePoint sp = context.latLngToPoint(Latlng.create(la));
-			renderPoint(symbol, sp);
+			renderPoint(event, symbol, sp);
 		}
 	}
 	
@@ -305,11 +305,11 @@ public interface RenderEngine {
 	 * @param symbol
 	 * @param coordinate
 	 */
-	default void renderPoint(Event event, MarkerSymbol symbol, Coordinate coordinate) {
-		if(coordinate==null) return;
+	default void renderPoint(Event event, MarkerSymbol symbol, Latlng latlng) {
+		if(latlng==null) return;
 		MapContext context = event.get("map");
-		ScenePoint sp = context.latLngToPoint(Latlng.create(coordinate));
-		renderPoint(symbol, sp);
+		ScenePoint sp = context.latLngToPoint(latlng);
+		renderPoint(event, symbol, sp);
 	}
 	
 	/**
@@ -317,7 +317,7 @@ public interface RenderEngine {
 	 * @param symbol
 	 * @param coordinate
 	 */
-	void renderPoint(MarkerSymbol symbol, Coordinate coordinate);
+	void renderPoint(Event event, MarkerSymbol symbol, Coordinate coordinate);
 	
 	/**
 	 * 渲染文本

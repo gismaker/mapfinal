@@ -3,6 +3,7 @@ package com.mapfinal.map;
 import java.util.Map;
 
 import com.mapfinal.converter.SpatialReference;
+import com.mapfinal.event.Event;
 import com.mapfinal.resource.image.Image;
 import com.mapfinal.resource.image.LocalImage;
 import com.mapfinal.resource.image.RemoteImage;
@@ -73,8 +74,8 @@ public class GeoImageFeature<M> implements GeoImage<M> {
 		this.spatialReference = SpatialReference.wgs84();
 	}
 	
-	public M getImage() {
-		return picture!=null ? picture.getData() : null;
+	public M getImage(Event event) {
+		return picture!=null ? picture.getData(event) : null;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package com.mapfinal.resource;
 
 import com.mapfinal.MapfinalObject;
+import com.mapfinal.event.Event;
 
 /**
  * 资源，负责预加载和加载，数据内容
@@ -85,15 +86,15 @@ public interface Resource<D extends Data> extends MapfinalObject {
 	/**
 	 * 预加载
 	 */
-	void prepare();
+	void prepare(Event event);
 	
 	/**
 	 * 加载资源
 	 */
-	D read();
+	D read(Event event);
 	
 	/**
 	 * 写入资源
 	 */
-	void writer(D data);
+	void writer(Event event, D data);
 }

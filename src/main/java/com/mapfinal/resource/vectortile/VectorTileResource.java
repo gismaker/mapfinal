@@ -2,6 +2,7 @@ package com.mapfinal.resource.vectortile;
 
 import com.mapfinal.dispatcher.Dispatcher;
 import com.mapfinal.dispatcher.SpatialIndexObject;
+import com.mapfinal.event.Event;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.tile.TileData;
 import com.mapfinal.resource.tile.TileFeature;
@@ -16,7 +17,7 @@ public class VectorTileResource extends TileResourceDispatcher<TileFeature> impl
 	}
 
 	@Override
-	public Dispatcher connection() {
+	public Dispatcher connection(Event event) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -58,19 +59,19 @@ public class VectorTileResource extends TileResourceDispatcher<TileFeature> impl
 	}
 
 	@Override
-	public void prepare() {
+	public void prepare(Event event) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public TileData read() {
+	public TileData read(Event event) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void writer(TileData data) {
+	public void writer(Event event, TileData data) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -83,6 +84,12 @@ public class VectorTileResource extends TileResourceDispatcher<TileFeature> impl
 
 	@Override
 	public void setCurrentTileNumberOnScreen(int numTile) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setEvent(Event event) {
 		// TODO Auto-generated method stub
 		
 	}

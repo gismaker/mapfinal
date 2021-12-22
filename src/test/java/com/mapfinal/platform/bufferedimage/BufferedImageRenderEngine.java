@@ -182,7 +182,7 @@ public class BufferedImageRenderEngine implements RenderEngine {
 	@Override
 	public void renderImageFeature(Event event, Symbol symbol, GeoImage feature) {
 		// TODO Auto-generated method stub
-		if (feature == null || feature.getImage() == null)
+		if (feature == null || feature.getImage(event) == null)
 			return;
 		Graphics2D g2d = getGraphics2D();
 		MapContext context = event.get("map");
@@ -202,7 +202,7 @@ public class BufferedImageRenderEngine implements RenderEngine {
 		//设置为透明覆盖
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
 		// 绘制图片（如果宽高传的不是图片原本的宽高, 则图片将会适当缩放绘制）
-		g2d.drawImage((Image) feature.getImage(), x, y, w, h, null);
+		g2d.drawImage((Image) feature.getImage(event), x, y, w, h, null);
 		//g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
 //        g2d.setColor(Color.lightGray);
@@ -221,12 +221,12 @@ public class BufferedImageRenderEngine implements RenderEngine {
 		// TODO Auto-generated method stub
 		if (image == null || latlng == null)
 			return;
-		if (image.getData() == null)
+		if (image.getData(event) == null)
 			return;
 		Graphics2D g2d = getGraphics2D();
 		MapContext context = event.get("map");
 		ScenePoint p1 = context.latLngToPoint(latlng);
-		BufferedImage img = (BufferedImage) image.getData();
+		BufferedImage img = (BufferedImage) image.getData(event);
 		int x = (int) Math.round(p1.getX() - img.getWidth() * 0.5);
 		int y = (int) Math.round(p1.getY() - img.getHeight() * 0.5);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, opacity));
@@ -255,7 +255,7 @@ public class BufferedImageRenderEngine implements RenderEngine {
 			float opacity) {
 		if (image == null || latlngBounds == null)
 			return;
-		if (image.getData() == null)
+		if (image.getData(event) == null)
 			return;
 		if (!latlngBounds.isValid())
 			return;
@@ -279,7 +279,7 @@ public class BufferedImageRenderEngine implements RenderEngine {
 		// ImageHandle handle = Mapfinal.me().getFactory().getImageHandle();
 		// g2d.drawImage((Image)handle.scale2(image.getData(), w, h, false), x, y, w, h,
 		// null);
-		g2d.drawImage((Image) image.getData(), x, y, w, h, null);
+		g2d.drawImage((Image) image.getData(event), x, y, w, h, null);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 
@@ -335,14 +335,14 @@ public class BufferedImageRenderEngine implements RenderEngine {
 	}
 
 	@Override
-	public void renderPoint(MarkerSymbol symbol, Coordinate coordinate) {
+	public void renderPoint(Event event, MarkerSymbol symbol, Coordinate coordinate) {
 		// TODO Auto-generated method stub
 		if (symbol == null || !(symbol instanceof MarkerSymbol)) {
 			renderPointFill(MarkerSymbol.DEFAULT(), coordinate);
 		} else if (symbol instanceof SimpleMarkerSymbol) {
 			renderPointFill((SimpleMarkerSymbol) symbol, coordinate);
 		} else if (symbol instanceof PictureMarkerSymbol) {
-			renderPointImage((PictureMarkerSymbol) symbol, coordinate);
+			renderPointImage(event, (PictureMarkerSymbol) symbol, coordinate);
 		}
 	}
 
@@ -407,14 +407,14 @@ public class BufferedImageRenderEngine implements RenderEngine {
 		}
     }
 
-	private void renderPointImage(PictureMarkerSymbol symbol, Coordinate coordinate) {
+	private void renderPointImage(Event event, PictureMarkerSymbol symbol, Coordinate coordinate) {
 		if (symbol == null || symbol.getImage()==null) return;
 		int w = (int) symbol.getWidth();
 		int h = (int) symbol.getHeight();
 		int x = (int) symbol.getX((float)coordinate.getX());
 		int y = (int) symbol.getY((float)coordinate.getY());
 		Graphics2D g2d = getGraphics2D();
-		g2d.drawImage((Image) symbol.getImage().getData(), x, y, w, h, null);
+		g2d.drawImage((Image) symbol.getImage().getData(event), x, y, w, h, null);
 	}
 
 	@Override

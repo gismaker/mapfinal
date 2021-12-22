@@ -38,7 +38,7 @@ public class FeatureLayer extends AbstractLayer {
 		this.resource = resource;
 		setName(resource.getName());
 		setTitle(resource.getName());
-		dispatcher = (FeatureDispatcher) resource.connection();
+		dispatcher = (FeatureDispatcher) resource.connection(Event.by("init"));
 		System.out.println("FeatureDispatcher: " + resource.getName());
 		setSpatialReference(resource.getSpatialReference());
 	}

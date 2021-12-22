@@ -126,7 +126,7 @@ public class Event implements Cloneable, Serializable {
 	}
 	
 	public boolean isRender() {
-		return "render".equals(action) ? true : false;
+		return "render".equals(action) || "drawing".equals(action) ? true : false;
 	}
 	
 	public boolean hasCallback() {

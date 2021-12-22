@@ -21,11 +21,11 @@ public class BufferedImageMainTest {
         String url = "http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile/{z}/{y}/{x}";
         TileLayer tileLayer = new TileLayer("grey", url, Resource.FileType.http);
         tileLayer.addTo(Mapfinal.me().getMap());
-        Mapfinal.map().setCenter(new Latlng(42.946,89.183));
+        Mapfinal.map().setCenter(new Latlng(39.946,119.183));
         Mapfinal.map().setZoom(17);
         
         BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-        scene.draw(image.getGraphics(), 256, 256);
+        scene.drawTo(image);
         try {
 			ImageIO.write(image, "png", new File("/Users/yangyong/data/gisdata/test.png"));
 		} catch (IOException e) {

@@ -1,9 +1,11 @@
 package com.mapfinal.platform.swing;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -34,6 +36,7 @@ import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.render.Label;
+import com.mapfinal.render.SimpleRenderer;
 import com.mapfinal.render.style.LabelSymbol;
 import com.mapfinal.render.style.MarkerSymbol;
 import com.mapfinal.render.style.SimpleFillSymbol;
@@ -82,8 +85,12 @@ public class JavaSwingPanel extends JPanel {
 //			}
 //		});
         
-//        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "map_province_region.shp");
-//        layerPl.addTo(Mapfinal.me().getMap());
+        SimpleFillSymbol symbol = SimpleFillSymbol.DEFAULT();
+        symbol.setAlpha(50);
+        SimpleRenderer renderer = new SimpleRenderer(symbol);
+        ShapefileLayer layerPl = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "china_city_region.shp");
+        layerPl.setRenderer(renderer);
+        layerPl.addTo(Mapfinal.me().getMap());
 //        
 //        ShapefileLayer layerLine = new ShapefileLayer(Mapfinal.me().getCacheFolder() + File.separator + "Rivers.shp");
 //        layerLine.addTo(Mapfinal.me().getMap());
@@ -308,7 +315,11 @@ public class JavaSwingPanel extends JPanel {
         //setBackground(Color.lightGray); //背景色
         //Mapfinal.me().getMap().resize(this.getWidth(), this.getHeight());
         
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE); 
+        
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
         scene.draw(g, this.getWidth(), this.getHeight());
+        ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         
         // fps counter: count how many frames we draw and once a second calculate the
         // frames per second

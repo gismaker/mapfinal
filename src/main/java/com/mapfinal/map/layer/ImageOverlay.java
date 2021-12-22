@@ -42,10 +42,10 @@ public class ImageOverlay extends AbstractLayer {
 		if(!isVisible()) return;
 		if(!event.isRender()) return;
 		if(image==null || bounds==null || !bounds.isValid()) return;
-		if(image.getData()==null) {
-			image.read();
+		if(image.getData(event)==null) {
+			image.read(event);
 		}
-		if(image.getData()==null) return;
+		if(image.getData(event)==null) return;
 		if(isVisible()) engine.renderImage(event, bounds, image, getOpacity());
 	}
 	

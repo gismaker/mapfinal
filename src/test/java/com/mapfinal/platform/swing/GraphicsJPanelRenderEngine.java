@@ -3,7 +3,9 @@ package com.mapfinal.platform.swing;
 
 import javax.swing.JPanel;
 
-public class GraphicsJPanelRenderEngine extends GraphicsRenderEngine {
+import com.mapfinal.platform.bufferedimage.BufferedImageRenderEngine;
+
+public class GraphicsJPanelRenderEngine extends BufferedImageRenderEngine {
 
 	private JPanel panel;
 

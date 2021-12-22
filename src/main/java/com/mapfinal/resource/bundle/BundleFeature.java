@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.Geometry;
 
 import com.mapfinal.Mapfinal;
 import com.mapfinal.converter.SpatialReference;
+import com.mapfinal.event.Event;
 import com.mapfinal.map.GeoImage;
 import com.mapfinal.map.Tile;
 import com.mapfinal.resource.Data;
@@ -121,7 +122,7 @@ public class BundleFeature<M> implements GeoImage<M>, Data {
 	}
 
 	@Override
-	public M getImage() {
+	public M getImage(Event event) {
 		// TODO Auto-generated method stub
 		return image;
 	}
