@@ -34,6 +34,7 @@ import com.mapfinal.map.layer.Marker;
 import com.mapfinal.map.layer.PointLayer;
 import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
+import com.mapfinal.map.layer.ShapefileLayer;
 import com.mapfinal.map.layer.TileLayer;
 import com.mapfinal.render.Label;
 import com.mapfinal.render.SimpleRenderer;
@@ -43,7 +44,6 @@ import com.mapfinal.render.style.SimpleFillSymbol;
 import com.mapfinal.render.style.SimpleMarkerSymbol;
 import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.image.LocalImage;
-import com.mapfinal.resource.shapefile.ShapefileLayer;
 
 public class JavaSwingPanel extends JPanel {
 

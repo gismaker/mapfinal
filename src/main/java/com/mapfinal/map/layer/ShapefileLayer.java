@@ -1,6 +1,7 @@
-package com.mapfinal.resource.shapefile;
+package com.mapfinal.map.layer;
 
-import com.mapfinal.map.layer.FeatureLayer;
+import com.mapfinal.resource.shapefile.Shapefile;
+import com.mapfinal.resource.shapefile.ShapefileManager;
 
 public class ShapefileLayer extends FeatureLayer {
 	

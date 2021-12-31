@@ -28,6 +28,7 @@ import com.mapfinal.map.FeatureClass;
 import com.mapfinal.map.Field;
 import com.mapfinal.map.Field.FieldType;
 import com.mapfinal.resource.FeatureResource;
+import com.mapfinal.resource.Resource;
 import com.mapfinal.resource.shapefile.dbf.MapField;
 import com.mapfinal.resource.shapefile.dbf.MapFields;
 import com.mapfinal.resource.shapefile.dbf.MapRecordSet;
@@ -60,6 +61,7 @@ public class Shapefile extends FeatureResource<Long> {
 	public Shapefile(String url, String charsetName) {
 		this.charsetName = charsetName;
 		setUrl(url);
+		setType(Resource.Type.shp.name());
 		setName(FileKit.getFileNameNoEx(getUrl()));
 		try {
 			isShapefileExists(getUrl());
@@ -73,6 +75,7 @@ public class Shapefile extends FeatureResource<Long> {
 	public Shapefile(String url) {
 		// TODO Auto-generated constructor stub
 		setUrl(url);
+		setType(Resource.Type.shp.name());
 		setName(FileKit.getFileNameNoEx(getUrl()));
 		try {
 			isShapefileExists(getUrl());
