@@ -1,4 +1,4 @@
-package com.mapfinal.processor;
+package com.mapfinal.processor.simplify;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import com.mapfinal.event.Event;
  * @author yangyong
  *
  */
-public interface GeoCompress {
+public interface GeoSimplifier {
 
 	public enum Type {
 		/**
@@ -27,6 +27,10 @@ public interface GeoCompress {
 		 * 道格拉斯·普客法（DP法）压缩矢量多边形
 		 */
 		DP,
+		/**
+		 * TopologyPreservingSimplifier
+		 */
+		TOPO,
 		/**
 		 * 未知
 		 */

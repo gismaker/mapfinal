@@ -6,7 +6,7 @@ import com.mapfinal.Platform;
 import com.mapfinal.geometry.FloatPackedCS;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.MapCSFactory;
-import com.mapfinal.processor.GeoCompress;
+import com.mapfinal.processor.simplify.GeoSimplifier;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.render.SimpleRenderCompress;
 import com.mapfinal.resource.image.ImageHandle;
@@ -29,7 +29,7 @@ public class JavaSwingPlatform implements Platform {
 	}
 	
 	@Override
-	public RenderCompress getRenderCompress(GeoCompress.Type type) {
+	public RenderCompress getRenderCompress(GeoSimplifier.Type type) {
 		// TODO Auto-generated method stub
 		if(renderCompress==null) {
 			renderCompress = new SimpleRenderCompress(type);

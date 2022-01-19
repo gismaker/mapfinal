@@ -10,7 +10,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import com.mapfinal.Mapfinal;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.platform.swing.JavaSwingPlatform;
-import com.mapfinal.processor.DouglasCompress;
+import com.mapfinal.processor.simplify.DouglasSimplifier;
 import com.mapfinal.resource.shapefile.Shapefile;
 import com.mapfinal.resource.shapefile.ShapefileFeature;
 import com.mapfinal.resource.shapefile.ShapefileManager;
@@ -34,7 +34,7 @@ public class DouglasCompressTest {
 		System.out.println("original:" + coordinates[0].x + ", " + coordinates[0].y);
 		System.out.println("original:" + coordinates[coordinates.length-1].x + ", " + coordinates[coordinates.length-1].y);
 		CoordinateSequence coordinateSequence = (CoordinateSequence) new CoordinateArraySequence(coordinates);
-		DouglasCompress douglasCompress = new DouglasCompress();
+		DouglasSimplifier douglasCompress = new DouglasSimplifier();
 		List<Integer> excute = douglasCompress.excute(null, coordinateSequence, 0.0000001);
 		ArrayList<Coordinate> corlist = new ArrayList<>();
 		for (Integer i : excute) {

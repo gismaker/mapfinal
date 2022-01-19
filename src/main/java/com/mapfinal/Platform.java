@@ -1,6 +1,6 @@
 package com.mapfinal;
 
-import com.mapfinal.processor.GeoCompress;
+import com.mapfinal.processor.simplify.GeoSimplifier;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.resource.image.ImageHandle;
 
@@ -28,7 +28,7 @@ public interface Platform {
 	 * @param nPoints
 	 * @return
 	 */
-	public RenderCompress getRenderCompress(GeoCompress.Type type);
+	public RenderCompress getRenderCompress(GeoSimplifier.Type type);
 	
 	/**
 	 * 创建一个图像处理句柄

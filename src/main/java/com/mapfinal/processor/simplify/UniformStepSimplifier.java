@@ -1,4 +1,4 @@
-package com.mapfinal.processor;
+package com.mapfinal.processor.simplify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import com.mapfinal.event.Event;
  * @author yangyong
  *
  */
-public class UniformStepCompress implements GeoCompress {
+public class UniformStepSimplifier implements GeoSimplifier {
 
 	@Override
 	public List<Integer> excute(Event event, CoordinateSequence points, Double tolerance) {

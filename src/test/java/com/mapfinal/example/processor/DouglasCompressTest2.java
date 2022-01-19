@@ -13,7 +13,7 @@ import com.mapfinal.Mapfinal;
 import com.mapfinal.dispatcher.SpatialIndexObject;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.platform.swing.JavaSwingPlatform;
-import com.mapfinal.processor.DouglasCompress2;
+import com.mapfinal.processor.simplify.DouglasSimplifier2;
 import com.mapfinal.resource.shapefile.Shapefile;
 import com.mapfinal.resource.shapefile.ShapefileFeature;
 import com.mapfinal.resource.shapefile.ShapefileManager;
@@ -79,7 +79,7 @@ public class DouglasCompressTest2 {
 		System.out.println("original:" + coordinates[0].x + ", " + coordinates[0].y);
 		System.out.println("original:" + coordinates[coordinates.length-1].x + ", " + coordinates[coordinates.length-1].y);
 		CoordinateSequence coordinateSequence = (CoordinateSequence) new CoordinateArraySequence(coordinates);
-		DouglasCompress2 douglasCompress = new DouglasCompress2();
+		DouglasSimplifier2 douglasCompress = new DouglasSimplifier2();
 		List<Integer> excute = douglasCompress.excute(null, coordinateSequence, 1.0);
 		ArrayList<Coordinate> corlist = new ArrayList<>();
 		for (Integer i : excute) {

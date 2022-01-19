@@ -1,4 +1,4 @@
-package com.mapfinal.processor;
+package com.mapfinal.processor.simplify;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,7 +16,7 @@ import com.mapfinal.event.Event;
  * @author yangyong
  *
  */
-public class UniformDistributionCompress implements GeoCompress {
+public class UniformDistributionSimplifier implements GeoSimplifier {
 
 	/**
 	 * 6378137赤道半径，一度对应赤道上的一米
