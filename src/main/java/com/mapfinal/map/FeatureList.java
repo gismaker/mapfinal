@@ -82,7 +82,7 @@ public class FeatureList<K> implements Data, Cloneable {
 	 */
 	public void addFeature(Feature<K> feature) {
 		if(feature.getEnvelope()!=null) {
-			if(this.envelope==null) {
+			if(null==this.envelope) {
 				this.envelope = new Envelope(feature.getEnvelope());
 			} else {
 				this.envelope.intersection(feature.getEnvelope());
