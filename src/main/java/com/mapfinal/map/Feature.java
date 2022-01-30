@@ -26,6 +26,10 @@ public class Feature<K> implements Graphic, JsonStore {
 
 	protected K id;
 	/**
+	 * 要素本身的类型，Feature、GeometryCollection
+	 */
+	protected String type = "Feature";
+	/**
 	 * 图形对象
 	 */
 	protected Geometry geometry = null;
@@ -247,6 +251,14 @@ public class Feature<K> implements Graphic, JsonStore {
 		this.geometry = geometry;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	/**
 	 * 空间索引对象
 	 * 

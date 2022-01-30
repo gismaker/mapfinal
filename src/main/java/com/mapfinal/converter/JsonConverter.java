@@ -64,6 +64,18 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 		if("Feature".equalsIgnoreCase(geotype)) {
 			return parseGeometry(geometry.getJSONObject("geometry"));
 		}
+		
+		if("GeometryCollection".equalsIgnoreCase(geotype)) {
+			JSONArray geometries = geometry.getJSONArray("geometries");
+			int len = geometries.size();
+			Geometry[] geometries_array = new Geometry[len];
+			for (int i = 0; i < len; i++) {
+				Geometry geometry_obj = parseGeometry(geometries.getJSONObject(i));
+				geometries_array[i] = geometry_obj;
+			}
+			return GeoKit.createGeometryCollect(geometries_array);
+		}
+		
 		// System.out.println("[geotype] " + geotype);
 		if (StringKit.isBlank(geotype))
 			return null;
@@ -124,13 +136,26 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 				if("name".equals(featureCollection.getJSONObject("crs").getString("type"))) {
 					JSONObject crs = featureCollection.getJSONObject("crs");
 					String crsName = crs.getJSONObject("properties").getString("name");
-					if(StringKit.isNotBlank(crsName) && crsName.startsWith("urn:ogc:def:crs:EPSG::")) {
-						String epsg = "EPSG:" + crsName.substring(crsName.indexOf("::")+2);
-						featureList.setSpatialReference(new SpatialReference(epsg));
+					if(StringKit.isNotBlank(crsName)) {
+						if(crsName.startsWith("urn:ogc:def:crs:EPSG::")) {
+							String epsg = "EPSG:" + crsName.substring(crsName.indexOf("::")+2);
+							featureList.setSpatialReference(new SpatialReference(epsg));
+						} else if(crsName.startsWith("EPSG:")) {
+							featureList.setSpatialReference(new SpatialReference(crsName));
+						} else if(crsName.endsWith("CRS84")) {
+							featureList.setSpatialReference(new SpatialReference("EPSG:4326"));
+						} 
 					}
 				}
 			}
 			return featureList;
+		} else {
+			Feature<String> feature = parseFeature(featureCollection);
+			if(feature!=null) {
+				FeatureList<String> featureList = new FeatureList<String>(1);
+				featureList.addFeature(feature);
+				return featureList;
+			}
 		}
 		return null;
 	}
@@ -139,8 +164,16 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	public Feature<String> parseFeature(JSONObject feature) {
 		Map<String, Object> properties = (Map) feature.get("properties");
 		Geometry geometry = parseGeometry(feature.getJSONObject("geometry"));
+		if(geometry==null) {
+			return null;
+		}
 		Feature<String> result = new Feature<String>(geometry, properties);
 		result.setId(feature.getString("id"));
+		
+		String type = feature.getString("type");
+		if("GeometryCollection".equalsIgnoreCase(type)) {
+			result.setType(type);
+		}
 		return result;
 	}
 
