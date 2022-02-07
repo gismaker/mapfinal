@@ -48,6 +48,9 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	}
 
 	public Geometry parseGeometry(JSONObject geometry) {
+		if(geometry==null) {
+			return null;
+		}
 		String geotype = geometry.getString("type");
 		if("FeatureCollection".equalsIgnoreCase(geotype)) {
 			JSONArray features = geometry.getJSONArray("features");
@@ -162,6 +165,17 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 	
 
 	public Feature<String> parseFeature(JSONObject feature) {
+		String type = feature.getString("type");
+		if("GeometryCollection".equalsIgnoreCase(type)) {
+			Geometry geometry = parseGeometry(feature);
+			if(geometry==null) {
+				return null;
+			}
+			Feature<String> result = new Feature<String>(geometry, null);
+			result.setType(type);
+			return result;
+		}
+		
 		Map<String, Object> properties = (Map) feature.get("properties");
 		Geometry geometry = parseGeometry(feature.getJSONObject("geometry"));
 		if(geometry==null) {
@@ -169,11 +183,6 @@ public class JsonConverter implements DataConverter<String, Geometry> {
 		}
 		Feature<String> result = new Feature<String>(geometry, properties);
 		result.setId(feature.getString("id"));
-		
-		String type = feature.getString("type");
-		if("GeometryCollection".equalsIgnoreCase(type)) {
-			result.setType(type);
-		}
 		return result;
 	}
 
