@@ -6,7 +6,6 @@ import com.mapfinal.Platform;
 import com.mapfinal.geometry.FloatPackedCS;
 import com.mapfinal.geometry.GeoKit;
 import com.mapfinal.geometry.MapCSFactory;
-import com.mapfinal.platform.swing.BufferedImageHandle;
 import com.mapfinal.processor.simplify.GeoSimplifier;
 import com.mapfinal.render.RenderCompress;
 import com.mapfinal.render.SimpleRenderCompress;

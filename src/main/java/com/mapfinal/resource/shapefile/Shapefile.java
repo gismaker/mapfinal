@@ -59,21 +59,15 @@ public class Shapefile extends FeatureResource<Long> {
 	private FeatureClass<Long> featureClass;
 	
 	public Shapefile(String url, String charsetName) {
-		this.charsetName = charsetName;
-		setUrl(url);
-		setType(Resource.Type.shp.name());
-		setName(FileKit.getFileNameNoEx(getUrl()));
-		try {
-			isShapefileExists(getUrl());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		recordSet = new MapRecordSet();
-		ShapefileManager.me().addResource(url, this);
+		init(url, charsetName);
 	}
 	
 	public Shapefile(String url) {
-		// TODO Auto-generated constructor stub
+		init(url, null);
+	}
+	
+	public void init(String url, String charsetName) {
+		this.charsetName = charsetName;
 		setUrl(url);
 		setType(Resource.Type.shp.name());
 		setName(FileKit.getFileNameNoEx(getUrl()));
@@ -236,8 +230,12 @@ public class Shapefile extends FeatureResource<Long> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		shpRandomAccess = null;
+		shxRandomAccess = null;
+		binit = false;
 		recordSet = null;
 		recordSet = new MapRecordSet();
+		ShapefileManager.me().remove(getUrl());
 	}
 	
 	/**

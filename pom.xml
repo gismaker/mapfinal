@@ -94,7 +94,28 @@
 			<artifactId>gdal</artifactId>
 			<version>3.4.0</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.albfernandez/javadbf -->
+		<!-- https://github.com/albfernandez/javadbf -->
+		<dependency>
+			<groupId>com.github.albfernandez</groupId>
+			<artifactId>javadbf</artifactId>
+			<version>1.13.2</version>
+		</dependency>
 		
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.36.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.12</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

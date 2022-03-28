@@ -36,6 +36,7 @@ import com.mapfinal.map.layer.PolygonLayer;
 import com.mapfinal.map.layer.PolylineLayer;
 import com.mapfinal.map.layer.ShapefileLayer;
 import com.mapfinal.map.layer.TileLayer;
+import com.mapfinal.platform.bufferedimage.ColorUtil;
 import com.mapfinal.render.Label;
 import com.mapfinal.render.SimpleRenderer;
 import com.mapfinal.render.style.LabelSymbol;
